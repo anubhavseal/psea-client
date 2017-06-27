@@ -1,0 +1,66 @@
+.container-fluid
+	.app-container(style='padding-top:53px')
+		div(data-ng-class="{'col-sm-9 col-md-9': !toggleRC, 'col-sm-12 col-md-12': toggleRC}")
+			.innerWrapper(ng-init="more = true")
+				#listFixed(ng-style='{width: toggleRC ? "100%" : "80%"}')
+					.page-title#listViewHeader(style='display: none;')
+						span.pull-left(help-text style='display:none' data-help-group-id='{{listConfig.helpGroupId}}' data-help-control-id='header')
+						#listHeader.pull-left(ng-repeat='item in listConfig.headerData' compile-template ng-bind-html='listConfig.header | html')
+					#listViewHeaderDetails.actionBody(style='display:none' data-ng-switch='' on='listConfig.templateType')
+						.listItem.clearfix(data-ng-switch-when='default' ng-repeat='item in listConfig.headerDetailsData' ng-show='(listConfig.headerDetailsData != null && listConfig.headerDetailsData.length > 0)')
+							include viewTemplateHeaderList
+						.table-responsive(data-ng-switch-when='grid' ng-show='(listConfig.headerDetailsData != null && listConfig.headerDetailsData.length > 0)')
+							include viewTemplateGrid
+					#listFilter.filterSection(style='display: none;padding-top:6px' ng-if='listConfig.filter != ""'  ng-class="{'showMore': more, 'showLess': !more}")
+						a.expandCollapse(href="#" ng-show='listConfig.filter.length >= 5' ng-click="getHeight(); more = !more;")
+							i.fa.fa-chevron-down(title='Expand')
+							i.fa.fa-chevron-up(title='Compress')
+						.row
+							form.form-inline(name='filtersForm')
+								.form-group(ng-repeat='control in listConfig.filter' ng-class="control.showLabel ? 'withLabel' : 'withOutLabel'")
+									div(class='' data-ng-switch='' on='control.controlType')
+										label(ng-show='control.showLabel') {{control.caption}}
+										input.form-control(name='{{control.id}}' ng-class="{selected: (control.selectedOption != undefined && control.selectedOption != null && control.selectedOption !== '')}" type='text' data-ng-switch-when='text' placeholder="{{control.defaultCaption}}" ng-model='control.selectedOption')
+										input.form-control(name='{{control.id}}' ng-class="{selected: (control.selectedOption != undefined && control.selectedOption != null && control.selectedOption !== '')}" type='number' data-ng-switch-when='number' placeholder="{{control.defaultCaption}}" ng-model='control.selectedOption')
+										input.form-control(name='{{control.id}}' ng-class="{selected: (control.selectedOption != undefined && control.selectedOption != null && control.selectedOption !== '')}" type='email' data-ng-switch-when='email' placeholder="{{control.defaultCaption}}" ng-model='control.selectedOption')
+										select.form-control(name='{{control.id}}' ng-class="{selected: (control.selectedOption != undefined && control.selectedOption.id != undefined && control.selectedOption.id != null && control.selectedOption.id !== '')}" data-ng-switch-when='dropdown' ng-options="option.caption for option in (filterOptions != null ? filterOptions(control) : control.options) | orderBy:'{{control.sortBy}}'" ng-mousedown='refreshDropdown(control, $event)' ng-model='control.selectedOption' ng-change='search()' required)
+								button.btn.btn-primary.theme-btn-primary(type='submit' ng-click='search()' style='height:33px') 
+									i.fa.fa-search
+									| &nbsp;&nbsp;Search
+								button.btn.btn-default.clearFilters(type='button' ng-click='clearFilters()' style='height:33px') Clear Filters
+								//- span.pull-left {{filtersForm.$valid}}
+					#listAction.actionSection(ng-if='isActionBarEnable(listConfig, sortConfig)')
+						.row
+							.actionHeader.clearfix
+								.checkbox.pull-left(ng-show='(listConfig.data != null && listConfig.data.length > 0) && listConfig.showCheckBox != false')
+									label
+										.checkbox-wrap
+											input.checkbox-input(type='checkbox' ng-model='allSelected' ng-model-options="{getterSetter: true}")
+											span.input-icon
+										span &nbsp;
+								.buttonCont(ng-repeat='actionControl in listConfig.actions')
+									div(data-ng-switch='' on='actionControl.controlType')
+										button.btn.btn-default(type='button' class="{{actionControl.class}}" ng-show='actionControl.accessible && isActionVisible(actionControl)' data-ng-switch-when='button' ng-click='handleActionClick(actionControl);' data-ng-bind-html='actionControl.icon | html' title='{{actionControl.caption}}')
+										div.separator(data-ng-switch-when='separator' ng-show='actionControl.accessible && isActionVisible(actionControl)')
+								span.pull-right(ng-if='sortConfig.availableOptions != null && sortConfig.availableOptions.length > 0')
+									label Sort By: 
+									select.form-control( style='display:inline;width:150px' name='' ng-options='option.name for option in sortConfig.availableOptions' ng-model='sortConfig.selectedOption' ng-change='search()')
+								span.pull-right
+									label Show: 
+									select.form-control(name='rowsPerPage' id='rowsPerPage' ng-options="option.caption for option in availableRowsPerPage" ng-model="listConfig.rowsPerPage" style='display:inline; width:70px' ng-change='search()')
+									| &nbsp;&nbsp;&nbsp;
+				#listData.actionBody(style='position: relative;' data-ng-switch='' on='listConfig.templateType' ng-style='{"padding-top": fixedElementHeight + "px", "padding-right": (toggleRC ? 0 : 42) + "px"}')
+					.clearfix(data-ng-switch-when='default' ng-if='(listConfig.data != null && listConfig.data.length > 0)' ng-class='{__row_selected : item.__selected}')
+						include viewTemplateList
+					.clearfix(data-ng-switch-when='tiles' ng-if='(listConfig.data != null && listConfig.data.length > 0)' ng-class='{__row_selected : item.__selected}')
+						include viewTemplateTiles
+					.table-responsive(data-ng-switch-when='grid_with_freezecolumn' ng-if='(listConfig.data != null && listConfig.data.length > 0)')
+						include viewTemplateGridFC
+					.table-responsive(data-ng-switch-when='grid' ng-if='(listConfig.data != null && listConfig.data.length > 0)')
+						include viewTemplateGrid
+					#pagerContainerBottom.pagination.clearfix(style='display:none')
+						#pagerMessageBottom.paginationMsg.pull-left
+							| &nbsp;
+						#pagerBottom.pull-right
+					h2.text-warning(data-ng-class='{"hidden": (listConfig.data != null && listConfig.data.length > 0)}') {{listConfig.NoDataMessage}}
+		include viewTemplateRecentActivities

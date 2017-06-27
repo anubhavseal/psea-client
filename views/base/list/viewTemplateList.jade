@@ -1,0 +1,17 @@
+ul.table-list.list-unstyled
+	li.table-list-head(ng-if='listConfig.showHeaders')
+		.row
+			.col-xs-1(ng-if='listConfig.showCheckBox != false')
+				a.col-title(href='')
+			div(ng-repeat='column in listConfig.columns track by $index' class='{{column.class}}')
+				a.col-title
+					span.ib {{column.caption == null || column.caption == '' ? '&nbsp;' : column.caption}}
+					span.ib.media-10.icon-sort-20.media-icon(ng-if="column.sort" click="$operation.order.set(instanceOrder, &quot;instanceDate&quot;)")
+	li.table-list-row(ng-repeat='item in listConfig.data')
+		.table-list-sub-row
+			.row
+				.col-xs-1(ng-if='listConfig.showCheckBox != false')
+					.checkbox-wrap
+						input.checkbox-input(type='checkbox' ng-model="item.__selected" ng-change='onRowSelectionChange(item)')
+						span.input-icon
+				div(ng-repeat='column in listConfig.columns track by $index' class='{{column.class}}' compile-template ng-bind-html='column.html | html')

@@ -1,0 +1,8 @@
+extends ../layout/layout
+
+block content
+	div
+		div(ng-view='')
+	!= js('base/include.js')
+	!= js('security/include.js')
+	!= js('shared/include.js')

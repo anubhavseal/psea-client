@@ -1,0 +1,11 @@
+table.table.table-bordered.table-striped
+	thead
+		tr
+			th(ng-if='listConfig.showHeaderCheckBox != false') &nbsp;
+			th(ng-repeat='column in listConfig.headerDetailsColumns') {{column.caption}}
+	tbody
+		tr(ng-repeat='item in listConfig.headerDetailsData')
+			td(ng-if='listConfig.showHeaderCheckBox != false')
+				.checkbox(style='padding-top:2px;height:15px')
+					input(type="checkbox" ng-model="item.__selected" ng-change='onRowSelectionChange(item)')
+			td(ng-repeat='column in listConfig.headerDetailsColumns track by $index' class='{{column.class}}' compile-template ng-bind-html='column.html | html')

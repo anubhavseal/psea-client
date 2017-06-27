@@ -1,0 +1,13 @@
+.container-fluid
+    .app-container
+        .page-title
+            h1.pull-left {{caption}}
+        .row.row-25.card-grid
+            .col-xs-4.col-md-3(ng-repeat='funct in functions')
+                .card(style="min-height: 170px;")
+                    .card-image(style="background-image: url('/images/pattern_1a.png')")
+                        .card-image-content
+                            h3
+                                a(style='font-size: 18px;' href='#' ng-click='navigate(funct)')  {{funct.caption}}
+                    .card-content
+                        .card-details.clearfix

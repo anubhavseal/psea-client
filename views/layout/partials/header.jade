@@ -1,0 +1,46 @@
+nav.navbar
+	.container-fluid(ng-controller='base.header.controller')
+		.navbar-header(ng-show='user != null')
+			button#toggle-nav-bar.navbar-toggle.pull-left(type='button' ng-click='toggleMenu();')
+				span.sr-only Toggle navigation
+				span.icon-bar
+				span.icon-bar
+				span.icon-bar
+
+		div#Logo(class="pull-left headerLogo" style="cursor:pointer" ng-click="gotoHome()")
+			img.img-responsive(src='/images/trial-logo-light@2x.png')
+		
+		ol.breadcrumb.pull-left(ng-show='user != null')
+			li(ng-repeat='breadcrumb in breadcrumbs')
+				a(href='#' ng-click='showBreadcrumb(breadcrumb)' style='text-transform: capitalize') {{breadcrumb.caption}}
+		.dropdown.pull-right.user-settings(style='padding:5px')
+			div(ng-if='user != null')
+				a.dropdown-toggle(aria-expanded='false', aria-haspopup='true', role='button', data-toggle='dropdown', href='#')
+					span#userdetails(data-userId="{{user.userId}}" data-emailId="{{user.email}}" data-userName="{{user.name || user.email || user.userId}}")
+						| {{user.name || user.email || user.userId}}
+				ul.dropdown-menu.pull-right
+					li(ng-repeat='headerLink in headerLinks' ng-class='{"divider": (headerLink.caption == "separator" || headerLink.caption == "-")}')
+						a(href='#' ng-click='onClick(headerLink)' compile-template ng-bind-html="headerLink.caption | html")
+			div(ng-if='user == null')
+				a.dropdown-toggle(aria-expanded='false' aria-haspopup='true' role='button' data-toggle='dropdown' href='#' ng-click='signIn()')
+					span#userdetails(data-userId="-" data-emailId="Sign In" data-userName="Sign In")
+						| Sign In					
+		form.navbar-form.pull-right(ng-show='user != null')
+			.has-icon-left(ng-if='searchPossible === true')
+				input.form-control.input-rounded(type='text', placeholder='Search', ng-change='search()', ng-keydown='onSearchTextKeyPress($event)', ng-model='searchOptions.text', style='width:250px')
+				span.input-add-on.media-16.icon-search-18
+				div.searchResult
+					div(ng-show='searchInProgress' style='padding:10px;color:#20b6ff;font-size:14px')
+						i.fa.fa-spinner.fa-pulse 
+						| &nbsp;Searching
+					ul(style="list-style-type:none;padding:0px;margin-bottom:0px" ng-show='searchItems != null && searchItems.length > 0')
+						li.globalSearchItem(ng-repeat='searchItem in searchItems' ng-click='showItem(searchItem)' title='{{searchItem.toolTip}}')
+							div(style='display:inline-block;width:42px;height:42px;overflow:hidden;padding:2px;')
+								img(src='{{searchItem.icon}}' style='width:40px;height:40px;border:1px solid lightgray;border-radius: 2px 2px;')
+							div(style='display:inline-block;width:169px;height:42px;overflow:hidden;padding:2px;')
+								div(style='padding:0px 5px;width:100%;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')
+									| {{searchItem.name}}
+								div(style='padding:0px 5px;width:100%;font-size:11px;color:lightgray;overflow:hidden;text-overflow:ellipsis;white-space:nowrap')
+									| {{searchItem.type}}
+					div(ng-show='!searchInProgress && (searchItems == null || searchItems.length == 0)' style='padding:10px;color:gray;font-size:14px')
+						| No Items found

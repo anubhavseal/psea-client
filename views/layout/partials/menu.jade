@@ -1,0 +1,12 @@
+nav.sidenav(ng-controller='security.menu.controller')
+	ul.sidenav.list-unstyled(ng-show='user != null')
+		li.sidenav-menu(ng-repeat='menu in menus' ng-class='{"dropdown open active": (menu.childs != null && menu.childs.length > 0 && isMenuActive(menu.link)), "dropdown open": (menu.childs != null && menu.childs.length > 0 && !isMenuActive(menu.link)), "active": ((menu.childs == null || menu.childs.length > 0) && isMenuActive(menu.link))}')
+			a(ng-href='{{menu.link == null || menu.link == "" ? "#" : menu.link}}' ng-class='{"dropdown-toggle": (menu.childs != null && menu.childs.length > 0)}')
+				span.sidenav-menu-container
+					span.sidenav-menu-icon(ng-class='menu.icon')
+					span.sidenav-menu-name {{menu.caption}}
+			ul.dropdown-menu(ng-if='menu.childs != null && menu.childs.length > 0')
+				li(ng-repeat='child in menu.childs' ng-class='{"active": isMenuActive(child.link)}')
+					a(ng-href='{{child.link}}')
+						| {{child.caption}}
+						span(ng-if='child.additionalInfo != null && child.additionalInfo.length > 0' class='badge {{child.icon}}' ng-bind-html='child.additionalInfo')

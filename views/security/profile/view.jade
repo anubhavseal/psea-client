@@ -1,0 +1,44 @@
+.container-fluid
+	.hidden#adjacentTemplate
+		div(class='col-xs-2 col-sm-2 col-md-2 treeRowCheckbox' style='text-align:center')
+			input(type='checkbox' data-ng-disabled='!node.accessible' data-ng-hide='node.accessType != null && node.accessType != "" && node.accessType.toUpperCase().indexOf("R") < 0' class='read' data-ng-model='node.readAccess' data-ng-change='setAccess(node, "R")')
+		div(class='col-xs-2 col-sm-2 col-md-2 checkBoxAlign treeRowCheckbox' style='text-align:center')
+			input(type='checkbox' data-ng-disabled='!node.accessible' data-ng-hide='node.accessType != null && node.accessType != "" && node.accessType.toUpperCase().indexOf("W") < 0 && node.accessType.toUpperCase().indexOf("F") < 0 && node.accessType.toUpperCase().indexOf("A") < 0' class='write' data-ng-model='node.writeAccess' data-ng-change='setAccess(node, "W")')
+	.app-container.home-page
+		.page-title
+			.clearfix.section-title
+				form.form-horizontal(name="profileForm" ng-submit="save(profileForm.$valid)" novalidate)
+					h3.pull-left.title(style='margin-right: 5px;') * Profiles - 
+						span(data-ng-hide='showProfileNameInput || isNew' data-ng-click='showProfileNameInput = true' style='font-size:20px')
+							{{profile.profileName == null || profile.profileName == "" ? "No Profile Name Given. Please Click Here To Change" : profile.profileName}}
+					.col-sm-8
+						input(data-ng-show='showProfileNameInput || isNew' type="text" data-ng-model='profile.profileName' placeholder='Profile Name' data-ng-blur='showProfileNameInput = false' ng-required="true" autofocus='true')
+						p.help-block(ng-show="profileForm.$invalid && !profileForm.$pristine")
+							i.fa.fa-exclamation-triangle(style='color:red')
+							| &nbsp;Profile name is required.
+					button.btn.btn-primary.theme-btn-primary.pull-right.saveProfile(data-ng-show='saveAccess' data-ng-click='save()' ng-disabled="profileForm.$invalid") Save Profile
+		.settings.scn
+			div(style="color:#014683;")
+				.row
+					.col-xs-8
+						h4 
+							| Permissions for 
+							select.select-md.form-control(ng-show='tenantSpecific == "both"' ng-disabled='!isNew' placeholder='type' ng-options='tenant.tenantName for tenant in tenants' ng-model='profile.selectedTenant' ng-change='onChangeTenant()' style='width:200px;display:inline-block')
+					.col-xs-2(style='text-align:center')
+						.checkbox(style='display: inline-flex;')
+							input(type="checkbox" data-ng-model='headerReadAccess' data-ng-change='setAccess(null, "R")') 
+							|  Read
+					.col-xs-2(style='text-align:center')
+						.checkbox(style='display: inline-flex;')
+							input(type="checkbox" data-ng-model='headerWriteAccess' data-ng-change='setAccess(null, "W")') 
+							|  Full		
+					.nav.nav-bordered(style="border-bottom: 1px solid #014683;")
+			.treeViewBody.clearfix(style='margin-left:-20px')
+				div(data-angular-treeview="true" 
+					data-tree-id="profileTree" 
+					data-tree-model="functions" 
+					data-node-id="functionId" 
+					data-node-label="caption" 
+					data-adjacent-template-id="adjacentTemplate"
+					data-tree-label-node-class="col-xs-8 col-sm-8 col-md-8 clearfix treeRowLable")
+					

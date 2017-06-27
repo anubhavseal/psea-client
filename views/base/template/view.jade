@@ -1,0 +1,12 @@
+extends ../../layout/modalLayout
+block content
+	.row
+		.padding-right-5(ng-class="{'col-md-12' : (templates == null || templates.length == 0), 'col-md-9' : (templates != null && templates.length > 0) }")
+			textarea#modifiedHTMLContent(data-ng-model='editcontent', ng-show='formattedHTML', data-ck-editor='')
+			textarea#modifiedHTMLContent(data-ng-model='editcontent', ng-show='!formattedHTML', rows='15', cols='{{(templates != null && templates.length > 0) ? 88 : 119}}')
+		.col-md-3(ng-show='(templates != null && templates.length > 0)', style='border: 1px solid gray;padding:0px;')
+			.h4(style='text-align:center;background:lightgray;border-bottom: 1px solid gray;padding:5px;margin:0px')
+				| Fields
+			div(style='text-align:left;background:white; overflow-x: hidden;overflow-y:auto;height:274px')
+				.mergeField(ng-repeat='template in templates', ng-click='insertTemplate(template)')
+					| {{template.caption}}

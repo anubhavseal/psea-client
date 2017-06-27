@@ -1,0 +1,34 @@
+﻿table(cellpadding='0', cellspacing='0')
+	tr(ng-show='listConfig.showHeaders')
+		td(width='{{listConfig.freezeColumnWidth}}')
+			#divLM98156LeftTopGrid(ng-style="{'height' : listConfig.headerHeight + 'px', 'width': listConfig.freezeColumnWidth + 'px', 'overflow': 'hidden'}")
+				table(cellpadding='2', cellspacing='2', style='table-layout: fixed;')
+					thead
+						tr(height='{{listConfig.headerHeight}}')
+							td(ng-if='listConfig.showCheckBox != false', width='50')  
+							td(ng-repeat='column in listConfig.fColumns', valign='{{column.headerRowStyle.verticalAlign}}', align='{{column.headerRowStyle.textAlign}}', ng-bind-html='getHeaderColumnHTML(column) | html', compile-template='compile-template', class='{{column.headerClass}}', ng-style='{{column.headerStyle}}', width='{{column.width}}', ng-click='addSortExpression(column)')
+		td
+			#divLM98156RightTopGrid(ng-style="{'height' : listConfig.headerHeight + 'px', 'width': 'calc(100vw - ' + (toggleRC ? 200 : 520)	+ 'px - ' + listConfig.freezeColumnWidth + 'px)', 'overflow': 'hidden'}")
+				table(cellpadding='2', cellspacing='2', style='table-layout: fixed;')
+					thead
+						tr(height='{{listConfig.headerHeight}}')
+							td(ng-repeat='column in listConfig.sColumns', valign='{{column.headerRowStyle.verticalAlign}}', align='{{column.headerRowStyle.textAlign}}', ng-bind-html='getHeaderColumnHTML(column) | html', compile-template='compile-template', class='{{column.headerClass}}', ng-style='{{column.headerStyle}}', width='{{column.width}}', ng-click='addSortExpression(column)')
+							td(width='21', style='background:darkgray;min-width:21px;width:100%')  
+	tr
+		td(width='{{listConfig.freezeColumnWidth}}')
+			#divLM98156LeftBottomGrid(ng-style="{'height': 'calc(100vh - 25px - ' + fixedElementHeight + 'px - ' + listConfig.headerHeight + 'px - ' + listConfig.fcAdditionalHeight+ 'px)', 'width': listConfig.freezeColumnWidth + 'px', 'overflow': 'hidden'}")
+				table(cellpadding='2', cellspacing='2', style='table-layout: fixed;width:100%')
+					tbody
+						tr(height='25', ng-repeat='(rowIndex, item) in listConfig.data track by rowIndex', ng-dblclick='handleRowClick(item)', ng-show='isRowVisible(item)', style="min-height:25px;background:{{($index % 2) == 0 ? '#f2f2f2' : ''}}")
+							td(ng-if='listConfig.showCheckBox != false', width='50', style='padding-left:17px')
+								input(type='checkbox', ng-model='item.__selected', ng-change='onRowSelectionChange(item)', style='height:13px')
+							td(ng-repeat='(colIndex, column) in listConfig.fColumns track by colIndex', title='{{column.field.caption + ": " + item[column.id]}}', valign='{{column.dataRowStyle.verticalAlign}}', align='{{column.dataRowStyle.textAlign}}', ng-bind-html='getColumnHTML(item, column) | html', compile-template='compile-template', class='{{column.class}}', ng-style='getColumnStyle(item, column)', width='{{column.width}}')
+				div(style='height:20px')
+				div(style="display:none;height:18px;position:absolute;z-index:1000;bottom:{{listConfig.showPagination ? '41px': '1px'}};background:#f7f7f7;width:{{listConfig.freezeColumnWidth}}px")
+		td
+			#divLM98156RightBottomGrid(onscroll="GLOBAL_HELPER.setScroll(this, '#divLM98156RightTopGrid', '#divLM98156LeftBottomGrid')", ng-style="{'height': 'calc(100vh - 25px - ' + fixedElementHeight + 'px - ' + listConfig.headerHeight + 'px - ' + listConfig.fcAdditionalHeight + 'px )', 'width': 'calc(100vw - ' + (toggleRC ? 200 : 520)	+ 'px - ' + listConfig.freezeColumnWidth + 'px)', 'overflow': 'auto'}")
+				table(cellpadding='2', cellspacing='2', style='width:100%')
+					tbody
+						tr(height='25', ng-repeat='(rowIndex, item) in listConfig.data track by rowIndex', ng-dblclick='handleRowClick(item)', ng-show='isRowVisible(item)', style="min-height:25px;background:{{($index % 2) == 0 ? '#f2f2f2' : ''}}", on-repeat-finish-render='equalizeHeight')
+							td(ng-repeat='(colIndex, column) in listConfig.sColumns track by colIndex', title='{{column.field.caption + ": " + item[column.id]}}', valign='{{column.dataRowStyle.verticalAlign}}', align='{{column.dataRowStyle.textAlign}}', ng-bind-html='getColumnHTML(item, column) | html', compile-template='compile-template', class='{{column.class}}', ng-style='getColumnStyle(item, column)', width='{{column.width}}')
+							td(width='1', ng-style="getColumnStyle(item, column, {'min-width': '1px', 'width': '100%'})")  

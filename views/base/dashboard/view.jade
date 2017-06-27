@@ -1,0 +1,55 @@
+.container-fluid
+	.app-container(style='padding-top:60px')
+		#headerContainer.row
+			.col-md-12(style='width:100%;')
+				#listHeader.row.container-header(style='padding-top: 0px;')
+					.col-lg-6.pad-left0.pull-left(ng-bind-html='dashboardConfig.header | html', compile-template='')
+					.col-lg-6
+						div.buttonCont.pull-right(ng-repeat='actionControl in dashboardConfig.actions')
+							div(data-ng-switch='', on='actionControl.controlType')
+								div(style='background:white;border:1px solid lightgray;border-radius:5px', ng-show='actionControl.accessible && isActionVisible(actionControl)', data-ng-switch-when='span', data-ng-bind-html='(actionControl.html || (actionControl.icon + actionControl.caption)) | html', title='{{actionControl.title || actionControl.caption}}', compile-template)
+								button.btn.btn-default.i-btn-well(type='button', ng-show='actionControl.accessible && isActionVisible(actionControl)', data-ng-switch-when='button', ng-click='handleActionClick(actionControl);', data-ng-bind-html='(actionControl.html || (actionControl.icon + actionControl.caption)) | html', title='{{actionControl.title || actionControl.caption}}', style='border-color:white;padding-left:0px;', compile-template)
+								div(data-ng-switch-when='separator', ng-show='actionControl.accessible && isActionVisible(actionControl)') &nbsp;&nbsp;&nbsp;
+						span.pull-right(style='background:white;border:1px solid lightgray;border-radius:5px')
+							button.btn.btn-default(type='button' ng-click='refresh();', title='Refresh', style='border-color:white;{{dashboardSettings != null && dashboardSettings.autoRefresh != null && dashboardSettings.autoRefresh.enabled ? "color:green" : "" }}')
+								i.fa.fa-refresh
+							span(style='padding:2px;border-left:1px solid lightgray')
+								a.dropdown-toggle(aria-expanded='false', aria-haspopup='true', role='button', data-toggle='dropdown', href='#')
+									i.fa.fa-sort-desc(style='height:25px;')
+								ul.dropdown-menu.pull-right
+									li(ng-click="toggleAutoRefresh();")
+										a(href='#')
+											i.fa.fa-check(style="color:{{isAutoRefreshEnabled() ? 'green' : 'white'}}")
+											| &nbsp;Auto Refresh
+									li(ng-click="openAutoRefreshPopup();")
+										a(href='#')
+											i.fa.fa-cog
+											| &nbsp;Settings
+				#filterpanel.panel-primary(style='display:{{dashboardConfig == null || dashboardConfig.filters == null || dashboardConfig.filters.length == 0 ? "none" : ""}}')
+					#listFilter.filterSection(style='padding-top:6px' ng-if='dashboardConfig.filters != ""'  ng-class="{'showMore': more, 'showLess': !more}")
+						a.expandCollapse(href="#" ng-show='dashboardConfig.filters.length >= 5' ng-click="getHeight(); more = !more;")
+							i.fa.fa-chevron-down(title='Expand')
+							i.fa.fa-chevron-up(title='Compress')
+						.row
+							form.form-inline(name='filtersForm')
+								.form-group(ng-repeat='control in dashboardConfig.filters' ng-class="control.showLabel ? 'withLabel' : 'withOutLabel'")
+									div(class='' data-ng-switch='' on='control.controlType')
+										label(ng-show='control.showLabel') {{control.caption}}
+										input.form-control(name='{{control.id}}' ng-class="{selected: (control.selectedOption != undefined && control.selectedOption != null && control.selectedOption !== '')}" type='text' data-ng-switch-when='text' placeholder="{{control.defaultCaption}}" ng-model='control.selectedOption')
+										input.form-control(name='{{control.id}}' ng-class="{selected: (control.selectedOption != undefined && control.selectedOption != null && control.selectedOption !== '')}" type='number' data-ng-switch-when='number' placeholder="{{control.defaultCaption}}" ng-model='control.selectedOption')
+										input.form-control(name='{{control.id}}' ng-class="{selected: (control.selectedOption != undefined && control.selectedOption != null && control.selectedOption !== '')}" type='email' data-ng-switch-when='email' placeholder="{{control.defaultCaption}}" ng-model='control.selectedOption')
+										select.form-control(name='{{control.id}}' ng-class="{selected: (control.selectedOption != undefined && control.selectedOption.id != undefined && control.selectedOption.id != null && control.selectedOption.id !== '')}" data-ng-switch-when='dropdown' ng-options="option.caption for option in (filterOptions != null ? filterOptions(control) : control.options) | orderBy:'{{control.sortBy}}'" ng-mousedown='refreshDropdown(control, $event)' ng-model='control.selectedOption' ng-change='search()' required)
+								button.btn.btn-primary.theme-btn-primary(type='submit' ng-click='refresh()' style='height:33px') 
+									i.fa.fa-search
+									| &nbsp;&nbsp;Search
+								button.btn.btn-default.clearFilters(type='button' ng-click='clearFilters()' style='height:33px') Clear Filters
+		#widgetContainer.row
+			.col-md-12(style='width:100%;padding-top:10px')
+				.row(ng-repeat='widgetRow in dashboardConfig.widgetRows')
+					div(class='{{widget.class}}', ng-repeat='widget in widgetRow.widgets', data-ng-switch='', on='widget.theme')
+						.panel.panel-default(data-ng-switch-when='panel')
+							.panel-heading.dashboard-widget(ng-show="widget.caption != null && widget.caption != ''")
+								span(ng-bind-html='widget.caption | html' compile-template='')
+								i.fa.fa-spinner.fa-spin.pull-right(ng-show='widget.refreshing')
+							div(id='{{widget.id}}', style='padding:1px;', data-ng-bind-html='widget.template | html', compile-template='')
+						.plain-widget(data-ng-switch-when='plain', id='{{widget.id}}', style='padding:1px;', data-ng-bind-html='widget.template | html', compile-template='')

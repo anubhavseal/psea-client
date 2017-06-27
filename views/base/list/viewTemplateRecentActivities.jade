@@ -1,0 +1,12 @@
+.col-sm-3.col-md-3.recentSection(style='padding-top:53px;display:none' ng-class="{'showMore': !toggleRC, 'showLess': toggleRC}" ng-model='activities')
+	.innerRACont
+		a.recentActivityToggle#recentActivityToggle(href="#" ng-click="toggleRC = !toggleRC" ng-class="{'showMore': toggleRC, 'showLess': !toggleRC}")
+			i.fa.fa-chevron-left(title='Expand Recent Activities')
+			i.fa.fa-chevron-right(title='Compress Recent Activities')
+		h4(data-ng-hide='activities == null || activities.length == 0') Recent Activities
+		h4(data-ng-show='activities == null || activities.length == 0') No Recent Activities
+		ul.list-unstyled
+			li(data-ng-repeat='item in activities' ng-style='{left:item.left}')
+				| {{item.activityByName}} {{item.activityTypeName}} {{item.referenceDescription}}
+				br
+				em {{item.activityAt | date:'MMM dd, yyyy HH:mm'}}

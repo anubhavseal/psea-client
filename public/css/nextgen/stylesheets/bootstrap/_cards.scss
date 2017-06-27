@@ -1,0 +1,245 @@
+// Card
+.card-grid{
+    .card {
+        background-color: #fff;
+        min-height: 190px;
+        box-shadow: 0.3px 0.3px 1px 0 rgba(27, 36, 50, 0.1);
+        border-radius: 4px;
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .card-image {
+        height: 0;
+        position: relative;
+        padding-bottom: 50%;
+        background-image: url('#{$path-images}/cover-bg.png');
+        background-size: 100% 100%;
+        > .btn-group {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            @media (min-width: $screen-lg) { 
+                display: none;
+            }
+        }
+
+        &:hover {
+            > .btn-group {
+                display: block;
+            }
+        }
+    }
+    figure {
+        height: 0;
+        overflow: hidden;
+        padding-bottom: inherit;
+    }
+    .card-image-content, .card-content{
+        h3 {
+            color: #192225;
+            font-size: 20px;
+            margin: 0;
+            font-family: "sf_ui_textmedium";
+        }
+        p {
+            color: #9fa8b5;
+            font-size: 12px;
+            margin-bottom: 25px;
+            margin-top: 4px;
+        }
+    }
+    .card-image-content{
+        bottom: 0;
+        padding: 20px;
+        position: absolute;
+        h3 a {
+            color: #FFF;
+            font-family: "sf_ui_textbold";
+        }
+        p {
+            margin-bottom: 0px;
+            color: #FFF;
+        }
+    }
+    .card-content {
+        padding: 24px 22px;
+        position: relative;
+        .btn-group-actions {
+            margin-right: -8px;
+            .btn {
+                padding: 3px 8px;
+                opacity: 0.4;
+                @include transition(opacity .2s);
+                &:hover{
+                    opacity: 0.8;
+                }
+            }
+        }
+
+    }
+    .card-status {
+        @extend .list-unstyled;
+        margin-bottom: 0;
+        li {
+            color: #9fa8b5;
+            display: inline-block;
+            font-size: 12px;
+            margin-right: 12px;
+            text-align: center;
+            &.status-success{
+                color: $brand-success;
+                .dot {
+                    background-color: $brand-success
+                }   
+            }
+            &.status-danger{
+                color: $brand-danger;
+                .dot {
+                    background-color: $brand-danger
+                }   
+            }
+            &.status-warning{
+                color: $brand-warning;
+                .dot {
+                    background-color: $brand-warning
+                }   
+            }
+        }
+        .status {
+            display: block;
+            line-height: 1;
+            margin-top: -1px;
+        }
+        .dot {
+            background-color: #9fa8b5;
+            border-radius: 100px;
+            display: inline-block;
+            height: 6px;
+            width: 6px;
+        }
+    }   
+
+    &.card-detail {
+        margin-top: 14px;
+        .card-image {
+            padding-bottom: 20%;
+            @media (min-width: $screen-md-min) { 
+                padding-bottom: 14%;
+            }
+        }
+        .card-content {
+            h3 {
+                font-size: 28px;
+            }
+            p {
+                color: #3b4345;
+                margin-bottom: 5px;
+                font-size: 14px;
+            }
+        } 
+        .card-content {
+            padding: 20px 15px;
+            @media (min-width: $screen-md-min) { 
+                padding: 30px 25px;
+            }
+            position: relative;
+            > .btn-group {
+                position: absolute;
+                right: 25px;
+                top: 32px;
+            }
+        }
+
+    } 
+    &.card-left{
+        position: relative;
+        .card {
+            overflow: visible;
+            display: flex;
+            min-height: 270px;
+            margin-bottom: 13px;
+            position: relative;
+            border-radius: 2px;
+            box-shadow: 0.5px 0.5px 2px 0 rgba(27, 36, 50, 0.1);
+        }
+        .card-image {
+            height: auto;
+            padding: 0;
+            width: 270px;
+            .label{
+                border-radius: 100px;
+                display: block;
+                font-size: 11px;
+                letter-spacing: 0.3px;
+                margin-left: -12px;
+                padding: 4px 12px;
+                position: absolute;
+                text-transform: uppercase;
+                top: 26px;
+            }
+        }
+        .card-content {
+            position: static;
+            width: calc(100% - 270px);
+            .btn-group {
+                position: absolute;
+                right: 18px;
+                top: 18px;
+                .btn {
+                    opacity: 0.31;
+                    padding: 5px;
+                    @include transition(opacity .2s);
+                    &:hover{
+                        opacity: 0.8;
+                    }
+                }
+            }
+        }
+
+
+        .actions {
+            > a {
+                background-color: #c6cbd3;
+                border-radius: 50px;
+                display: block;
+                height: 70px;
+                margin-top: -35px;
+                position: absolute;
+                top: 50%;
+                width: 38px;
+                opacity: 0;
+                @include transition(background-color .2s, opacity 0.2s);
+                &:hover {
+                    background-color: #b1b6be;
+                }
+                &.arrow-left {
+                    left: -19px;
+                    .arrows {
+                        margin-left: -11px;
+                    }
+                }
+                &.arrow-right {
+                    right: -19px;
+                    .arrows {
+                        left: auto;
+                        margin-right: -11px;
+                        right: 50%;
+                    }
+                }
+            }
+            .arrows {
+                left: 50%;
+                margin-top: -11px;
+                position: absolute;
+                top: 50%;
+            }
+        } 
+        &:hover {
+            .actions a{
+                opacity: 1;
+            }
+        }
+
+    }
+}

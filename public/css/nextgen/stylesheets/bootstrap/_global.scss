@@ -1,0 +1,542 @@
+body {
+    min-width: $screen-sm-min;
+}
+canvas {
+    max-width: 100%;
+}
+.app-main{
+    position: relative;
+    z-index: 1;
+    background-color: $body-bg;
+    @extend .clearfix;
+    @media (min-width: $grid-float-breakpoint) {
+    	margin-left: 250px;
+    }
+}
+.app-container{
+    padding: 0 10px; 
+    @media (min-width: $screen-xl-min) {
+        padding: 0 45px; 
+    }
+}
+.scn{
+    background-color: #fff;
+    box-shadow: 0.5px 0.5px 2px 0 rgba(27, 36, 50, 0.1);
+}
+.row-25{
+    @include custom-row(25px);
+}
+.row-50{
+    @include custom-row(50px);
+}
+
+.ib {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.mrt-20 {
+    margin-top: 20px;
+}
+.mrt-10 {
+    margin-top: 10px;
+}
+.mrt-30 {
+    margin-top: 30px;
+}
+.mrt-50 {
+    margin-top: 50px;
+}
+
+.op-04 {
+    opacity: 0.4
+}
+.media-icon, .media-img{
+    display: inline-block;
+}
+.media-9 {
+    @include size(9px, 9px);
+    background-size: 9px 9px;
+}
+.media-10 {
+    @include size(10px, 10px);
+    background-size: 10px 10px;
+}
+.media-12 {
+    @include size(12px, 12px);
+    background-size: 12px 12px;
+}
+.media-16 {
+    @include size(16px, 16px);
+    background-size: 16px 16px;
+}
+.media-18 {
+    @include size(18px, 18px);
+    background-size: 18px 18px;
+}
+.media-22 {
+    @include size(22px, 22px);
+    background-size: 22px 22px;
+}
+.media-32 {
+    @include size(32px, 32px);
+    background-size: 32px 32px;
+}
+.media-36 {
+    @include size(36px, 36px);
+    background-size: 36px 36px;
+}
+.media-64 {
+    @include size(64px, 64px);
+    background-size: 64px 64px;
+}
+
+.media-rounded {
+    @include rounded(200px);
+}
+.media-bordered-2{
+    border: 2px solid #10dccf;
+}
+.media-empty {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    &:hover {
+        text-decoration: none;
+    }
+    .media-empty-label {
+        color: #10dccf;
+        font-size: 14px;
+        @extend .font-medium;
+        padding: 0;
+        &:hover {
+            text-decoration: none;
+        }
+    }
+    &.color-1{
+        border-color: #10dccf;
+        .media-empty-label{
+            color: #10dccf;
+        }
+    }
+    &.color-2{
+        border-color: #edaa55;
+        .media-empty-label{
+            color: #edaa55;
+        }
+    }
+    &.color-3{
+        border-color: #ed558c;
+        .media-empty-label{
+            color: #ed558c;
+        }
+    }
+}
+
+.font-medium {
+    font-family: 'sf_ui_textmedium' !important;
+    font-weight: normal;
+}
+.font-regular {
+    font-family: 'sf_ui_textregular' !important;
+    font-weight: normal;
+}
+.font-bold {
+    font-family: 'sf_ui_textbold' !important;
+    font-weight: normal;
+}
+
+.page-title {
+    margin-bottom: 20px;
+    margin-top: 10px;
+    @extend .clearfix;
+    h1 {
+        font-family: "sf_ui_textlight";
+        font-size: 25px;
+        margin: 0;
+        line-height: 1.3;
+        margin-right: 50px;
+    }
+}
+.environement-details {
+    .page-title {
+        margin-bottom: 28px;
+        margin-top: 33px;
+        h1 {
+            width: 100%;
+            margin-bottom: 10px;
+            @media (min-width: $screen-md-min) {
+                width: auto;
+                margin-bottom: 0;
+                margin-right: 60px;
+            }
+        }
+    }
+    .table-list {
+        margin-bottom: 60px;
+    }
+    .list-info {
+        .list-label {
+            color: #3b4345;
+            text-align: left;
+            width: 70px;
+        }
+        .list-value {
+            margin-left: 85px;
+        }
+        > li {
+            margin-bottom: 2px;
+        }
+    }
+    .bulk-actions {
+        position: absolute;
+        right: 0;
+        top: 55px;
+        z-index: 99;
+    }
+
+}
+
+.section-title {
+    margin-bottom: 25px;
+    .title {
+        margin: 0;
+        line-height: 1;
+        &.pull-left {
+            margin-right: 70px;
+        }
+    }
+    .nav-pills-mini{
+        margin-top: 2px;
+    }
+}
+
+
+// 
+.activities {
+    background-color: #fff;
+    box-shadow: 0.5px 0.5px 2px 0 rgba(27, 36, 50, 0.1);
+    padding: 30px 20px;
+    border-radius: 2px;
+    .time {
+        margin-left: 10px;
+    }
+    margin-bottom: 25px;
+}
+.home-page .activities {
+    .table {
+        margin-top: 40px;
+    }
+}
+.environement-details .activities {
+    .table {
+        margin-top: 20px;
+    }
+}
+
+
+// User details
+.user-details {
+    padding-left: 48px;
+    &.no-image {
+        padding-left: 0;
+    }
+    .full-name {
+        color: #3b4345;
+        font-family: "sf_ui_textmedium";
+        font-size: 14px;
+        line-height: 1;
+    }
+    .email{
+        color: #8d9ba1;
+        font-size: 12px;
+    }
+}
+
+.drive-branding{
+    margin-bottom: 25px;
+    .logo {
+        display: block;
+        width: 89px;
+        margin-bottom: 15px
+    }
+    h2 {
+        color: #3b4345;
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+    p {
+        color: #3b4345;
+        line-height: 1.5;
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+    h4{
+        color: #647177;
+        line-height: 1.4;
+        letter-spacing: 0.3px;
+        font-size: 11px;
+        @extend .font-bold;
+    }
+    footer {
+        border-top: 1px solid #e2e3e4;
+        margin-top: 80px;
+        padding-top: 10px;
+        p {
+            color: #9fa8b5;
+            line-height: 1.4;
+            font-size: 11px;
+            margin-bottom: 0;
+        }
+    }
+    .btn-primary {
+        font-size: 11px;
+        height: 35px;
+        padding-left: 40px;
+        padding-right: 50px;
+        text-shadow: 0.5px 0.5px 1px rgba(24, 34, 36, 0.3);
+        margin-top: 10px;
+        width: 100%;
+    }
+}
+.drive-branding-details {
+    padding: 35px 30px;
+    > .row-50, > header {
+        padding: 0px 40px
+    }
+}
+
+
+// Drive created
+.drive-created {
+    margin-bottom: 25px;
+    width: 100%;
+    .panel {
+        padding: 0 20px;
+        margin-bottom: 10px;
+        &:last-child {
+            margin-bottom: 60px;
+        }
+    }
+    .panel-heading {
+        padding: 15px 0;
+    }
+    .panel-body {
+        padding: 23px 0;
+    }
+    .btn-primary {
+        font-size: 11px;
+        height: 40px;
+        margin-top: 4px;
+        padding-left: 32px;
+        padding-right: 32px;
+        text-shadow: 0.5px 0.5px 1px rgba(24, 34, 36, 0.3);
+    }
+    .logo-details {
+        margin-bottom: 30px;
+        img {
+            height: 48px;
+        }
+    }
+}
+
+
+// Success message
+.success-message {
+    padding: 0 0 53px;
+    text-align: center;
+    h4 {
+        color: #192225;
+        font-size: 25px;
+        margin-bottom: 5px;
+        margin-top: 15px;
+    }
+    p {
+        color: #919ca1;
+        font-size: 15px;
+    }
+}
+
+// Vertical align middle with borders
+.flex-vertical {
+    display: flex;
+    .flex-cols {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        min-width: 50%;
+        padding: 60px 25px;
+    }
+    .flex-first-col {
+        border-right: 1px solid #eeeff0;
+    }
+    .flex-last-col {
+        align-self: flex-start;
+    }
+}
+
+
+// drive-creating
+.drive-creating-inner {
+    margin-bottom: 25px;
+    h3 {
+        color: #192225;
+        margin: 0 0 35px
+    }
+    .progress-bar-cont {
+        position: relative;
+    }
+    .tooltip {
+        opacity: 1; 
+        position: absolute; 
+        left: 50%; 
+        top: 10px; 
+        margin-left: -20px;
+    }
+    .progress {
+        margin-bottom: 6px;
+    }
+    .progress-bar-help {
+        color: #9fa8b5;
+        font-size: 11px;
+        @extend .font-medium;
+    }
+    .progress-bar-status {
+        color: #9fa8b5;
+        font-size: 12px;
+        margin-bottom: 35px;
+        margin-top: 50px;
+        text-align: center;
+    }
+    .video-cont {
+        text-align: center;
+        h4 {
+            color: #3b4345;
+            font-size: 18px;
+            margin-bottom: 12px;
+            margin-top: 0;
+        }
+        p {
+            color: #3b4345;
+            font-size: 12px;
+            margin-bottom: 50px;
+        }
+    }
+    .video {
+        box-shadow: 0 2px 24px 0 rgba(59, 67, 69, 0.2);
+    }
+}
+
+
+// Drive settings
+.drive-mail-config-details, .drive-schedule-details, .drive-specification-details {
+    padding: 20px 30px;
+}
+.drive-schedule-details {
+    .schedule-options {
+        margin-left: 25px;
+        .form-control {
+            width: 350px;
+        }
+        .form-basic {
+            margin-top: 18px; 
+            .form-group {
+                margin-bottom: 15px;
+            }
+        }
+
+    }
+    .input-number {
+        width: 80px;
+        margin: 0 3px;
+    }
+}
+.erpm-sales {
+    .breadcrumb {
+        padding: 18px 0 6px;
+    }
+}
+
+// Edit schedule
+.edit-schedule {
+    .timing-input {
+        width: 100px;
+    }
+    .form-inline .control-label {
+        font-size: 14px;
+        margin: 0 3px;
+    }
+    .control-label {
+        text-align: left;
+    }
+    .radio label{
+        font-size: 14px;
+    }
+    .btn-transparent {
+        margin-left: -3px;
+    }
+    .form-group{
+        margin-bottom: 30px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .btn-group {
+        .btn-default {
+            border-color: #e2e3e4;
+            color: #89909c;
+        }
+        .btn {
+            font-size: 11px;
+            height: 36px;
+            padding: 0;
+            width: 44px;
+        }
+        .btn-primary {
+            border-color: #02a5e6;
+        }
+    }
+}
+
+
+// Settings
+.settings {
+    padding: 30px 20px;
+    border-radius: 2px;
+    .nav-bordered {
+        border-bottom: 1px solid #e8e8e8;
+    }
+}
+
+// Brand creating widget
+.brand-creating-widget {
+    .form-group-btn {
+        margin-bottom: 0px; 
+        text-align: center;
+    }
+    .add-widget {
+        background-color: #eeeff0;
+        border-radius: 2px;
+        margin-top: 20px;
+        padding: 40px;
+        .btn-default {
+            border-color: rgba(201, 208, 210, 0.9);
+            color: #3b4345;
+            font-size: 13px;
+            &:hover, &:focus, &:active {
+                border-color: rgba(159, 165, 179, 0.7);
+                background-color: #FFF;
+            }
+        }
+    }
+    .form-control {
+        font-size: 12px;
+    }
+    .video, .document {
+        border-radius: 2px;
+        box-shadow: 0 2px 24px 0 rgba(59, 67, 69, 0.2);
+        margin-top: 20px;
+        overflow: hidden;
+    }
+}

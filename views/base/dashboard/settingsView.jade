@@ -1,0 +1,20 @@
+extends ../../layout/ModalLayout
+block content
+	.form-group
+		.row(style='margin-bottom:5px;')
+			.col-md-2
+				label.control-label(style='width:18%;')
+					| Enable
+			.col-md-10
+				.checkbox-wrap
+					input#sendActivationMail.checkbox-input(type='checkbox', ng-model='settings.autoRefreshEnabled')
+					span.input-icon
+		.row(style='margin-bottom:5px;')
+			.col-md-2
+				label.control-label
+				| After
+			.col-md-2(style='padding-right:5px;')
+				input.input-md.form-control(type='number', min=1, ng-model='settings.interval')
+			.col-md-3(style='padding:0px;')
+				select.form-control.select-md(ng-options='intervalType.caption for intervalType in intervalTypes' ng-model='settings.intervalType')
+

@@ -1,0 +1,92 @@
+.container-fluid
+	.app-container.home-page
+		.page-title
+			.clearfix.section-title
+				h3.pull-left.title(style='margin-right: 5px;') 
+					span User - 
+					span(style='color: gray;')
+						{{isNewUser ? 'Register New' : user.email}}
+		.settings.scn
+			.row.mrt-50
+				.col-xs-8.col-xs-6
+					form.form-horizontal(name="userForm" ng-submit="save(userForm.$valid)" novalidate)
+						.form-group
+							label.col-sm-3.control-label(for='userName') * Name
+							.col-sm-8
+								input#userName.input-md.form-control(name='userName' type='text' ng-model='user.name' ng-required="true")
+								p.help-block(ng-show="userForm.userName.$invalid && !userForm.userName.$pristine")
+									i.fa.fa-exclamation-triangle(style='color:red')
+									| &nbsp;Name is required.
+						.form-group
+							label.col-sm-3.control-label(for='userEmail') * Email
+							.col-sm-8
+								input#userEmail.input-md.form-control(name='userEmail' type='email' ng-model='user.email' ng-required="true")
+								p.help-block(ng-show="userForm.userEmail.$error.required && !userForm.userEmail.$pristine")
+									i.fa.fa-exclamation-triangle(style='color:red')
+									| &nbsp;Email is required.
+								p.help-block(ng-show="userForm.userEmail.$error.email && !userForm.userEmail.$pristine")
+									i.fa.fa-exclamation-triangle(style='color:red')
+									| &nbsp;Please provide email address.
+						.form-group(ng-if = 'isNewUser')
+							label.col-sm-3.control-label(for='newPassword') Password
+							.col-sm-8
+								input#newPassword.input-md.form-control(type='password' ng-model='user.password')
+						.form-group(ng-if = 'isNewUser')
+							label.col-sm-3.control-label(for='confirmPassword') Confirm Password
+							.col-sm-8
+								input#confirmPassword.input-md.form-control(name='confirmPassword' type='password' ng-model='user.confirmPassword' ng-required="user.password != null && user.password.length > 0")
+								p.help-block(ng-show="userForm.confirmPassword.$invalid && !userForm.confirmPassword.$pristine")
+									i.fa.fa-exclamation-triangle(style='color:red')
+									| &nbsp;Please provide confirm password
+								p.help-block(ng-show="userForm.confirmPassword.$valid && (user.confirmPassword || '') != (user.password || '')")
+									i.fa.fa-exclamation-triangle(style='color:red')
+									| &nbsp;Confirm password should be same as provided password.
+						.form-group
+							label.col-sm-3.control-label(for='accountExpiry') Account Expiry
+							.col-sm-8
+								input#accountExpiry.input-md.form-control(type='date' ng-model='user.accountExpiry')
+						.form-group(ng-show='userTypes != null && userTypes.length > 0')
+							label.col-sm-3.control-label(for='type') * User Type
+							.col-sm-8
+								select.select-md.form-control(placeholder='type' ng-options='userType.lookupName for userType in userTypes' ng-model='user.userType' ng-change='onChangeUserType()')
+						.form-group(ng-show='profiles != null && profiles.length > 0 && user.globalProfileVisible')
+							label.col-sm-3.control-label(for='profile') * Profile
+							.col-sm-8
+								select.select-md.form-control(placeholder='Profile' ng-options='profile.profileName for profile in profiles' ng-model='user.profile')
+						.form-group(ng-show='accessibleTenantCount > 0')
+							label.col-sm-3.control-label Accessible Tenants
+							.col-sm-8
+								ul.customMultiSelectBox
+									li(ng-repeat='tenant in tenants' ng-if='tenant.accessible || tenant.userAccess')
+										.row(style='padding:2px 10px;background:{{$index % 2 == 0 ? "" : "#efefef"}}' )
+											.col-sm-6
+												.checkbox
+													label
+														.checkbox-wrap
+															input.checkbox-input(type='checkbox' ng-model='tenant.userAccess' style='height:15px;width:15px;' ng-disabled='!tenant.accessible')
+															span.input-icon
+														span {{tenant.tenantName}}
+											.col-sm-6(ng-show='user.tenantSpecificProfileVisible')
+												select.select-md.form-control(placeholder='Tenant Specific Profile' ng-options='profile.profileName for profile in tenant.profiles' ng-model='tenant.profile' ng-show='tenant.profiles != null && tenant.profiles.length > 0')
+						.form-group(ng-if = 'isNewUser')
+							label.col-sm-3.control-label(for='sendActivationMail') Send Activation Mail
+							.col-sm-8
+								.checkbox
+									label
+										.checkbox-wrap
+											input#sendActivationMail.checkbox-input(type='checkbox' ng-model='user.sendActivationMail')
+											span.input-icon
+						.form-group(ng-if = 'isNewUser')
+							label.col-sm-3.control-label(for='sendActivationMail') Force User To Accept Agreement
+							.col-sm-8
+								.checkbox
+									label
+										.checkbox-wrap
+											input#sendActivationMail.checkbox-input(type='checkbox' ng-model='user.forceAcceptAgreement')
+											span.input-icon
+										| (On first login, user will be prompted to accept the agreement, without accepting user will not be able to proceed ahead.)
+						.form-group
+							.col-sm-offset-5.col-sm-4
+								button.btn.btn-primary.theme-btn-primary(ng-if='saveAccess' type='submit' ng-disabled='userForm.$invalid') {{isNewUser ? 'Register' : 'Update'}}
+								&nbsp;&nbsp;
+								button.btn.btn-default(type='button' ng-click='reset()') Reset

@@ -1,0 +1,3 @@
+.row.row-25.card-grid
+	.list-card(ng-repeat='item in listConfig.data' ng-class='{{listConfig.tileConfig.class == null || listConfig.tileConfig.class == "" ? ["col-xs-4", "col-md-3"] : listConfig.tileConfig.class}}' compile-template ng-bind-html='listConfig.tileConfig.html | html')
+		

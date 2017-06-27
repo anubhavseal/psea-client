@@ -1,0 +1,22 @@
+.container-fluid.body-content.newDesign(style='padding-top: 72px;')
+	.clearfix.section-title
+		
+	.row
+		.col-md-8.col-md-offset-2(style='background:white;border:1px solid lightgray')
+			.row
+				h3.title(style='text-align:center;font-size:24px;color:#20b6ff;padding-bottom:10px;padding-top:10px;')
+					| Select Tenant
+			.row
+				.col-md-12(style='text-align:center;font-size:12px;padding-bottom:5px;')
+					| Please select one of the tenants below and click on "Proceed" to go ahead
+			.row(style="padding: 20px;")
+				table.table.table-hover(style="background-color:white;width:100%;border:1px solid lightgray;")
+					tbody
+						tr(ng-repeat='tenant in tenants')
+							td.highlight.theme-link(ng-click='selectTenant(tenant)')
+								i.fa.fa-check(ng-show='tenant.selected') 
+								{{tenant.tenantName}}
+			.row
+				.col-md-12(style='text-align:center;font-size:12px;padding-bottom:20px;')
+					.btn.btn-primary.theme-btn-primary(ng-click='proceed()')
+						| Proceed 

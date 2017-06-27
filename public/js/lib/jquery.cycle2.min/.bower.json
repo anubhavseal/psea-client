@@ -1,0 +1,14 @@
+{
+  "name": "jquery.cycle2.min",
+  "_cacheHeaders": {
+    "ETag": "\"43a17a50394068fa234b78ec50140c4b0353643a\"",
+    "Content-Length": "22940",
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "_release": "e-tag:43a17a503",
+  "main": "index.js",
+  "_source": "https://raw.github.com/malsup/malsup.github.com/master/min/jquery.cycle2.min.js",
+  "_target": "*",
+  "_originalSource": "https://raw.github.com/malsup/malsup.github.com/master/min/jquery.cycle2.min.js",
+  "_direct": true
+}

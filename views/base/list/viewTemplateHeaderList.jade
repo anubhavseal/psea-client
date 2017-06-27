@@ -1,0 +1,3 @@
+.checkbox.pull-left(style='padding-top:2px;height:15px' ng-if='listConfig.showHeaderCheckBox != false')
+	input(type="checkbox" ng-model="item.__selectedHeaderRow" ng-change='getService("LWISDonationsService").headerRowSelected(item)')
+div(ng-repeat='column in listConfig.headerDetailsColumns track by $index' class='pull-left {{column.class}}' compile-template ng-bind-html='column.html | html')

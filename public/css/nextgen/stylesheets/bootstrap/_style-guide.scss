@@ -1,0 +1,202 @@
+.style-guide {
+    padding-top:0;
+    background-color: #FFF;
+    .content-panel{
+        padding: 40px 35px;
+        margin-bottom: 60px;
+        > h2{
+            margin-bottom: 70px;
+            color: $brand-primary;
+            position: relative;
+            &:after {
+                background-color: $brand-primary;
+                bottom: -10px;
+                content: "";
+                height: 2px;
+                left: 0;
+                position: absolute;
+                width: 60px;
+            }
+        }
+    }
+    h4.section-title {
+        color: $brand-primary;
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: 1px;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+    }
+    .styleguide-items{
+        margin-bottom: 60px;
+        &:last-child{
+            margin-bottom: 0;
+        }
+    }
+    .sub-section{
+        margin-bottom: 40px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .typography{
+        .font-family h4{
+            color: $gray-base;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+        .text-examples .text {
+            margin-bottom: 40px;
+            &:last-child{
+                margin-bottom: 0;
+            }
+        }
+        .text-info {
+            color: #56668b;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        .text-label {
+            color: $gray-base;
+            opacity: 0.5;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        .type {
+            border: 1px solid #d2d7e3;
+            border-radius: 5px;
+            float: left;
+            margin-right: 30px;
+            padding: 0 20px 20px;
+            width: 145px;
+            h2 {
+                border-bottom: 1px solid #cfd4e1;
+                font-size: 88px;
+                margin-bottom: 10px;
+            }
+            &.light{
+                > h2{
+                    font-weight: 200;
+                }
+            }
+            &.regular{
+                > h2{
+                    font-weight: 400;
+                }
+            }
+            &.medium{
+                > h2{
+                    font-weight: 500;
+                }
+            }
+            &.semi-bold{
+                > h2{
+                    font-weight: 600;
+                }
+            }
+            &.bold{
+                > h2{
+                    font-weight: 800;
+                }
+            }
+        }
+        .name, .size {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .name {
+            color: $gray-base;
+            text-transform: uppercase;
+        }
+        .size {
+            color: #8b98b7;
+        }
+    }
+
+
+    .colors {
+        .color-box {
+            border-radius: 4px;
+            height: 88px;
+            margin-bottom: 12px;
+            width: 88px;
+        }
+        li {
+            display: block;
+            float: left;
+            margin-right: 30px;
+        }
+        .lable {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .value {
+            color: #56668b;
+            font-size: 11px;
+        }
+    }
+
+    .forms {
+        input {
+            margin-bottom: 20px;
+        }
+    } 
+
+    .buttons {
+        .btn {
+            margin-right: 15px;
+        }
+        .btn-group {
+            .btn {
+                margin-right: 0;
+            }
+        }
+    }
+
+    .media-list-block{
+        .styleguide-items{
+            max-width: 600px;
+        }
+    }
+
+    .modal-block .modal {
+        display: block;
+        position: static;
+    }
+
+    .icons {
+        .dark-icons-list {
+            background-color: #10dccf;
+            padding: 40px;
+        }
+        .light-icons-list {
+            background-color: #0f182f;
+            padding: 40px;
+        }
+        .styleguide-items {
+            margin-bottom: 0;
+        }
+
+        .media-icon {
+            display: block;
+        }
+        .icons-list{
+            > li {
+                display: inline-block;
+                border-radius: 2px;
+                margin-right: 5px;
+                padding: 8px;
+                &.icon-light {
+                    background-color: $gray-base;
+                }
+            }
+        }
+
+    }
+
+}

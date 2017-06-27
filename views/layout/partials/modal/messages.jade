@@ -1,0 +1,6 @@
+#messageCont.alert(ng-show="__messages != null && __messages.length > 0" role="alert" ng-class="{'alert-danger': __errorAvailable, 'alert-info': (!__errorAvailable && !__warningAvailable), 'alert-warning': (!__errorAvailable &&  __warningAvailable)}")
+	strong(ng-show="__errorAvailable") Error(s) encountered
+	br(ng-show="__errorAvailable")
+	div(ng-repeat='message in __messages')
+		i.fa.fa-fw(ng-class="{'fa-exclamation-circle':message.type=='E', 'fa-info-circle':message.type=='I', 'fa-exclamation-triangle':message.type=='W'}")
+		span {{message.messageText}}

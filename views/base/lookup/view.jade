@@ -1,0 +1,26 @@
+extends ../../layout/modalLayout
+
+block content
+	table.table.table-bordered.table-striped
+		thead
+			tr
+				th(style='width:3%;text-align:center') #
+				th(ng-repeat='column in lookupConfig.columns' style='width:{{column.width}};text-align:center') {{column.caption}}
+				th(style='width:4%;text-align:center' ng-if='lookupConfig.canDelete === true') Delete
+				th(style='width:3%;text-align:center' ng-if='lookupConfig.canMove == true')  Move
+		tbody
+			tr(ng-repeat='item in data track by $index' ng-class='{"table-row-deleted" : (item.__row_mode === "D"), "table-row-modified" : (item.__row_mode === "E"), "table-row-new" : (item.__row_mode === "N")}')
+				td(style='width:3%;text-align:right' ng-class='{"table-row-deleted" : (item.__row_mode === "D"), "table-row-modified" : (item.__row_mode === "E"), "table-row-new" : (item.__row_mode === "N")}')
+					span(ng-if='(item.__row_mode === "E")') *
+					span {{$index + 1}}
+				td(ng-repeat='column in lookupConfig.columns' ng-class='{"table-row-deleted" : (item.__row_mode === "D"), "table-row-modified" : (item.__row_mode === "E"), "table-row-new" : (item.__row_mode === "N")}' class='{{column.class}}' style='width:{{column.width}}' compile-template ng-bind-html='column.html | html')
+				td(style='width:4%;text-align:center' ng-if='lookupConfig.canDelete === true')
+					button.btn.btn-default.btn-delete(type='button' ng-click='deleteRow(data, item, $index)')
+						i.fa.fa-trash-o.text-danger
+				td(style='width:3%;text-align:center' ng-if='lookupConfig.canMove == true')
+					div.moveCont
+						div.move(ng-class='{"disabled":$first}' ng-click='moveUp(data, $index)' title='Move Up')
+							i.fa.fa-caret-up
+						div.move(ng-class='{"disabled":$last}' ng-click='moveDown(data, $index)' title='Move Down')
+							i.fa.fa-caret-down
+	a(href="#" ng-click='addRow(data, lookupConfig.defaultFields)' ng-show='lookupConfig.canAdd === true') + Add New <!--	{{lookupConfig.caption}}-->

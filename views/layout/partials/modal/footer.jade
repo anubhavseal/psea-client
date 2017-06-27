@@ -1,0 +1,5 @@
+.modal-footer(style='margin-top:0px;padding:8px 10px 8px;border-top:1px solid #20b6ff')
+	#footerMessage(compile-template ng-bind-html='footerMessage | html')
+	button.btn.theme-btn-primary(ng-repeat='btnObj in buttons' data-action='{{btnObj.action}}' ng-class='btnObj.class' type='button' ng-click='handleActionClick($event)' ng-disabled='btnObj.checkForm && popupForm.$invalid') {{btnObj.caption}}
+	button.btn.btn-primary.theme-btn-primary(data-ng-show='saveAccess' ng-click='ok()') {{saveButtonCaption || "Save"}}
+	button.btn.btn-default(type='button' ng-click='cancel()') Cancel

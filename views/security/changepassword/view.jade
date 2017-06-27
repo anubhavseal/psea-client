@@ -1,0 +1,26 @@
+.container-fluid
+	.app-container.home-page
+		.settings.scn
+			.clearfix.section-title
+				h3.pull-left.title Change Password
+			ul.nav.nav-bordered
+				li(role='presentation' ng-class='{"active": (tab == "presentation")}' ng-click='tab="presentation"')
+					a(href='#') Password
+			.row.mrt-50(ng-show='tab == "presentation"')
+				.col-xs-8.col-xs-6
+					form.form-horizontal
+						.form-group
+							label.col-sm-3.control-label(for='currentPassword') Current Password
+							.col-sm-8
+								input#currentPassword.form-control(type='password' ng-model='credentials.password')
+						.form-group
+							label.col-sm-3.control-label(for='newPassword') New Password
+							.col-sm-8
+								input#new.form-control(type='password' ng-model='credentials.newPassword')
+						.form-group
+							label.col-sm-3.control-label(for='confirmPassword') Confirm Password
+							.col-sm-8
+								input#confirmPassword.form-control(type='password' ng-model='credentials.confirmPassword')
+						.form-group
+							.col-sm-offset-3.col-sm-8
+								button.btn.btn-primary.theme-btn-primary(type='button' ng-click='savePassword()') Change Password

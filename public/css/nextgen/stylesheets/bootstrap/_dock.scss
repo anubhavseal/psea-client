@@ -1,0 +1,232 @@
+.navigation-dock {
+    background-color: #FFF;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    width: 250px;
+    color:#8b98b7;
+    z-index: 0;
+    position: fixed;
+    top: 0px;
+    left: 0;
+    bottom: 0;
+    z-index: 100;
+    -webkit-backface-visibility: hidden !important;
+    box-shadow: 0.5px 0 18px 0 rgba(6, 35, 51, 0.1);
+    @include translate3d(-250px, 0, 0);
+    @include transition-transform(0.25s ease 0s);
+    @media (min-width: $grid-float-breakpoint) {
+        @include translate3d(0, 0, 0);
+        @include transition-transform(0s ease 0s);
+    }
+    .dropdown-menu {
+        border: medium none;
+        box-shadow: none;
+        margin-left: 0;
+        padding-left: 32px;
+        margin-top: 5px;
+        padding-top: 0;
+        position: relative;
+        width: 100%;
+        > li > a {
+            color: #8d9ba1;
+            font-size: 11px;
+            line-height: 2.4;
+            background-color: transparent !important;
+            padding: 0 40px 0 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;   
+            position: relative;
+        }
+        .active a {
+            color: $brand-primary;
+        }
+    }
+    .logo {
+        display: inline-block;
+        vertical-align: middle;
+        width: 134px;
+    }
+    .sidenav {
+        margin-top: 28px;
+    }
+}
+.nav-overlay{
+    background-color: rgba(0, 0, 0, 0.25);
+    display: none;
+    height: 100%;
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+}
+.app-main {
+    @media (min-width: $grid-float-breakpoint) {
+        position: relative;
+    }
+}
+.nav-open {
+    .nav-overlay{
+        display: block;
+        @media (min-width: $grid-float-breakpoint) {
+            display: none;
+        }
+    }
+    .navigation-dock {
+        @include translate3d(0, 0, 0);
+        @media (min-width: $grid-float-breakpoint) {
+            @include translate3d(0, 0, 0);
+        }
+    }
+    .app-main {
+        @media (min-width: $grid-float-breakpoint) {
+            margin-left: 0;
+            z-index: 101;
+        }
+    }
+}
+.navigation-dock-header{
+    padding: 10px 25px;
+    background-color: $brand-primary;
+    text-align: center; 
+}
+
+.navigation-dock-footer {
+    background-color: #fff;
+    bottom: 0;
+    padding: 10px 25px 35px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    .logo {
+        width: 127px;
+    }
+}
+
+.sidenav-menu {
+    overflow: hidden;
+    position: relative;
+    &.active, &:hover {
+        > a, a:hover {
+            color: $brand-primary;
+            .sidenav-menu-icon-home {
+                background-image: url('#{$path-images}/icon-home-blue-18@2x.png');
+            }
+            .sidenav-menu-icon-drives {
+                background-image: url('#{$path-images}/icon-drives-blue-18@2x.png');
+            }
+            .sidenav-menu-icon-reports {
+                background-image: url('#{$path-images}/icon-reports-blue-18@2x.png');
+            }
+            .sidenav-menu-icon-help {
+                background-image: url('#{$path-images}/icon-help-blue-18@2x.png');
+            }
+            .sidenav-menu-icon-settings {
+                background-image: url('#{$path-images}/icon-settings-blue-18@2x.png');
+            }
+        }
+    }
+    > a {
+        -webkit-tap-highlight-color: transparent;
+        outline-offset: -7px;
+        overflow: hidden;
+        color: #8d9ba1;
+        height: 29px;
+        font-size: 11px;
+        font-weight: bold;
+        text-decoration: none;
+        display: block;
+        padding:0 20px !important;
+        position: relative;
+        white-space: nowrap;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        @include transition(color 0.15s ease 0s);
+        &:before {
+            content: '';
+            height: 100%;
+            vertical-align: middle;
+            display: inline-block;
+        }
+        .sidenav-menu-container {
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+    }
+
+    .badge {
+        align-items: center;
+        background-color: transparent;
+        border: 1px solid $brand-success;
+        color: $brand-success;
+        display: flex;
+        font-family: "sf_ui_textbold";
+        font-size: 9px;
+        font-weight: 200;
+        height: 20px;
+        justify-content: center;
+        letter-spacing: 0.5px;
+        line-height: 1;
+        padding: 0;
+        position: absolute;
+        right: 20px;
+        top: 4px;
+        width: 20px;
+        &:after {
+            background-color: $brand-success;
+            border-radius: 100px;
+            content: "";
+            display: block;
+            height: 7px;
+            position: absolute;
+            right: -2px;
+            top: 0;
+            width: 7px;
+            border: 1px solid #fff;
+        }
+        &.badge-warning {
+            border: 1px solid $brand-warning;
+            color: $brand-warning;
+            &:after {
+                background-color: $brand-warning;
+            }
+        }
+    }
+
+}
+.sidenav-menu-icon-home {
+    background-image: url('#{$path-images}/icon-home@2x.png');
+}
+.sidenav-menu-icon-drives {
+    background-image: url('#{$path-images}/icon-drives@2x.png');
+}
+.sidenav-menu-icon-reports {
+    background-image: url('#{$path-images}/icon-reports@2x.png');
+}
+.sidenav-menu-icon-help {
+    background-image: url('#{$path-images}/icon-help@2x.png');
+}
+.sidenav-menu-icon-settings {
+    background-image: url('#{$path-images}/icon-settings@2x.png');
+}
+.sidenav-menu-icon {
+    vertical-align: top;
+    display:inline-block;
+    width: 18px;
+    height: 18px;
+    background-size: 18px 18px;
+    background-repeat: no-repeat;
+    opacity: 0.68;
+}
+.sidenav-menu-name {
+    width: 162px;
+    vertical-align: bottom;
+    margin-left: 6px;
+    line-height: 20px;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: normal;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}

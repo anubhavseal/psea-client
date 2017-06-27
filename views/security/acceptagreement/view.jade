@@ -1,0 +1,53 @@
+div
+	.container-fluid.body-content.newDesign(style='padding-top: 72px;')
+		.row
+			.col-md-8.col-md-offset-2(style='background:white;border:1px solid lightgray')
+				.row
+					.col-md-12(style='text-align:center;font-size:24px;color:#20b6ff;padding-bottom:10px;padding-top:10px;')
+						| Welcome To Trial.iO
+				.row
+					.col-md-12(style='text-align:center;font-size:14px;padding-bottom:10px;' ng-if='user.accountExpiryDays == null')
+						| We have created account for you. 
+					.col-md-12(style='text-align:center;font-size:14px;padding-bottom:10px;' ng-if='user.accountExpiryDays != null')
+						| We have created {{user.accountExpiryDays}} day Proof-of-Concept (POC) account for you. 
+						span(ng-show='user.accountExpiry != null')
+							| Your POC period would end on {{user.accountExpiry| date: 'MMM dd, yyyy'}}
+				.row
+					.col-md-12(style='text-align:center;font-size:12px;padding-bottom:5px;')
+						| Click accept to continue and create your free trials, sales demos and training environments in just one-click
+				.row(style='padding:20px')
+					.col-md-12(style='center;font-size:10px;padding-left:5px;border:1px solid lightgray;max-height:300px;overflow-x:auto;overflow-y:auto')
+						.row
+							.col-md-12(style='padding-bottom:10px')
+								| PLEASE READ THIS {{user.accountExpiryDays == null ? '' : user.accountExpiryDays + ' DAY TRIAL '}} LICENSE AGREEMENT CAREFULLY BEFORE YOU SUBMIT YOUR INFORMATION TO MOTIFWORKS TO PARTICIPATE IN THE FREE TRIAL AND/OR START USING MOTIFWORKS PRODUCTS (the “Trial.iO Product”) MADE AVAILABLE TO YOU AS PART OF THIS FREE TRIAL. THESE TERMS AND CONDITIONS ENTERED INTO BY YOU AND MOTIFWORKS INC. (“MOTIFWORKS”) ARE REFERRED TO AS THE “AGREEMENT.”
+						.row
+							.col-md-12(style='padding-bottom:10px')
+								| Motifworks will make the Trial.iO product available to Company for evaluation via Trial.iO online, Web-based platform and applications that are hosted by Motifworks, or a third party hosting facility designated by Motifworks and provided as a service (known as the “on-demand” model).
+						.row
+							.col-md-12(style='padding-bottom:10px')
+								| During the Evaluation Period, Motifworks grants to Company a non-exclusive, revocable and non-transferable right to use the Trial.iO Product solely for the purpose of internally evaluating the suitability of the Trial.iO Product for Company’s internal business purposes. Company may, using the functionality within the Trial.iO Product, configure and, modify certain available features and functionality of the Trial.iO Product offered as part of its evaluation process.
+						.row
+							.col-md-12(style='padding-bottom:10px')
+								| Company may, from time to time, provide suggestions, enhancement or feature requests or other feedback to Motifworks with respect to the Motifworks Property (as defined below) or other Motifworks products, services or related documentation (whether or not such is disclosed or delivered by Motifworks to Company under this Agreement) (collectively, “Feedback”). Company agrees that all Feedback is and shall be given by Company entirely voluntarily. Motifworks shall be free to use, disclose, reproduce, license or otherwise distribute and exploit the Feedback in its discretion, without restriction or obligation of any kind or nature. Feedback, even if designated as confidential by Company, shall not create any obligation of confidentiality for Motifworks, unless Motifworks expressly agrees so in writing.
+						.row
+							.col-md-12(style='padding-bottom:10px')
+								| Company agrees to allow Motifworks and its Affiliates to store and use Company business name, logo, contact information, including names, business phone numbers, and business e-mail addresses as part of Motifworks marketing purposes and collateral. Company can contact Motifworks to request to opt-out for using Company business name for Motifworks marketing and other collateral. 
+						.row
+							.col-md-12(style='padding-bottom:10px')
+								| In the course of providing Company with the services contemplated in the Agreement, Motifworks may collect, use, process and store diagnostic and usage related content from the computer, mobile phone or other devices the Company uses to access the Motifworks Product or service. 
+						.row(ng-if='user.accountExpiryDays != null')
+							.col-md-12(style='padding-bottom:10px')
+								| This Agreement commences on the Effective Date and continues for a period of {{user.accountExpiryDays}} days thereafter ("Evaluation Period"), unless terminated sooner.
+						.row(ng-if='user.accountExpiryDays == null')
+							.col-md-12(style='padding-bottom:10px')
+								| This Agreement commences on the Effective Date and continues unless terminated.
+						.row
+							.col-md-12(style='padding-bottom:10px')
+								| The parties acknowledge that in the course of performing their obligations under this Agreement, each may receive Confidential Information. Each party covenants and agrees that neither it nor its agents, employees, officers, directors or representatives will disclose or cause to be disclosed any Confidential Information of the Disclosing Party, except (a) to those employees, representatives, or contractors of the Receiving Party who require access to the Confidential Information to exercise its rights under this Agreement and who are bound by written agreement, with terms at least as restrictive as these, not to disclose third-party confidential or proprietary information disclosed to such party, or (b) as such disclosure may be required by law or governmental regulation, subject to the Receiving Party providing to the Disclosing Party written notice to allow the Disclosing Party to seek a protective order or otherwise prevent the disclosure. 
+						.row
+							.col-md-12(style='padding-bottom:10px')
+								| THE Motifworks PRODUCT IS PROVIDED TO COMPANY ON AN “AS IS” BASIS. ALL CONDITIONS, REPRESENTATIONS AND WARRANTIES, WHETHER EXPRESS, IMPLIED, STATUTORY OR OTHERWISE, INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD PARTY RIGHTS, ARE HEREBY DISCLAIMED TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW. Motifworks'S PRODUCT OR SERVICE MAY BE SUBJECT TO LIMITATIONS OR ISSUES INHERENT IN THE USE OF THE INTERNET AND Motifworks IS NOT RESPONSIBLE FOR ANY PROBLEMS OR OTHER DAMAGE RESULTING FROM SUCH LIMITATIONS OR ISSUES.
+				.row
+					.col-md-12(style='text-align:center;font-size:12px;padding-bottom:20px;')
+						.btn.btn-primary.theme-btn-primary(ng-click='acceptAgreement()')
+							| ACCEPT

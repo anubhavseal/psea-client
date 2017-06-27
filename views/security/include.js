@@ -1,0 +1,12 @@
+//= require security/module.js
+//= require security/access.service.js
+//= require security/menu/controller.js
+//= require security/menu/childmenu.controller.js
+//= require security/signup/controller.js
+//= require security/acceptagreement/controller.js
+//= require security/profile/controller.js
+//= require security/login/controller.js
+//= require security/login/forgotPassword.controller.js
+//= require security/changepassword/controller.js
+//= require security/router.js
+//= require security/selecttenant/controller.js
