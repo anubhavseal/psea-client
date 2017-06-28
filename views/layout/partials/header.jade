@@ -6,15 +6,11 @@ nav.navbar
 				span.icon-bar
 				span.icon-bar
 				span.icon-bar
-
-		div#Logo(class="pull-left headerLogo" style="cursor:pointer" ng-click="gotoHome()")
-			img.img-responsive(src='/images/psea_logo.png')
 		div(style="display:inline-block;margin: 15px 0px 0px 0px;")
 			a(href='#' ng-click="gotoHome()")
 				span.glyphicon.glyphicon-home(style="font-size:20px;")
-		//- form.navbar-form.navbar-right(style="visibility:visible")
-		//- 	.form-group
-		//- 		input.form-control(type="text",placeholder='Search')
+		div#Logo(class="navbar-left headerLogo" style="cursor:pointer" ng-click="gotoHome()")
+			img.img-responsive(src='/images/psea_logo.png')
 		ol.breadcrumb.pull-left(ng-show='user != null')
 			li(ng-repeat='breadcrumb in breadcrumbs')
 				a(href='#' ng-click='showBreadcrumb(breadcrumb)' style='text-transform: capitalize') {{breadcrumb.caption}}

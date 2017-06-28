@@ -644,7 +644,17 @@ a.editable-click {
 }
 .page-title-anchor{
   margin-left: 5px;
-}
+} 
 .full-flex-cols {
 	min-width: 100% 
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #0168b3 !important;
+    border-color: #0168b3 !important;
+}
+
+#onboarding .center-pane {
+    border-top: 4px solid #0168b3 !important;
 }
