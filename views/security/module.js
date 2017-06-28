@@ -5,5 +5,6 @@ angular.module('security', [
   'ui.bootstrap',  
   'nvd3',
   'datamaps',
-  'base'
+  'base',
+  'AdalAngular'
 ]);

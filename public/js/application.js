@@ -48,3 +48,6 @@
 //= require lib/ckeditor/ckeditor.js
 //= require lib/ng-ckeditor/angularjs/plugins/ng-ckeditor/ng-ckeditor-1.0.1.js
 //= require lib/simplepagination/jquery.simplePagination.js
+
+//= require lib/adal/adal.js
+//= require lib/adal/adal-angular.js

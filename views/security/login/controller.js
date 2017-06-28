@@ -1,11 +1,27 @@
 angular.module('security')
-	.controller('security.login.controller', ['$scope', '$http', '$constants', '$loader', '$window', '$notifier', '$modal', '$cache', '$dataService', '$accessService', '$rootScope', 
-		function ($scope, $http, $constants, $loader, $window, $notifier, $modal, $cache, $dataService, $accessService, $rootScope) {
+	.controller('security.login.controller', ['$scope', '$http', '$constants', '$loader', '$window', '$notifier', '$modal', '$cache', '$dataService', '$accessService', '$rootScope', 'adalAuthenticationService', 
+		function ($scope, $http, $constants, $loader, $window, $notifier, $modal, $cache, $dataService, $accessService, $rootScope, adalService) {
 			$scope.credentials = {};
 			$scope.authenticate = authenticate;
 			$scope.forgotPassword = forgotPassword;
+			$scope.authWith = authWith;
 			
 			function init() {
+				$scope.SupportedAuthentications = [];;
+				$scope.dbAuthSupported = false;
+				
+				angular.forEach($constants.SupportedAuthentications || [], function(authType) {
+					if (authType.type != null && (authType.type.toUpperCase() == 'DB' || authType.type.toUpperCase() == 'DATABASE')) {
+						$scope.dbAuthSupported = true;
+					} else {
+						$scope.SupportedAuthentications.push(authType);
+					}
+				});
+				
+				if (!$scope.dbAuthSupported && $scope.SupportedAuthentications.length == 0) {
+					$scope.dbAuthSupported = true;
+				}
+				
 				var token = $cache.get('security', 'token') || $cache.session.get('security', 'token');
 				var user = $cache.get('security', 'user') || $cache.session.get('security', 'user');
 				if (token != null && user != null && token != '' && user.userId != '' && user.userId != null ) {
@@ -16,6 +32,16 @@ angular.module('security')
 						$cache.session.put('security', 'user', $cache.get('security', 'user'));
 					}
 					gotoHome();
+				}
+				
+				if (!$scope.dbAuthSupported && $scope.SupportedAuthentications.length == 1) {
+					authWith($scope.SupportedAuthentications[0]);
+				}
+			}
+			
+			function authWith(authType) {
+				if (authType.type.toUpperCase() == 'O365') {
+					adalService.login();
 				}
 			}
 			

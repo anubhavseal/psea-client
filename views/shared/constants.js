@@ -34,6 +34,10 @@ angular.module('shared').constant('$constants', {
 			'Status':		 "C:\\Trialio\\DeployTestDrive.ps1 -testDriveName GenericVHDBase -serviceName {SiteName} -password {LoginPassword} -VMSize {VMSize} -ConfigType STATUS         -subscriptionId '{subscriptionId}' -cloudUserName '{cloudUserName}' -cloudPassword '{cloudPassword}'"
 		}
 	}, 
+	'SupportedAuthentications': [
+		{'type': 'DB', 'caption': 'Database', 'icon': null},
+		{'type': 'O365', 'caption': 'O365', 'icon': '/images/office-365-cloud-png-12.png', 'config': {instance: 'https://login.microsoftonline.com/', tenant: 'motifworks.com', clientId: 'b28c22a2-e7c9-498a-99be-16c726703418', extraQueryParameter: 'nux=1'}}
+	],
 	'GuacamoleConfig': {
 		'basePath': 'http://webconsole.trial.io/access/#/', 
 		"basePathHttps": "https://webconsole.trial.io/access/#/"

@@ -1,43 +1,46 @@
 doctype html
 html
-  head
-    meta(charset='utf-8')
-    meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
-    title Trial.io
-    link(href='/assets/nextgen/stylesheets/application.css', rel='stylesheet', type='text/css')
-  .container#onboarding
-    #logo
-      a(href='#')
-        img.img-responsive-logo(src='/images/trial-logo-text-ldark@2x.png')
-    #onboarding
-      .row
-        .col-md-6.col-md-offset-3
-          #login.center-pane
-            .form-wrapper
-              h4 Log In
-              form(method='POST' ng-submit="authenticate()")#login-form
-                .form-group
-                  input#email.form-control(ng-model='credentials.username', type='email', name='email', placeholder='Email address', autofocus='autofocus')
-                .form-group
-                  input#password.form-control(ng-model='credentials.password', type='password', name='password', placeholder='Password')
-                .form-group
-                  .remember-me
-                  .checkbox
-                      label
-                        .checkbox-wrap
-                          input.checkbox-input(type='checkbox', ng-model='credentials.rememberMe')
-                          span.input-icon
-                        |  Stay logged in
-                  p.forgot-pw
-                    a.theme-link(href='#', ng-click='forgotPassword()',tabindex='-1') Forgot your password? 
-                button.btn.btn-primary.btn-block.btn-lg.theme-btn-primary(style='width:100%' type='submit') Log In
-                hr.col-md-4
-                p.col-md-2(style="margin-top:10px;text-align:center") OR
-                hr.col-md-4
-                br
-                h5.col-md-6(style="text-align:center;margin-top:10px") Don't have an account yet? 
-                button.btn.btn-primary.btn-block.btn-lg.theme-btn-primary(style='width:50%' type='submit') Office 365
-        //p
-            | Don't have an account yet? 
-            a(href='', target='_self') Sign up
+	head
+		meta(charset='utf-8')
+		meta(http-equiv='X-UA-Compatible', content='IE=edge')
+		meta(name='viewport', content='width=device-width, initial-scale=1')
+		title Trial.io
+		link(href='/assets/nextgen/stylesheets/application.css', rel='stylesheet', type='text/css')
+	.container#onboarding
+		#logo
+			a(href='#')
+				img.img-responsive-logo(src='/images/trial-logo-text-ldark@2x.png')
+		#onboarding
+			.row
+				.col-md-6.col-md-offset-3
+					#login.center-pane
+						.form-wrapper
+							h4(ng-if='dbAuthSupported') Log In
+							form(method='POST' ng-submit="authenticate()")#login-form(ng-if='dbAuthSupported')
+								.form-group
+									input#email.form-control(ng-model='credentials.username', type='email', name='email', placeholder='Email address', autofocus='autofocus')
+								.form-group
+									input#password.form-control(ng-model='credentials.password', type='password', name='password', placeholder='Password')
+								.form-group
+									.remember-me
+									.checkbox
+											label
+												.checkbox-wrap
+													input.checkbox-input(type='checkbox', ng-model='credentials.rememberMe')
+													span.input-icon
+												|	Stay logged in
+									p.forgot-pw
+										a.theme-link(href='#', ng-click='forgotPassword()',tabindex='-1') Forgot your password? 
+								button.btn.btn-primary.btn-block.btn-lg.theme-btn-primary(style='width:100%' type='submit') Log In
+							.row(style="margin: 0px 0px 0px 0px;" ng-if='dbAuthSupported && SupportedAuthentications.length > 0')
+								.col-md-5(style='border-bottom:1px solid lightgray;height:22px')
+								.col-md-2(style="margin-top:10px;text-align:center")
+									label OR
+								.col-md-5(style='border-bottom:1px solid lightgray;height:22px')
+							.row(style="margin: 0px 0px 0px 0px;" ng-if='SupportedAuthentications.length > 0')
+								.col-md-12 
+									span Sign in with 
+									img.btn.btn-default(ng-repeat='authtType in SupportedAuthentications' style='width:60px;height:40px;border:1px solid white;border-radius:5px 5px' type='submit' src='{{authtType.icon}}' ng-click='authWith(authtType)')
+				//p
+						| Don't have an account yet? 
+						a(href='', target='_self') Sign up
