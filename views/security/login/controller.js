@@ -5,12 +5,15 @@ angular.module('security')
 			$scope.authenticate = authenticate;
 			$scope.forgotPassword = forgotPassword;
 			$scope.authWith = authWith;
+			$scope.authConfigs = {};
 			
 			function init() {
 				$scope.SupportedAuthentications = [];;
 				$scope.dbAuthSupported = false;
 				
+				var authConfigs = {};
 				angular.forEach($constants.SupportedAuthentications || [], function(authType) {
+					authConfigs[authType.type.toUpperCase()] = authType;
 					if (authType.type != null && (authType.type.toUpperCase() == 'DB' || authType.type.toUpperCase() == 'DATABASE')) {
 						$scope.dbAuthSupported = true;
 					} else {
@@ -18,9 +21,13 @@ angular.module('security')
 					}
 				});
 				
+				$scope.authConfigs = authConfigs;
+				
 				if (!$scope.dbAuthSupported && $scope.SupportedAuthentications.length == 0) {
 					$scope.dbAuthSupported = true;
 				}
+				
+				var alreadyAuthWith = isAlreadyAuthenticated();
 				
 				var token = $cache.get('security', 'token') || $cache.session.get('security', 'token');
 				var user = $cache.get('security', 'user') || $cache.session.get('security', 'user');
@@ -32,16 +39,36 @@ angular.module('security')
 						$cache.session.put('security', 'user', $cache.get('security', 'user'));
 					}
 					gotoHome();
-				}
-				
-				if (!$scope.dbAuthSupported && $scope.SupportedAuthentications.length == 1) {
+				} else if (alreadyAuthWith != 'none') {
+					proceedAheadWithExternalAuthentication(alreadyAuthWith);
+				} else if (!$scope.dbAuthSupported && $scope.SupportedAuthentications.length == 1) {
 					authWith($scope.SupportedAuthentications[0]);
+				} 
+			}
+			
+			function isAlreadyAuthenticated() {
+				if ($scope.authConfigs['O365'] != null) {
+					var userInfo = $rootScope.userInfo;
+					if (userInfo != null && userInfo.isAuthenticated != null && userInfo.profile != null && userInfo.profile.upn != null && userInfo.profile.upn != '') {
+						return 'O365';
+					}
 				}
+			
+				return 'none';
 			}
 			
 			function authWith(authType) {
 				if (authType.type.toUpperCase() == 'O365') {
 					adalService.login();
+				}
+			}
+			
+			function proceedAheadWithExternalAuthentication(alreadyAuthWith) {
+				if (alreadyAuthWith == 'O365') {
+					$scope.credentials.username = $rootScope.userInfo.profile.upn;
+					$scope.credentials.password = window.btoa(JSON.stringify($rootScope.userInfo));
+					$scope.credentials.authWith = 'O365'
+					authenticate();
 				}
 			}
 			
@@ -57,7 +84,6 @@ angular.module('security')
 			}
 			
 			function authenticate() {
-				$loader.show();
 				if ($scope.credentials.username == null || $scope.credentials.username == ''){
 					$notifier.error('Email is mandatory.');
 					angular.element('#email').focus();
@@ -68,6 +94,7 @@ angular.module('security')
 					angular.element('#password').focus();
 					return false;
 				}
+				$loader.show();
 				$http.post(getAPIBasePath() + 'token', $scope.credentials)
 					.success(function(response) {
 						if (response == null) {
