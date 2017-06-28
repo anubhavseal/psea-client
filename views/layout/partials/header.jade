@@ -8,8 +8,13 @@ nav.navbar
 				span.icon-bar
 
 		div#Logo(class="pull-left headerLogo" style="cursor:pointer" ng-click="gotoHome()")
-			img.img-responsive(src='/images/trial-logo-light@2x.png')
-		
+			img.img-responsive(src='/images/psea_logo.png')
+		div(style="display:inline-block;margin: 15px 0px 0px 0px;")
+			a(href='#' ng-click="gotoHome()")
+				span.glyphicon.glyphicon-home(style="font-size:20px;")
+		//- form.navbar-form.navbar-right(style="visibility:visible")
+		//- 	.form-group
+		//- 		input.form-control(type="text",placeholder='Search')
 		ol.breadcrumb.pull-left(ng-show='user != null')
 			li(ng-repeat='breadcrumb in breadcrumbs')
 				a(href='#' ng-click='showBreadcrumb(breadcrumb)' style='text-transform: capitalize') {{breadcrumb.caption}}
@@ -25,9 +30,9 @@ nav.navbar
 				a.dropdown-toggle(aria-expanded='false' aria-haspopup='true' role='button' data-toggle='dropdown' href='#' ng-click='signIn()')
 					span#userdetails(data-userId="-" data-emailId="Sign In" data-userName="Sign In")
 						| Sign In					
-		form.navbar-form.pull-right(ng-show='user != null')
+		form.navbar-form.pull-right()
 			.has-icon-left(ng-if='searchPossible === true')
-				input.form-control.input-rounded(type='text', placeholder='Search', ng-change='search()', ng-keydown='onSearchTextKeyPress($event)', ng-model='searchOptions.text', style='width:250px')
+				input.form-control.input-rounded(type='text', placeholder='Search Profiles', ng-change='search()', ng-keydown='onSearchTextKeyPress($event)', ng-model='searchOptions.text', style='width:250px')
 				span.input-add-on.media-16.icon-search-18
 				div.searchResult
 					div(ng-show='searchInProgress' style='padding:10px;color:#20b6ff;font-size:14px')

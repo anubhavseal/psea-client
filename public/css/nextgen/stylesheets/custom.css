@@ -110,11 +110,11 @@ margin-left: -1%;
 }
 
 .headerLogo {
-	background:#20b6ff;
+	/*background:#20b6ff;*/
 	display:inline-block;
 	width:250px;
 	height:52px;
-	padding:10px 58px;
+	padding:5px 58px;
 	margin:-1px 11px -4px -68px;
 }
 

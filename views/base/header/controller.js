@@ -238,7 +238,7 @@ angular.module('base')
 		function setLayout(){
 			var url = '' + $window.location;
 			var bHideMenuBar = $accessService.getActiveUser() == null || isURLSatisfied(url, $constants.MenuLessRoutes) || isURLSatisfied(url, [$constants.AcceptAgreementPage, $constants.ChangePasswordPage, $constants.SelectTenantPage]);
-			var bHideHeader = isURLSatisfied(url, $constants.HeaderLessRoutes) || isURLSatisfied(url, $constants.UnsecuredRoutes) || isURLSatisfied(url, [$constants.LoginPage]);
+			var bHideHeader = isURLSatisfied(url, $constants.HeaderLessRoutes) || isURLSatisfied(url, $constants.UnsecuredRoutes) || isURLSatisfied(url, []);
 			
 			if (bHideHeader) {
 				angular.element('body').addClass('nav-open');
@@ -251,7 +251,7 @@ angular.module('base')
 				angular.element('.navbar-header').css('visibility', 'hidden');
 				angular.element('.breadcrumb').css('visibility', 'hidden');
 				angular.element('.nav-overlay').css('visibility', 'hidden');
-				angular.element('.navbar-form').css('visibility', 'hidden');
+				angular.element('.navbar-form').css('visibility', '');
 				angular.element('.navigation-dock').css('visibility', 'hidden');
 			} else  {
 				angular.element('body').removeClass('nav-open');
@@ -261,7 +261,7 @@ angular.module('base')
 				angular.element('.navbar-header').css('visibility', '');
 				angular.element('.breadcrumb').css('visibility', '');
 				angular.element('.nav-overlay').css('visibility', '');
-				angular.element('.navbar-form').css('visibility', '');
+				angular.element('.navbar-form').css('visibility', 'visible');
 			}
 		}
 		

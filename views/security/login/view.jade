@@ -13,7 +13,7 @@ html
 		#onboarding
 			.row
 				.col-md-6.col-md-offset-3
-					#login.center-pane
+					#login.center-pane(style="padding-bottom:20px")
 						.form-wrapper
 							h4(ng-if='dbAuthSupported') Log In
 							form(method='POST' ng-submit="authenticate()")#login-form(ng-if='dbAuthSupported')
@@ -38,7 +38,7 @@ html
 									label OR
 								.col-md-5(style='border-bottom:1px solid lightgray;height:22px')
 							.row(style="margin: 0px 0px 0px 0px;" ng-if='SupportedAuthentications.length > 0')
-								.col-md-12 
+								.col-md-12(style="text-align:right")
 									span Sign in with 
 									img.btn.btn-default(ng-repeat='authtType in SupportedAuthentications' style='width:60px;height:40px;border:1px solid white;border-radius:5px 5px' type='submit' src='{{authtType.icon}}' ng-click='authWith(authtType)')
 				//p
