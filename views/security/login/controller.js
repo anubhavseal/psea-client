@@ -66,8 +66,7 @@ angular.module('security')
 			function proceedAheadWithExternalAuthentication(alreadyAuthWith) {
 				if (alreadyAuthWith == 'O365') {
 					$scope.credentials.username = $rootScope.userInfo.profile.upn;
-					$scope.credentials.password = window.btoa(JSON.stringify($rootScope.userInfo));
-					$scope.credentials.authWith = 'O365'
+					$scope.credentials.password = window.btoa(alreadyAuthWith + '$' + JSON.stringify($rootScope.userInfo));
 					authenticate();
 				}
 			}
