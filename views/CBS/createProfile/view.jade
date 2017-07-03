@@ -1,0 +1,40 @@
+.row
+    .col-md-4
+        .div.profile-image-container
+            .row
+                .col-md-12(style="padding-bottom:90px;")
+                    h1.text-left Welcome Back
+            .row
+                .col-md-12(style="padding-bottom:15px;")
+                    span 
+                        em My Recent Profile
+            .row
+                .col-md-12
+                    h3 York City
+                    span Last accessed
+            .row(style="padding-bottom:15px;")
+                .col-md-12
+            .row
+                .col-md-6(style="padding:2px;")
+                    button.btn.btn-primary.btn-lg(style="width:100%;" ng-click="populateAccess()") Analysis
+                .col-md-6(style="padding:2px;")
+                    button.btn.btn-primary.btn-lg(style="width:100%;") Criteria
+    .col-md-8
+        .panel-group#accordian
+            .panel.panel-default(ng-repeat="type in types")
+                .panel-heading.clearfix
+                    h4.panel-title.pull-left(style='padding-top:5px')
+                        {{type.caption}}
+                        label.text-muted &nbsp;({{getSelectedCount(type)}})
+                    span.glyphicon.glyphicon-menu-down.pull-right(style='cursor:pointer;font-size:20px;' ng-if='!type.selected' ng-click='selectType(type)')
+                    button.btn.btn-success.pull-right(ng-show='type.selected') Update
+                .div(ng-class="{ 'panel-collapse collapse in' : type.selected, 'panel-collapse collapse': !type.selected}")
+                    .panel-body
+                        .row.checked-container(ng-show='type.group1Count > 0' style='padding:10px;{{type.group1Count > 0 && type.group2Count > 0 ? "border-bottom:1px solid lightgray" : ""}}')
+                                .col-md-4(ng-repeat="option in type.options | filter: { group: 1}" )
+                                    input(type="checkbox"  ng-model="option.selected" ng-attr-id="{{option.caption}}")
+                                    label(for="{{option.caption}}") &nbsp;{{option.caption}}
+                        .row.unchecked-container(ng-show='type.group2Count > 0' style='padding:10px;')
+                                .col-md-4(ng-repeat="option in type.options | filter: { group: 2}" )
+                                    input(type="checkbox" ng-checked="option.selected" ng-model="option.selected" ng-attr-id="{{option.caption}}")
+                                    label.text-muted(for="{{option.caption}}") &nbsp;{{option.caption}}

@@ -22,15 +22,16 @@ html
 									input#email.form-control(ng-model='credentials.username', type='email', name='email', placeholder='Email address', autofocus='autofocus')
 								.form-group
 									input#password.form-control(ng-model='credentials.password', type='password', name='password', placeholder='Password')
-								.form-group
-									.remember-me
-									.checkbox
-											label
-												.checkbox-wrap
-													input.checkbox-input(type='checkbox', ng-model='credentials.rememberMe')
-													span.input-icon
-												|	Stay logged in
-									p.forgot-pw
+								.row.forgot-password(style="padding:11px;")
+									.form-group.col-md-6
+										.remember-me
+										.checkbox
+												label
+													.checkbox-wrap
+														input.checkbox-input(type='checkbox', ng-model='credentials.rememberMe')
+														span.input-icon
+													|	Stay logged in
+									div.forgot-pw.col-md-6(style="text-align:right;padding-top:12px;")
 										a.theme-link(href='#', ng-click='forgotPassword()',tabindex='-1') Forgot your password? 
 								button.btn.btn-primary.btn-block.btn-lg.theme-btn-primary(style='width:100%' type='submit') Log In
 							.row(style="margin: 0px 0px 0px 0px;" ng-if='dbAuthSupported && SupportedAuthentications.length > 0')

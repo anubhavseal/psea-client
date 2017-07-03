@@ -1,0 +1,12 @@
+angular.module('cbs')
+.config(['$routeProvider',function($routeProvider){
+    $routeProvider
+    .when('/profile-listing',{
+        templateUrl:'views/CBS/profilelisting/view',
+        controller:'profileListing.controller'
+    })
+    .when('/create-profile',{
+        templateUrl:'views/CBS/createProfile/view',
+        controller:'createProfile.controller'
+    })
+}]);

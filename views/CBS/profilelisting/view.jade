@@ -1,0 +1,34 @@
+.profile-listing-container.container-fluid(style="background-color:white")
+	.row
+		.col-md-12(style="height:80px")
+	.row
+		.col-md-4
+			.div.profile-image-container
+				.row
+					.col-md-12(style="padding-bottom:90px;")
+						h1.text-left Welcome Back
+				.row
+					.col-md-12(style="padding-bottom:15px;")
+						span 
+							em My Recent Profile
+				.row
+					.col-md-12
+						h3 York City
+						span Last accessed
+				.row(style="padding-bottom:15px;")
+					.col-md-12
+				.row
+					.col-md-6(style="padding:2px;")
+						button.btn.btn-primary.btn-lg(style="width:100%;") Analysis
+					.col-md-6(style="padding:2px;")
+						button.btn.btn-primary.btn-lg(style="width:100%;") Criteria
+		.col-md-8.profile-container
+			.row
+				.col-md-4(ng-repeat='profile in profileArray')
+					.panel.panel-default.profile
+						.panel-heading.profile-heading {{profile.name}}
+						.panel-body.profile-body
+							span 
+								em Last accessed {{profile.lastAccessed}} days back
+			button.btn.btn-success.btn-lg.pull-right Create New Profile
+
