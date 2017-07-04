@@ -5,10 +5,13 @@
                     h4.panel-title.pull-left(style='padding-top:5px')
                         {{type.caption}}
                         label.text-muted &nbsp;({{getSelectedCount(type)}})
-                    .div.search-box-container
-                        input.search-box.text-center(type="text" id="search" ng-model="searchData" placeholder="{{type.id|uppercase}}" ng-show="type.selected")
-                    span.glyphicon.glyphicon-menu-down.pull-right(style='cursor:pointer;font-size:20px;' ng-if='!type.selected' ng-click='selectType(type)')
                     button.btn.btn-success.pull-right(ng-show='type.selected') Update
+                    .form-inline.pull-right(ng-show="type.selected")
+                        .form-group.col-lg-4
+                            .form-group.has-feedback
+                                input.form-control.search-box(type="text" id="search" ng-model="searchData" placeholder="{{type.id|uppercase}}" )
+                                span.glyphicon.glyphicon-search.form-control-feedback
+                    span.glyphicon.glyphicon-menu-down.pull-right(style='cursor:pointer;font-size:20px;' ng-if='!type.selected' ng-click='selectType(type)')
                 .div(ng-class="{ 'panel-collapse collapse in' : type.selected, 'panel-collapse collapse': !type.selected}")
                     .panel-body
                         .row.checked-container(ng-show='type.group1Count > 0' style='padding:10px;{{type.group1Count > 0 && type.group2Count > 0 ? "border-bottom:1px solid lightgray" : ""}}')
