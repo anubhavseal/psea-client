@@ -18,7 +18,18 @@
 	text-transform: capitalize;
 	border: none;
 }
-
+.search-box-container{
+	display: inline;
+    margin-left: 10%;
+	margin-right: 10%;
+}
+.search-box{
+	height: 33px;
+    width: 297px;
+    border: 1px solid rgba(55,119,241,0.3);
+    border-radius: 10px;
+    background-color: #F5F6FA;
+}
 .profile-body{
 	padding-left: 0px;
 	color: #9e9e9e;

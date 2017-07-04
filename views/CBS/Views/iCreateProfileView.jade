@@ -5,7 +5,8 @@
                     h4.panel-title.pull-left(style='padding-top:5px')
                         {{type.caption}}
                         label.text-muted &nbsp;({{getSelectedCount(type)}})
-                    input.pull-left(type="text" ng-model="searchData" placeholder="{{type.id}}" ng-if="type.selected")
+                    .div.search-box-container
+                        input.search-box.text-center(type="text" id="search" ng-model="searchData" placeholder="{{type.id|uppercase}}" ng-show="type.selected")
                     span.glyphicon.glyphicon-menu-down.pull-right(style='cursor:pointer;font-size:20px;' ng-if='!type.selected' ng-click='selectType(type)')
                     button.btn.btn-success.pull-right(ng-show='type.selected') Update
                 .div(ng-class="{ 'panel-collapse collapse in' : type.selected, 'panel-collapse collapse': !type.selected}")
@@ -18,3 +19,4 @@
                                 .col-md-4(ng-repeat="option in type.options | filter: { group: 2, caption: searchData}" )
                                     input(type="checkbox" ng-checked="option.selected" ng-model="option.selected" ng-attr-id="{{option.caption}}")
                                     label.text-muted(for="{{option.caption}}") &nbsp;{{option.caption}}
+    button.btn.btn-success.btn-lg.pull-right Select Profile
