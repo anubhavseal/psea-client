@@ -1,6 +1,6 @@
 var app = angular.module('cbs');
 
-app.controller('createProfile.controller', function($scope) {
+app.controller('cbs.home.controller', function($scope) {
         $scope.getSelectedCount = getSelectedCount;
         $scope.selectType = selectType;
          $scope.profileArray = [{
