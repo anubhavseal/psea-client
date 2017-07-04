@@ -1,0 +1,9 @@
+.col-md-8.profile-container
+			.row
+				.col-md-4(ng-repeat='profile in profileArray')
+					.panel.panel-default.profile
+						.panel-heading.profile-heading {{profile.name}}
+						.panel-body.profile-body
+							span 
+								em Last accessed {{profile.lastAccessed}} days back
+			button.btn.btn-success.btn-lg.pull-right Create New Profile

@@ -49,6 +49,12 @@
 	background-size: cover;
 	border-radius: 5px;
 }
+
+.side-menu-container{
+	max-width: 70%;
+    margin: auto;
+}
+
 .panel.panel-default{
 	border: 2px solid rgba(200,199,209,0.4);
 	border-radius: 6px;

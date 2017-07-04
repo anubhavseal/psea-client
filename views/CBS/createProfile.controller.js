@@ -3,6 +3,34 @@ var app = angular.module('cbs');
 app.controller('createProfile.controller', function($scope) {
         $scope.getSelectedCount = getSelectedCount;
         $scope.selectType = selectType;
+         $scope.profileArray = [{
+        name:'San Jose Profile',
+        lastAccessed:19
+    },
+    {
+        name:'San Jose Profile',
+        lastAccessed:19
+    },
+    {
+        name:'San Jose Profile',
+        lastAccessed:19
+    },
+    {
+        name:'San Jose Profile',
+        lastAccessed:19
+    },
+    {
+        name:'San Jose Profile',
+        lastAccessed:19
+    },
+    {
+        name:'San Jose Profile',
+        lastAccessed:19
+    },
+    {
+        name:'San Jose Profile',
+        lastAccessed:19
+    }];
 
         function selectType(selectedType){
             angular.forEach($scope.types, function(type){

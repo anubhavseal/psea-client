@@ -7,7 +7,7 @@ angular.module('shared').constant('$constants', {
 	'AcceptAgreementPage': '/acceptagreement',
 	'ChangePasswordPage': '/changepassword',
 	'SelectTenantPage': '/selecttenant',
-	'UnsecuredRoutes': ['/profile-listing','/create-profile', '/drives/:testDriveName/environments/:testDriveInstanceId/provision', '/drives/:testDriveName/environments/:testDriveInstanceId/connect'],
+	'UnsecuredRoutes': ['/profile-listing','/profile-master', '/drives/:testDriveName/environments/:testDriveInstanceId/provision', '/drives/:testDriveName/environments/:testDriveInstanceId/connect'],
 	'HeaderLessRoutes': [],
 	'MenuLessRoutes': ['/updatesubscriptioninfo'],
 	'LogLevel': 1, 
