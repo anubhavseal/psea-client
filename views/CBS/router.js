@@ -1,12 +1,12 @@
 angular.module('cbs')
 .config(['$routeProvider',function($routeProvider){
     $routeProvider
-    .when('/profile-listing',{
-        templateUrl:'views/CBS/views/iProfileListingView',
-        controller:'cbs.home.controller'
-    })
     .when('/cbs-home',{
-        templateUrl:'views/CBS/home/view',
+        templateUrl:'/views/CBS/profile/view',
         controller:'cbs.home.controller'
     })
+    .when('/cbs-home/profile-listing',{
+        templateUrl:'/views/CBS/profile/i_ProfileListingView',
+        controller:'cbs.home.controller'
+    });
 }]);

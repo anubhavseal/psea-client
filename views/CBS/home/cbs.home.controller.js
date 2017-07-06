@@ -1,37 +1,32 @@
 var app = angular.module('cbs');
 
-app.controller('cbs.home.controller', function($scope) {
-        $scope.getSelectedCount = getSelectedCount;
-        $scope.selectType = selectType;
-         $scope.profileArray = [{
-        name:'San Jose Profile',
-        lastAccessed:19
-    },
-    {
-        name:'San Jose Profile',
-        lastAccessed:19
-    },
-    {
-        name:'San Jose Profile',
-        lastAccessed:19
-    },
-    {
-        name:'San Jose Profile',
-        lastAccessed:19
-    },
-    {
-        name:'San Jose Profile',
-        lastAccessed:19
-    },
-    {
-        name:'San Jose Profile',
-        lastAccessed:19
-    },
-    {
-        name:'San Jose Profile',
-        lastAccessed:19
-    }];
+app.controller('cbs.home.controller', function($scope,$location) {
+    $scope.getSelectedCount = getSelectedCount;
+    $scope.selectType = selectType;
 
+        $scope.profileArray = [{
+            name: 'San Jose Profile',
+            lastAccessed: 19
+        },{
+            name: 'San Jose Profile',
+            lastAccessed: 19
+        },{
+            name: 'San Jose Profile',
+            lastAccessed: 19
+        },{
+            name: 'San Jose Profile',
+            lastAccessed: 19
+        },{
+            name: 'San Jose Profile',
+            lastAccessed: 19
+        },{
+            name: 'San Jose Profile',
+            lastAccessed: 19
+        },{
+            name: 'San Jose Profile',
+            lastAccessed: 19
+        }];    
+        
         function selectType(selectedType){
             angular.forEach($scope.types, function(type){
                 type.selected = false;
@@ -48,7 +43,7 @@ app.controller('cbs.home.controller', function($scope) {
             });
             return selectedCount == 0 ? 'None Selected' : selectedCount;
         }
-
+        
         function getTypes(callback) {
             callback([{
                     id: 'district',
@@ -182,6 +177,45 @@ app.controller('cbs.home.controller', function($scope) {
             ]);
         }
 
+        function getQuickPickTypes(callback){
+            callback([{
+                'id':1,
+                'caption':'Montogomery County'
+            },{
+                'id':2,
+                'caption':'IU Montgomery'
+            },{
+                'id':3,
+                'caption':'Mideastern Region',
+            },{
+                'id':4,
+                'caption':'Cluster:STRANZ, KAREN'
+            },
+            {
+                'id':5,
+                'caption':'Contiguous District'
+            }])
+        }
+
+        function getQuickPickTypesAccess(callback){
+            callback([{
+                'id':1,
+                'access':true
+            },{
+                'id':2,
+                'access':false
+            },{
+                'id':3,
+                'access':false
+            },{
+                'id':4,
+                'access':false
+            },{
+                'id':5,
+                'access':false
+            }])
+        }
+
         function fetchOptions(callback, index) {
             index = index || 0 ;
             if ($scope.types == null || $scope.types.length <= index) {
@@ -211,6 +245,31 @@ app.controller('cbs.home.controller', function($scope) {
                 $scope.types = types;
                 fetchOptions(populateAccess);
             });
+
+            getQuickPickTypes(function(quickPickTypes){
+                $scope.quickPickTypes = quickPickTypes;
+                if($scope.quickPickTypes){
+                    populateQuickPickTypeAccess();
+                }
+            });
+            console.log($location.path());
+        }
+
+        function populateQuickPickTypeAccess(){
+            getQuickPickTypesAccess(function(permissions){
+                permissions = permissions || [];
+                var quickPickTypeMap = {};
+                angular.forEach($scope.quickPickTypes,function(type){
+                    quickPickTypeMap[type.id] = type;
+                    type.selected = false;
+                })
+                angular.forEach(permissions,function(permission){
+                   var quickPickType = quickPickTypeMap[permission.id];
+                   if(quickPickType != null && permission.access === true){
+                        quickPickType.selected = true;
+                   }
+                })
+            })
         }
 
         function populateAccess(){
@@ -249,6 +308,66 @@ app.controller('cbs.home.controller', function($scope) {
             });
         }
 
+        $scope.links = [{
+            'id':'geo-criteria',
+            'img':'/images/psea-assets/geo-selected/geo-selected.png',
+            'caption':'Geo Criteria',
+            'selected':false
+        },{
+            'id':'quick-pick-criteria',
+            'img':'/images/psea-assets/quick/quick.png',
+            'imgSelected':'/images/psea-assets/quick-selected/shape.png',
+            'caption':'Quick Pick',
+            'selected':false
+        },{
+            'id':'range-criteria',
+            'img':'/images/psea-assets/range/range.png',
+            'imgSelected':'/images/psea-assets/range-selected/range-selected.png',
+            'caption':'Range Criteria',
+            'selected':false
+        },{
+            'id':'check-criteria',
+            'img':'/images/psea-assets/check/check.png',
+            'imgSelected':'/images/psea-assets/check-selected/shape.png',
+            'caption':'Check Criteria',
+            'selected':false
+        }];
+
+        $scope.views=[{
+            'id':'profile-listing',
+            'url':'/views/CBS/profile/i_ProfileListingView',
+            'selected':true
+        },{
+            'id':'geo-criteria',
+            'url':'/views/CBS/profile/i_GeoCriteriaView',
+            'selected':false
+        },{
+            'id':'quick-pick-criteria',
+            'url':'/views/CBS/profile/i_QuickTypesView',
+            'selected':false
+        },{
+            'id':'range-criteria',
+            'url':'/views/CBS/profile/i_ProfileListingView',
+            'selected':false
+        },{
+            'id':'check-criteria',
+            'url':'/views/CBS/profile/i_ProfileListingView',
+            'selected':false
+        }];
+
+        $scope.setLayout = function(link){
+           var viewMap = {};
+           angular.forEach($scope.views,function(view){
+               viewMap[view.id]=view;
+               view.selected = false;
+           })
+           angular.forEach($scope.links,function(link){
+               link.selected = false;
+           })
+            link.selected = true;
+            viewMap[link.id].selected = true;
+            
+        }
         init();
     }
 );

@@ -1,3 +1,10 @@
+.col-md-8{
+	font-family: 'Lato', sans-serif !important;
+}
+/*#profile-listing,#geo-criteria,#quick-pick-criteria,#range-criteria,#check-criteria{
+	visibility: hidden;
+}*/
+
 .profile-container{
 	padding-right: 75px;
     padding-left: 30px;
@@ -128,3 +135,20 @@ input[type="checkbox"]:checked + label:before {
 	font-size: 15px;
 }
 
+
+.quick-types-list{
+	border: none;
+}
+
+.quick-types-list label {
+	font-family: 'Lato', sans-serif !important;
+    color: #202228;
+    font-size:16px;
+}
+
+#quick-pick-type{
+	height: 5%;
+	width: 12.03%;
+	border-radius: 3px;
+	background-color: #21CC71;
+}
