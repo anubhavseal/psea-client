@@ -239,7 +239,87 @@ app.controller('cbs.home.controller', function($scope,$location) {
 
             eval(type.dataFunction + '(afterFetchOptions)');
         }
+        function getGroups(callback){
+            callback([{
+                'id':'g1',
+                'caption':'Range 1'
+            },{
+                'id':'g2',
+                'caption':'Range 2'
+            },{
+                'id':'g3',
+                'caption':'Range 3'
+            },{
+                'id':'g4',
+                'caption':'Range 4'
+            },{
+                'id':'g5',
+                'caption':'Range 5'
+            }]);
+        }
 
+        function getAttributes(callback){
+            callback([{
+                'id':'a1',
+                'caption':'Starting Salary',
+                'value':'529792',
+                'rangeID':'g1'
+            },{
+                'id':'a2',
+                'caption':'Career Rate',
+                'value':'89652',
+                'rangeID':'g1'
+
+            },{
+                'id':'a3',
+                'caption':'Average BU Salary',
+                'value':'77098',
+                'rangeID':'g1'
+
+            },{
+                'id':'a4',
+                'caption':'% with Master Degree',
+                'value':'72.6%',
+                'rangeID':'g2'
+
+            },{
+                'id':'a5',
+                'caption':'Career Earnings',
+                'value':'2523674',
+                'rangeID':'g2'
+
+            }]);
+        }
+
+        function getPercentageRangeAndAccess(callback){
+            callback([{
+                'minValue':100,
+                'maxValue':200,
+                'attrID':'a1',
+                'selected':true
+            },{
+                'minValue':50,
+                'maxValue':300,
+                'attrID':'a2',
+                'selected':false
+            },{
+                'minValue':500,
+                'maxValue':1000,
+                'attrID':'a3',
+                'selected':false
+            },{
+                'minValue':120,
+                'maxValue':280,
+                'attrID':'a4',
+                'selected':true
+            },{
+                'minValue':140,
+                'maxValue':290,
+                'attrID':'a5',
+                'selected':true
+            }]);
+        }
+            
         function init(){
             getTypes(function(types){
                 $scope.types = types;
@@ -252,8 +332,52 @@ app.controller('cbs.home.controller', function($scope,$location) {
                     populateQuickPickTypeAccess();
                 }
             });
-            console.log($location.path());
+
+            getGroups(function(groups){
+                $scope.groups = groups;
+                fetchAttributes(PercentageRangeAndAccess);
+                console.log($scope.groups);
+            });
         }
+
+        function fetchAttributes(callback){
+            var groupMap = {};
+            var attributeMap = {};
+            if($scope.groups == null){
+                return;
+            }
+        
+            angular.forEach($scope.groups,function(group){
+                groupMap[group.id] = group; 
+            });
+            
+            getAttributes(function(attributes){
+                attributes = attributes || [];
+                angular.forEach(attributes,function(attribute){
+                    attributeMap[attribute.id] = attribute;
+                    var group = groupMap[attribute.rangeID]; 
+                    group.attributes = group.attributes || [];
+                    group.attributes.push(attribute);
+                })
+
+                callback(attributeMap);
+                return;
+            });
+        }
+        
+
+        function PercentageRangeAndAccess(attributeMap){
+            getPercentageRangeAndAccess(function(percentageRangeAndAccess){
+                percentageRangeAndAccess = percentageRangeAndAccess || [];
+                angular.forEach(percentageRangeAndAccess,function(percentageRangeAndAccess){
+                    var attribute = attributeMap[percentageRangeAndAccess.attrID];
+                    attribute.selected = percentageRangeAndAccess.selected;
+                    attribute.minValue = percentageRangeAndAccess.minValue;
+                    attribute.maxValue = percentageRangeAndAccess.maxValue;
+                })
+            })
+        }
+
 
         function populateQuickPickTypeAccess(){
             getQuickPickTypesAccess(function(permissions){
@@ -354,6 +478,8 @@ app.controller('cbs.home.controller', function($scope,$location) {
             'url':'/views/CBS/profile/i_ProfileListingView',
             'selected':false
         }];
+
+        
 
         $scope.setLayout = function(link){
            var viewMap = {};
