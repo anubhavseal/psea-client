@@ -1,0 +1,23 @@
+.col-md-8
+    .row
+        .col-md-12
+            ul.nav.nav-pills
+                li(role="presentation" ng-repeat="group in groups" ng-class="{active:group.selected}" ng-click="selectGroup(group)")
+                    a(href="" style="display:inline") {{group.caption}}
+                    span.badge {{getSelectedAttributesCount(group.attributes)}}
+    .row(ng-repeat="attribute in selectedGroup.attributes")
+        .col-md-4   
+            ul.list-group
+                li.list-group-item
+                    input(type="checkbox" id="{{attribute.caption}}" ng-model="attribute.selected" ng-checked="attribute.selected")
+                    label(for="{{attribute.caption}}")&nbsp;&nbsp;{{attribute.caption}}
+        .col-md-2
+            span {{attribute.value}}
+        .col-md-1
+            input.percentage-input(type="number" oninput="validity.valid||(value='');" ng-model="attribute.minimumPercentage" ng-disabled="!attribute.selected" ng-change="decreasePercentage(attribute)")
+        .col-md-2
+            span {{attribute.minValue|number:2}}
+        .col-md-1
+            input.percentage-input(type="number" oninput="validity.valid||(value='');" ng-model="attribute.maximumPercentage" ng-disabled="!attribute.selected" ng-change="increasePercentage(attribute)")
+        .col-md-2
+            span {{attribute.maxValue|number:2}}

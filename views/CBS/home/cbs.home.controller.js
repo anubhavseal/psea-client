@@ -3,6 +3,10 @@ var app = angular.module('cbs');
 app.controller('cbs.home.controller', function($scope,$location) {
     $scope.getSelectedCount = getSelectedCount;
     $scope.selectType = selectType;
+    $scope.selectGroup = selectGroup;
+    $scope.getSelectedAttributesCount = getSelectedAttributesCount;
+    $scope.increasePercentage = increasePercentage;
+    $scope.decreasePercentage = decreasePercentage;
 
         $scope.profileArray = [{
             name: 'San Jose Profile',
@@ -262,30 +266,30 @@ app.controller('cbs.home.controller', function($scope,$location) {
             callback([{
                 'id':'a1',
                 'caption':'Starting Salary',
-                'value':'529792',
+                'value':529792,
                 'rangeID':'g1'
             },{
                 'id':'a2',
                 'caption':'Career Rate',
-                'value':'89652',
+                'value':89652,
                 'rangeID':'g1'
 
             },{
                 'id':'a3',
                 'caption':'Average BU Salary',
-                'value':'77098',
+                'value':77098,
                 'rangeID':'g1'
 
             },{
                 'id':'a4',
                 'caption':'% with Master Degree',
-                'value':'72.6%',
+                'value':726,
                 'rangeID':'g2'
 
             },{
                 'id':'a5',
                 'caption':'Career Earnings',
-                'value':'2523674',
+                'value':2523674,
                 'rangeID':'g2'
 
             }]);
@@ -319,7 +323,7 @@ app.controller('cbs.home.controller', function($scope,$location) {
                 'selected':true
             }]);
         }
-            
+
         function init(){
             getTypes(function(types){
                 $scope.types = types;
@@ -349,7 +353,11 @@ app.controller('cbs.home.controller', function($scope,$location) {
         
             angular.forEach($scope.groups,function(group){
                 groupMap[group.id] = group; 
+                group.selected = false;
             });
+
+            $scope.groups[0].selected = true;
+            $scope.selectedGroup = $scope.groups[0];
             
             getAttributes(function(attributes){
                 attributes = attributes || [];
@@ -378,6 +386,32 @@ app.controller('cbs.home.controller', function($scope,$location) {
             })
         }
 
+        function selectGroup(group){
+            angular.forEach($scope.groups,function(group){
+                group.selected = false;
+            })
+            group.selected = true;
+            $scope.selectedGroup = group;
+            console.log($scope.selectedGroup);
+        }
+
+        function getSelectedAttributesCount(attributes){
+            var count = 0;
+            angular.forEach(attributes,function(attribute){
+                if(attribute.selected === true){
+                    count++;
+                }
+            })
+            return count;
+        }
+
+        function increasePercentage(attribute){
+            attribute.maxValue = attribute.value + (attribute.maximumPercentage*attribute.value)/100 ;
+        }
+
+        function decreasePercentage(attribute){
+            attribute.minValue = attribute.value - (attribute.minimumPercentage*attribute.value)/100 ;
+        }
 
         function populateQuickPickTypeAccess(){
             getQuickPickTypesAccess(function(permissions){
@@ -471,7 +505,7 @@ app.controller('cbs.home.controller', function($scope,$location) {
             'selected':false
         },{
             'id':'range-criteria',
-            'url':'/views/CBS/profile/i_ProfileListingView',
+            'url':'/views/CBS/profile/i_RangeCriteriaView',
             'selected':false
         },{
             'id':'check-criteria',
