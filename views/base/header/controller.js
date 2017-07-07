@@ -60,10 +60,10 @@ angular.module('base')
 		}
 		
 		function logOut() {
-			$dataService.post('userActivities', {'activityType': 'logout'}, function(response){
+			//$dataService.post('userActivities', {'activityType': 'logout'}, function(response){
 				$accessService.clearSession();
 				$location.path($constants.LoginPage);
-			});
+			//});
 		}
 		
 		function signIn() {
@@ -245,7 +245,7 @@ angular.module('base')
 				angular.element('.navbar').css('visibility', 'hidden');
 				angular.element('.navigation-dock').css('visibility', 'hidden');
 				angular.element('nav').removeClass('navbarWithoutLogin');
-			} else if (bHideMenuBar) {
+			} else if (bHideMenuBar || $constants.HideMenuBar) {
 				angular.element('body').addClass('nav-open');
 				angular.element('nav').addClass('navbarWithoutLogin');
 				angular.element('.navbar-header').css('visibility', 'hidden');

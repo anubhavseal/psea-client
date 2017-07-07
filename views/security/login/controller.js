@@ -133,7 +133,7 @@ angular.module('security')
 						
 						$cache.session.put('security', 'token', token);
 						
-						$dataService.post('userActivities', {'activityType': 'login'}, function(response){
+						var cbOnActivity = function(){
 							$dataService.get('users/me', function(user, status, headers, config){
 								if ($scope.credentials.rememberMe) {
 									$cache.put('security', 'user', user);
@@ -153,9 +153,15 @@ angular.module('security')
 							}, function(err){
 								showError(err);
 							});
+						}
+						
+						cbOnActivity();
+						
+						/*$dataService.post('userActivities', {'activityType': 'login'}, function(response){
+							cbOnActivity();
 						}, function(err){
-							showError(err);
-						});
+							cbOnActivity();
+						});*/
 					})
 					.error(function(err) {
 						showError(err);
