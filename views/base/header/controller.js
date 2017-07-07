@@ -245,7 +245,7 @@ angular.module('base')
 				angular.element('.navbar').css('visibility', 'hidden');
 				angular.element('.navigation-dock').css('visibility', 'hidden');
 				angular.element('nav').removeClass('navbarWithoutLogin');
-			} else if (bHideMenuBar) {
+			} else if (bHideMenuBar || $constants.HideMenuBar) {
 				angular.element('body').addClass('nav-open');
 				angular.element('nav').addClass('navbarWithoutLogin');
 				angular.element('.navbar-header').css('visibility', 'hidden');

@@ -3,10 +3,10 @@ nav.navbar
 		.navbar-header(ng-show='user != null')
 			button#toggle-nav-bar.navbar-toggle.pull-left(type='button' ng-click='toggleMenu();')
 				span.sr-only Toggle navigation
-				span.icon-bar
-				span.icon-bar
-				span.icon-bar
-		div(style="display:inline-block;margin: 15px 0px 0px 0px;")
+				span.icon-bar(style='background-color:#02b6ff')
+				span.icon-bar(style='background-color:#02b6ff')
+				span.icon-bar(style='background-color:#02b6ff')
+		div(class='pull-left' style="display:inline-block;margin: 15px 25px 0px 0px;")
 			a(href='#' ng-click="gotoHome()")
 				span.glyphicon.glyphicon-home(style="font-size:20px;")
 		div#Logo(class="navbar-left headerLogo" style="cursor:pointer" ng-click="gotoHome()")

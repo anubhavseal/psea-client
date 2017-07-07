@@ -2,6 +2,7 @@
 angular.module('shared').constant('$constants', {
     'AppBasePath' : 'http://localhost:82/',
     'APIBasePath' : 'http://localhost:8080/api/v1/',
+	'HideMenuBar': false, 
 	'HomePage': '/home',
 	'LoginPage': '/security/login',
 	'AcceptAgreementPage': '/acceptagreement',
