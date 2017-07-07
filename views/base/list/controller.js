@@ -540,6 +540,7 @@ angular.module('base')
 	    }
 
 	    function fetchRecentActivities() {
+			return;
 	        var recentActivitiesAPI = replaceParams($scope.listConfig.recentActivitiesAPI);
 	        if (recentActivitiesAPI == null || recentActivitiesAPI == '') {
 				var dataAPI = getAPIBase();
