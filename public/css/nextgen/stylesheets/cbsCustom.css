@@ -90,9 +90,6 @@
     border-color: #21CC71;
 	width: 15%;
 }
-input[type="checkbox"] {
-    display: none;
-}
 
 input[type="checkbox"] + label:before {
     content: '\00a0';

@@ -135,7 +135,7 @@ angular.module('security')
 			angular.forEach(functions, function(funct){
 				funct.accessible = funct.accessibleTo == null || funct.accessibleTo.length == 0 || funct.accessibleTo.indexOf(activeUser.type) >= 0;
 			});
-			angular.forEach(profile.accessibleFunction || [], function(accessibleFunction){
+			angular.forEach(profile.accessibleFunctions || [], function(accessibleFunction){
 				if (accessibleFunction.functionId == null) {
 					accessibleFunction = {'functionId': accessibleFunction, 'access': 'A'};
 				}
@@ -205,7 +205,7 @@ angular.module('security')
 		function save() {
 			$loader.show();
 			var profile = {'profileName': $scope.profile.profileName};
-			profile.accessibleFunction = prepareProfileFunctions(profileId);
+			profile.accessibleFunctions = prepareProfileFunctions(profileId);
 			var url = 'profiles' + ($scope.isNew ? '' : '/' + profileId);
 			var operation = ($scope.isNew ? $dataService.post : $dataService.put);
 			if ($scope.isNew && tenantSpecific === 'both') {
