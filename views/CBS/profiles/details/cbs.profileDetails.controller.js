@@ -1,54 +1,14 @@
 var app = angular.module('cbs');
 
-app.controller('cbs.home.controller', function($scope,$location) {
+app.controller('cbs.profileDetails.controller', function($scope) {
     $scope.getSelectedCount = getSelectedCount;
     $scope.selectType = selectType;
     $scope.selectGroup = selectGroup;
     $scope.getSelectedAttributesCount = getSelectedAttributesCount;
     $scope.increasePercentage = increasePercentage;
     $scope.decreasePercentage = decreasePercentage;
-
-        $scope.profileArray = [{
-            name: 'San Jose Profile',
-            lastAccessed: 19
-        },{
-            name: 'San Jose Profile',
-            lastAccessed: 19
-        },{
-            name: 'San Jose Profile',
-            lastAccessed: 19
-        },{
-            name: 'San Jose Profile',
-            lastAccessed: 19
-        },{
-            name: 'San Jose Profile',
-            lastAccessed: 19
-        },{
-            name: 'San Jose Profile',
-            lastAccessed: 19
-        },{
-            name: 'San Jose Profile',
-            lastAccessed: 19
-        }];    
         
-        function selectType(selectedType){
-            angular.forEach($scope.types, function(type){
-                type.selected = false;
-            });
-            selectedType.selected = true;
-        }
-
-        function getSelectedCount(type) {
-            var selectedCount = 0;
-            angular.forEach(type.options, function(option){
-                if (option.selected) {
-                    selectedCount++;
-                }
-            });
-            return selectedCount == 0 ? 'None Selected' : selectedCount;
-        }
-        
-        function getTypes(callback) {
+         function getTypes(callback) {
             callback([{
                     id: 'district',
                     caption: 'District',
@@ -220,29 +180,6 @@ app.controller('cbs.home.controller', function($scope,$location) {
             }])
         }
 
-        function fetchOptions(callback, index) {
-            index = index || 0 ;
-            if ($scope.types == null || $scope.types.length <= index) {
-                callback();
-                return;
-            }
-
-            var type = $scope.types[index];
-
-            if (type.dataFunction == null || type.dataFunction == ''){
-                fetchOptions(callback, index + 1);
-                return;
-            }
-
-            var afterFetchOptions = function(options) {
-                type.options = options || [];
-
-                fetchOptions(callback, index + 1);
-                return;
-            }
-
-            eval(type.dataFunction + '(afterFetchOptions)');
-        }
         function getGroups(callback){
             callback([{
                 'id':'g1',
@@ -323,6 +260,92 @@ app.controller('cbs.home.controller', function($scope,$location) {
                 'selected':true
             }]);
         }
+
+        $scope.links = [{
+            'id':'geo-criteria',
+            'img':'/images/psea-assets/geo/geo.png',
+            'imgSelected':'/images/psea-assets/geo-selected/geo-selected.png',
+            'caption':'Geo Criteria',
+            'selected':true
+        },{
+            'id':'quick-pick-criteria',
+            'img':'/images/psea-assets/quick/quick.png',
+            'imgSelected':'/images/psea-assets/quick-selected/shape.png',
+            'caption':'Quick Pick',
+            'selected':false
+        },{
+            'id':'range-criteria',
+            'img':'/images/psea-assets/range/range.png',
+            'imgSelected':'/images/psea-assets/range-selected/range-selected.png',
+            'caption':'Range Criteria',
+            'selected':false
+        },{
+            'id':'check-criteria',
+            'img':'/images/psea-assets/check/check.png',
+            'imgSelected':'/images/psea-assets/check-selected/shape.png',
+            'caption':'Check Criteria',
+            'selected':false
+        }];
+
+        $scope.views=[{
+            'id':'geo-criteria',
+            'url':'/views/CBS/profiles/details/i_GeoCriteriaView',
+            'selected':true
+        },{
+            'id':'quick-pick-criteria',
+            'url':'/views/CBS/profiles/details/i_QuickTypesView',
+            'selected':false
+        },{
+            'id':'range-criteria',
+            'url':'/views/CBS/profiles/details/i_RangeCriteriaView',
+            'selected':false
+        },{
+            'id':'check-criteria',
+            'url':'/views/CBS/profiles/details/i_GeoCriteriaView',
+            'selected':false
+        }];
+        
+        function selectType(selectedType){
+            angular.forEach($scope.types, function(type){
+                type.selected = false;
+            });
+            selectedType.selected = true;
+        }
+
+        function getSelectedCount(type) {
+            var selectedCount = 0;
+            angular.forEach(type.options, function(option){
+                if (option.selected) {
+                    selectedCount++;
+                }
+            });
+            return selectedCount == 0 ? 'None Selected' : selectedCount;
+        }
+        
+        function fetchOptions(callback, index) {
+            index = index || 0 ;
+            if ($scope.types == null || $scope.types.length <= index) {
+                callback();
+                return;
+            }
+
+            var type = $scope.types[index];
+
+            if (type.dataFunction == null || type.dataFunction == ''){
+                fetchOptions(callback, index + 1);
+                return;
+            }
+
+            var afterFetchOptions = function(options) {
+                type.options = options || [];
+
+                fetchOptions(callback, index + 1);
+                return;
+            }
+
+            eval(type.dataFunction + '(afterFetchOptions)');
+        }
+        
 
         function init(){
             getTypes(function(types){
@@ -465,55 +488,6 @@ app.controller('cbs.home.controller', function($scope,$location) {
                 }
             });
         }
-
-        $scope.links = [{
-            'id':'geo-criteria',
-            'img':'/images/psea-assets/geo-selected/geo-selected.png',
-            'caption':'Geo Criteria',
-            'selected':false
-        },{
-            'id':'quick-pick-criteria',
-            'img':'/images/psea-assets/quick/quick.png',
-            'imgSelected':'/images/psea-assets/quick-selected/shape.png',
-            'caption':'Quick Pick',
-            'selected':false
-        },{
-            'id':'range-criteria',
-            'img':'/images/psea-assets/range/range.png',
-            'imgSelected':'/images/psea-assets/range-selected/range-selected.png',
-            'caption':'Range Criteria',
-            'selected':false
-        },{
-            'id':'check-criteria',
-            'img':'/images/psea-assets/check/check.png',
-            'imgSelected':'/images/psea-assets/check-selected/shape.png',
-            'caption':'Check Criteria',
-            'selected':false
-        }];
-
-        $scope.views=[{
-            'id':'profile-listing',
-            'url':'/views/CBS/profile/i_ProfileListingView',
-            'selected':true
-        },{
-            'id':'geo-criteria',
-            'url':'/views/CBS/profile/i_GeoCriteriaView',
-            'selected':false
-        },{
-            'id':'quick-pick-criteria',
-            'url':'/views/CBS/profile/i_QuickTypesView',
-            'selected':false
-        },{
-            'id':'range-criteria',
-            'url':'/views/CBS/profile/i_RangeCriteriaView',
-            'selected':false
-        },{
-            'id':'check-criteria',
-            'url':'/views/CBS/profile/i_ProfileListingView',
-            'selected':false
-        }];
-
-        
 
         $scope.setLayout = function(link){
            var viewMap = {};
