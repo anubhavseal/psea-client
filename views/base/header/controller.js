@@ -60,10 +60,10 @@ angular.module('base')
 		}
 		
 		function logOut() {
-			$dataService.post('userActivities', {'activityType': 'logout'}, function(response){
+			//$dataService.post('userActivities', {'activityType': 'logout'}, function(response){
 				$accessService.clearSession();
 				$location.path($constants.LoginPage);
-			});
+			//});
 		}
 		
 		function signIn() {
