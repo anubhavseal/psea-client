@@ -10,6 +10,8 @@ app.controller('cbs.profileDetails.controller', function($scope) {
     $scope.updateGeoCriteriaCount = updateGeoCriteriaCount;
     $scope.updateQuickPickCount = updateQuickPickCount;
     $scope.updateRangeCriteriaCount = updateRangeCriteriaCount;
+    $scope.selectCriteria = selectCriteria;
+    $scope.currentSelectedCriteria = 'geo-criteria';
         
          function getTypes(callback) {
             callback([{
@@ -465,6 +467,25 @@ app.controller('cbs.profileDetails.controller', function($scope) {
                 })
                 console.log(group.attributeCount);
             })
+        }
+
+        $scope.master = [{
+            'id':'geo-criteria',
+            'selected':true
+        },{
+            'id':'quick-pick',
+            'selected':false
+        },{
+            'id':'range-criteria',
+            'selected':false
+        }];
+
+        function selectCriteria(criteria){
+            angular.forEach($scope.master,function(criteria){
+                criteria.selected = false;
+            })
+             criteria.selected = true;
+             $scope.currentSelectedCriteria = criteria.id;
         }
 
         $scope.setLayout = function(link){
