@@ -141,6 +141,83 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             ]);
         }
 
+        function fetchOptions(callback, index) {
+            index = index || 0 ;
+            if ($scope.types == null || $scope.types.length <= index) {
+                callback();
+                return;
+            }
+
+            var type = $scope.types[index];
+
+            if (type.dataFunction == null || type.dataFunction == ''){
+                fetchOptions(callback, index + 1);
+                return;
+            }
+
+            var afterFetchOptions = function(options) {
+                type.options = options || [];
+
+                fetchOptions(callback, index + 1);
+                return;
+            }
+
+            eval(type.dataFunction + '(afterFetchOptions)');
+        }
+
+        function populateAccess(){
+            getAccess(function(permissions){
+                permissions = permissions || [];
+
+                var optionMap = {};
+                var typeMap = {};
+
+                angular.forEach($scope.types, function(type){
+                    typeMap[type.id] = type;
+                    type.group1Count = 0;
+                    type.group2Count = 0;
+                    angular.forEach(type.options, function(option){
+                        optionMap[type.id + '$' + option.id] = option;
+                        option.group = 2;
+                        option.selected = false;
+                        type.group2Count++;
+                    });
+                });
+
+                angular.forEach(permissions, function(permission){
+                    var option = optionMap[permission.type + '$' + permission.id];
+                    if (option != null && permission.access === true) {
+                        option.group = 1;
+                        option.selected = true;
+                        var type = typeMap[permission.type];
+                        type.group1Count++;
+                        type.group2Count--;
+                    }
+                });
+
+                if ($scope.types != null && $scope.types.length > 0) {
+                    $scope.selectType($scope.types[0]);
+                }
+            });
+        }
+
+        function selectType(selectedType){
+            angular.forEach($scope.types, function(type){
+                type.selected = false;
+            });
+            selectedType.selected = true;
+        }
+
+        function getSelectedCount(type) {
+            var selectedCount = 0;
+            angular.forEach(type.options, function(option){
+                if (option.selected) {
+                    selectedCount++;
+                }
+            });
+            return selectedCount == 0 ? 'None Selected' : selectedCount;
+        }
+
         function getQuickPickTypes(callback){
             callback([{
                 'id':1,
@@ -179,6 +256,24 @@ app.controller('cbs.profileDetails.controller', function($scope) {
                 'access':false
             }])
         }
+
+        function populateQuickPickTypeAccess(){
+            getQuickPickTypesAccess(function(permissions){
+                permissions = permissions || [];
+                var quickPickTypeMap = {};
+                angular.forEach($scope.quickPickTypes,function(type){
+                    quickPickTypeMap[type.id] = type;
+                    type.selected = false;
+                })
+                angular.forEach(permissions,function(permission){
+                   var quickPickType = quickPickTypeMap[permission.id];
+                   if(quickPickType != null && permission.access === true){
+                        quickPickType.selected = true;
+                   }
+                })
+            })
+        }
+
 
         function getGroups(callback){
             callback([{
@@ -261,112 +356,6 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             }]);
         }
 
-        $scope.links = [{
-            'id':'geo-criteria',
-            'img':'/images/psea-assets/geo/geo.png',
-            'imgSelected':'/images/psea-assets/geo-selected/geo-selected.png',
-            'caption':'Geo Criteria',
-            'selected':true
-        },{
-            'id':'quick-pick-criteria',
-            'img':'/images/psea-assets/quick/quick.png',
-            'imgSelected':'/images/psea-assets/quick-selected/shape.png',
-            'caption':'Quick Pick',
-            'selected':false
-        },{
-            'id':'range-criteria',
-            'img':'/images/psea-assets/range/range.png',
-            'imgSelected':'/images/psea-assets/range-selected/range-selected.png',
-            'caption':'Range Criteria',
-            'selected':false
-        },{
-            'id':'check-criteria',
-            'img':'/images/psea-assets/check/check.png',
-            'imgSelected':'/images/psea-assets/check-selected/shape.png',
-            'caption':'Check Criteria',
-            'selected':false
-        }];
-
-        $scope.views=[{
-            'id':'geo-criteria',
-            'url':'/views/CBS/profiles/details/i_GeoCriteriaView',
-            'selected':true
-        },{
-            'id':'quick-pick-criteria',
-            'url':'/views/CBS/profiles/details/i_QuickTypesView',
-            'selected':false
-        },{
-            'id':'range-criteria',
-            'url':'/views/CBS/profiles/details/i_RangeCriteriaView',
-            'selected':false
-        },{
-            'id':'check-criteria',
-            'url':'/views/CBS/profiles/details/i_GeoCriteriaView',
-            'selected':false
-        }];
-        
-        function selectType(selectedType){
-            angular.forEach($scope.types, function(type){
-                type.selected = false;
-            });
-            selectedType.selected = true;
-        }
-
-        function getSelectedCount(type) {
-            var selectedCount = 0;
-            angular.forEach(type.options, function(option){
-                if (option.selected) {
-                    selectedCount++;
-                }
-            });
-            return selectedCount == 0 ? 'None Selected' : selectedCount;
-        }
-        
-        function fetchOptions(callback, index) {
-            index = index || 0 ;
-            if ($scope.types == null || $scope.types.length <= index) {
-                callback();
-                return;
-            }
-
-            var type = $scope.types[index];
-
-            if (type.dataFunction == null || type.dataFunction == ''){
-                fetchOptions(callback, index + 1);
-                return;
-            }
-
-            var afterFetchOptions = function(options) {
-                type.options = options || [];
-
-                fetchOptions(callback, index + 1);
-                return;
-            }
-
-            eval(type.dataFunction + '(afterFetchOptions)');
-        }
-        
-
-        function init(){
-            getTypes(function(types){
-                $scope.types = types;
-                fetchOptions(populateAccess);
-            });
-
-            getQuickPickTypes(function(quickPickTypes){
-                $scope.quickPickTypes = quickPickTypes;
-                if($scope.quickPickTypes){
-                    populateQuickPickTypeAccess();
-                }
-            });
-
-            getGroups(function(groups){
-                $scope.groups = groups;
-                fetchAttributes(PercentageRangeAndAccess);
-                console.log($scope.groups);
-            });
-        }
-
         function fetchAttributes(callback){
             var groupMap = {};
             var attributeMap = {};
@@ -436,59 +425,6 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             attribute.minValue = attribute.value - (attribute.minimumPercentage*attribute.value)/100 ;
         }
 
-        function populateQuickPickTypeAccess(){
-            getQuickPickTypesAccess(function(permissions){
-                permissions = permissions || [];
-                var quickPickTypeMap = {};
-                angular.forEach($scope.quickPickTypes,function(type){
-                    quickPickTypeMap[type.id] = type;
-                    type.selected = false;
-                })
-                angular.forEach(permissions,function(permission){
-                   var quickPickType = quickPickTypeMap[permission.id];
-                   if(quickPickType != null && permission.access === true){
-                        quickPickType.selected = true;
-                   }
-                })
-            })
-        }
-
-        function populateAccess(){
-            getAccess(function(permissions){
-                permissions = permissions || [];
-
-                var optionMap = {};
-                var typeMap = {};
-
-                angular.forEach($scope.types, function(type){
-                    typeMap[type.id] = type;
-                    type.group1Count = 0;
-                    type.group2Count = 0;
-                    angular.forEach(type.options, function(option){
-                        optionMap[type.id + '$' + option.id] = option;
-                        option.group = 2;
-                        option.selected = false;
-                        type.group2Count++;
-                    });
-                });
-
-                angular.forEach(permissions, function(permission){
-                    var option = optionMap[permission.type + '$' + permission.id];
-                    if (option != null && permission.access === true) {
-                        option.group = 1;
-                        option.selected = true;
-                        var type = typeMap[permission.type];
-                        type.group1Count++;
-                        type.group2Count--;
-                    }
-                });
-
-                if ($scope.types != null && $scope.types.length > 0) {
-                    $scope.selectType($scope.types[0]);
-                }
-            });
-        }
-
         $scope.setLayout = function(link){
            var viewMap = {};
            angular.forEach($scope.views,function(view){
@@ -502,6 +438,71 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             viewMap[link.id].selected = true;
             
         }
+
+        $scope.links = [{
+            'id':'geo-criteria',
+            'img':'/images/psea-assets/geo/geo.png',
+            'imgSelected':'/images/psea-assets/geo-selected/geo-selected.png',
+            'caption':'Geo Criteria',
+            'selected':true
+        },{
+            'id':'quick-pick-criteria',
+            'img':'/images/psea-assets/quick/quick.png',
+            'imgSelected':'/images/psea-assets/quick-selected/shape.png',
+            'caption':'Quick Pick',
+            'selected':false
+        },{
+            'id':'range-criteria',
+            'img':'/images/psea-assets/range/range.png',
+            'imgSelected':'/images/psea-assets/range-selected/range-selected.png',
+            'caption':'Range Criteria',
+            'selected':false
+        },{
+            'id':'check-criteria',
+            'img':'/images/psea-assets/check/check.png',
+            'imgSelected':'/images/psea-assets/check-selected/shape.png',
+            'caption':'Check Criteria',
+            'selected':false
+        }];
+
+        $scope.views=[{
+            'id':'geo-criteria',
+            'url':'/views/CBS/profiles/details/i_GeoCriteriaView',
+            'selected':true
+        },{
+            'id':'quick-pick-criteria',
+            'url':'/views/CBS/profiles/details/i_QuickTypesView',
+            'selected':false
+        },{
+            'id':'range-criteria',
+            'url':'/views/CBS/profiles/details/i_RangeCriteriaView',
+            'selected':false
+        },{
+            'id':'check-criteria',
+            'url':'/views/CBS/profiles/details/i_GeoCriteriaView',
+            'selected':false
+        }];
+
+        function init(){
+            getTypes(function(types){
+                $scope.types = types;
+                fetchOptions(populateAccess);
+            });
+
+            getQuickPickTypes(function(quickPickTypes){
+                $scope.quickPickTypes = quickPickTypes;
+                if($scope.quickPickTypes){
+                    populateQuickPickTypeAccess();
+                }
+            });
+
+            getGroups(function(groups){
+                $scope.groups = groups;
+                fetchAttributes(PercentageRangeAndAccess);
+                console.log($scope.groups);
+            });
+        }        
+
         init();
     }
 );
