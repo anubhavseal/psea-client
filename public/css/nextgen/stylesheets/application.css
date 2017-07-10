@@ -9585,7 +9585,7 @@ canvas {
 }
 
 .font-medium, label, .btn-group-justified.btn-tabs .btn, .label, .panel-heading, .modal-title, .media-empty .media-empty-label, .drive-creating-inner .progress-bar-help {
-  font-family: 'sf_ui_textmedium' !important;
+  font-family: 'sf_ui_textmedium';
   font-weight: normal;
 }
 

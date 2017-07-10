@@ -16,10 +16,10 @@
                     .panel-body
                         .row.checked-container(ng-show='type.group1Count > 0' style='padding:10px;{{type.group1Count > 0 && type.group2Count > 0 ? "border-bottom:1px solid lightgray" : ""}}')
                                 .col-md-4(ng-repeat="option in type.options | filter: { group: 1, caption: searchData }" )
-                                    input(type="checkbox"  ng-model="option.selected" ng-attr-id="{{option.caption}}")
+                                    input.cbs-input-box(type="checkbox"  ng-model="option.selected" ng-attr-id="{{option.caption}}")
                                     label(for="{{option.caption}}") &nbsp;{{option.caption}}
                         .row.unchecked-container(ng-show='type.group2Count > 0' style='padding:10px;')
                                 .col-md-4(ng-repeat="option in type.options | filter: { group: 2, caption: searchData}" )
-                                    input(type="checkbox" ng-checked="option.selected" ng-model="option.selected" ng-attr-id="{{option.caption}}")
+                                    input.cbs-input-box(type="checkbox" ng-checked="option.selected" ng-model="option.selected" ng-attr-id="{{option.caption}}")
                                     label.text-muted(for="{{option.caption}}") &nbsp;{{option.caption}}
     button.btn.btn-success.btn-lg.pull-right Select Profile
