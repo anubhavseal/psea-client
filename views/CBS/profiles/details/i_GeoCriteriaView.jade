@@ -5,7 +5,7 @@
                     h4.panel-title.pull-left(style='padding-top:5px')
                         {{type.caption}}
                         label.text-muted &nbsp;({{getSelectedCount(type)}})
-                    button.btn.btn-success.pull-right(ng-show='type.selected') Update
+                    button.btn.btn-success.pull-right(ng-show='type.selected' ng-click="updateGeoCriteriaCount(type)") Update
                     .form-inline.pull-right(ng-show="type.selected")
                         .form-group.col-lg-4
                             .form-group.has-feedback

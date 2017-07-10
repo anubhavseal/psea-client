@@ -7,6 +7,9 @@ app.controller('cbs.profileDetails.controller', function($scope) {
     $scope.getSelectedAttributesCount = getSelectedAttributesCount;
     $scope.increasePercentage = increasePercentage;
     $scope.decreasePercentage = decreasePercentage;
+    $scope.updateGeoCriteriaCount = updateGeoCriteriaCount;
+    $scope.updateQuickPickCount = updateQuickPickCount;
+    $scope.updateRangeCriteriaCount = updateRangeCriteriaCount;
         
          function getTypes(callback) {
             callback([{
@@ -218,6 +221,22 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             return selectedCount == 0 ? 'None Selected' : selectedCount;
         }
 
+        function updateGeoCriteriaCount(type){
+            var selected = 0;
+            var unselected = 0;
+            angular.forEach(type.options,function(option){
+                if(option.selected === true){
+                    selected++;
+                    option.group = 1;
+                }else{
+                    unselected++;
+                    option.group =2;
+                }
+                type.group1Count = selected;
+                type.group2Count = unselected;
+            })
+        }
+
         function getQuickPickTypes(callback){
             callback([{
                 'id':1,
@@ -274,6 +293,14 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             })
         }
 
+        function updateQuickPickCount(){
+            var selected = 0;
+            angular.forEach($scope.quickPickTypes,function(quickPickType){
+                if(quickPickType.selected === true){
+                    selected++;
+                }
+            });
+        }
 
         function getGroups(callback){
             callback([{
@@ -376,10 +403,11 @@ app.controller('cbs.profileDetails.controller', function($scope) {
                 angular.forEach(attributes,function(attribute){
                     attributeMap[attribute.id] = attribute;
                     var group = groupMap[attribute.rangeID]; 
-                    group.attributes = group.attributes || [];
-                    group.attributes.push(attribute);
+                    if(group != null){
+                        group.attributes = group.attributes || [];
+                        group.attributes.push(attribute);
+                    }
                 })
-
                 callback(attributeMap);
                 return;
             });
@@ -391,9 +419,11 @@ app.controller('cbs.profileDetails.controller', function($scope) {
                 percentageRangeAndAccess = percentageRangeAndAccess || [];
                 angular.forEach(percentageRangeAndAccess,function(percentageRangeAndAccess){
                     var attribute = attributeMap[percentageRangeAndAccess.attrID];
-                    attribute.selected = percentageRangeAndAccess.selected;
-                    attribute.minValue = percentageRangeAndAccess.minValue;
-                    attribute.maxValue = percentageRangeAndAccess.maxValue;
+                    if(attribute != null){
+                        attribute.selected = percentageRangeAndAccess.selected;
+                        attribute.minValue = percentageRangeAndAccess.minValue;
+                        attribute.maxValue = percentageRangeAndAccess.maxValue;
+                    }
                 })
             })
         }
@@ -425,6 +455,18 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             attribute.minValue = attribute.value - (attribute.minimumPercentage*attribute.value)/100 ;
         }
 
+        function updateRangeCriteriaCount(){
+            angular.forEach($scope.groups,function(group){
+                group.attributeCount = 0;
+                angular.forEach(group.attributes,function(attribute){
+                    if(attribute.selected === true){
+                        group.attributeCount++;
+                    }
+                })
+                console.log(group.attributeCount);
+            })
+        }
+
         $scope.setLayout = function(link){
            var viewMap = {};
            angular.forEach($scope.views,function(view){
@@ -437,6 +479,26 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             link.selected = true;
             viewMap[link.id].selected = true;
             
+        }
+
+        function init(){
+            getTypes(function(types){
+                $scope.types = types;
+                fetchOptions(populateAccess);
+            });
+
+            getQuickPickTypes(function(quickPickTypes){
+                $scope.quickPickTypes = quickPickTypes;
+                if($scope.quickPickTypes){
+                    populateQuickPickTypeAccess();
+                }
+            });
+
+            getGroups(function(groups){
+                $scope.groups = groups;
+                fetchAttributes(PercentageRangeAndAccess);
+                console.log($scope.groups);
+            });
         }
 
         $scope.links = [{
@@ -479,29 +541,9 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             'selected':false
         },{
             'id':'check-criteria',
-            'url':'/views/CBS/profiles/details/i_GeoCriteriaView',
+            'url':'/views/CBS/profiles/details/i_CheckCriteriaView',
             'selected':false
         }];
-
-        function init(){
-            getTypes(function(types){
-                $scope.types = types;
-                fetchOptions(populateAccess);
-            });
-
-            getQuickPickTypes(function(quickPickTypes){
-                $scope.quickPickTypes = quickPickTypes;
-                if($scope.quickPickTypes){
-                    populateQuickPickTypeAccess();
-                }
-            });
-
-            getGroups(function(groups){
-                $scope.groups = groups;
-                fetchAttributes(PercentageRangeAndAccess);
-                console.log($scope.groups);
-            });
-        }        
 
         init();
     }
