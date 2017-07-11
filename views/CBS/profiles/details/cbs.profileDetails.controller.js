@@ -1,6 +1,6 @@
 var app = angular.module('cbs');
 
-app.controller('cbs.profileDetails.controller', function($scope) {
+app.controller('cbs.profileDetails.controller',function($scope) {
     $scope.getSelectedCount = getSelectedCount;
     $scope.selectType = selectType;
     $scope.selectGroup = selectGroup;
@@ -12,6 +12,7 @@ app.controller('cbs.profileDetails.controller', function($scope) {
     $scope.updateRangeCriteriaCount = updateRangeCriteriaCount;
     $scope.selectCriteria = selectCriteria;
     $scope.currentSelectedCriteria = 'Geo-Criteria';
+    $scope.valid = false;
         
          function getTypes(callback) {
             callback([{
@@ -358,28 +359,18 @@ app.controller('cbs.profileDetails.controller', function($scope) {
 
         function getPercentageRangeAndAccess(callback){
             callback([{
-                'minValue':100,
-                'maxValue':200,
                 'attrID':'a1',
                 'selected':true
             },{
-                'minValue':50,
-                'maxValue':300,
                 'attrID':'a2',
                 'selected':false
             },{
-                'minValue':500,
-                'maxValue':1000,
                 'attrID':'a3',
                 'selected':false
             },{
-                'minValue':120,
-                'maxValue':280,
                 'attrID':'a4',
                 'selected':true
             },{
-                'minValue':140,
-                'maxValue':290,
                 'attrID':'a5',
                 'selected':true
             }]);
@@ -423,8 +414,6 @@ app.controller('cbs.profileDetails.controller', function($scope) {
                     var attribute = attributeMap[percentageRangeAndAccess.attrID];
                     if(attribute != null && percentageRangeAndAccess.selected === true){
                         attribute.selected = percentageRangeAndAccess.selected;
-                        attribute.minValue = percentageRangeAndAccess.minValue;
-                        attribute.maxValue = percentageRangeAndAccess.maxValue;
                     }
                 })
             })
@@ -448,12 +437,37 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             return count;
         }
 
+        $scope.validate = function(attribute){
+            var id = attribute.id;
+            // $scope.valid = false;
+            //  if(attribute.minimumValue < attribute.value){
+            //      $scope.valid = true;
+            //  }
+            //  else{
+            //      $scope.valid = false;
+            //  }
+            // angular.element('#' + attribute.id).val('');
+            // angular.element('#' + attribute.id).focus();
+            // $notifier.error('Email is mandatory.');
+            // console.log(5);
+            //$scope.frm.id.setValidity('val',false);
+            //$scope.forms.minimumPercentageForm.$setPristine();
+            // console.log(5);
+            //$scope.myForm.$setUntouched();
+            //console.log(5);
+        }
+
+        // $scope.setFormName = function(form){
+        //     $scope.myForm = form;
+        //     console.log(form);
+        // }
+
         function increasePercentage(attribute){
-            attribute.maxValue = attribute.value + (attribute.maximumPercentage*attribute.value)/100 ;
+            attribute.maximumValue = attribute.value + (attribute.maximumPercentage*attribute.value)/100 ;
         }
 
         function decreasePercentage(attribute){
-            attribute.minValue = attribute.value - (attribute.minimumPercentage*attribute.value)/100 ;
+            attribute.minimumValue = attribute.value - (attribute.minimumPercentage*attribute.value)/100 ;
         }
 
         function updateRangeCriteriaCount(){
@@ -567,3 +581,22 @@ app.controller('cbs.profileDetails.controller', function($scope) {
         init();
     }
 );
+
+
+// app.directive('validate',function(){
+//     return{
+//         require:'ngModel',
+//         link:function(scope,element,attr,mCtrl){
+//             var input = attr.text;
+//             console.log(input);
+//             function custom(input){
+//                 if(input < attribute.value){
+//                     mCtrl.$setValidity('val',false);
+//                 }
+//                 console.log(input);
+//                 return input;
+//             }
+//             mCtrl.$parsers.push(custom);
+//         }
+//     }
+// })

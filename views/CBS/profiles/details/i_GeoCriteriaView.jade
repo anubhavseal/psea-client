@@ -7,7 +7,7 @@
                         label.text-muted &nbsp;({{getSelectedCount(type)}})
                     button.btn.btn-success.pull-right(ng-show='type.selected' ng-click="updateGeoCriteriaCount(type)") Update
                     .form-inline.pull-right(ng-show="type.selected")
-                        .form-group.col-lg-4
+                        .form-group.col-md-4
                             .form-group.has-feedback
                                 input.form-control.search-box(type="text" id="search" ng-model="searchData" placeholder="{{type.id|uppercase}}" )
                                 span.glyphicon.glyphicon-search.form-control-feedback

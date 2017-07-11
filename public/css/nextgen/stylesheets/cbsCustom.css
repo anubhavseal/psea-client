@@ -270,3 +270,13 @@ input[type="checkbox"]:checked + label:before {
 #criteria-nav-pills{
 	margin-bottom: 20px;
 }
+
+.ng-invalid{
+	border-radius: 3px;
+	border: 1px solid red;
+}
+
+.error-text{
+	font-size: 14px;
+}
+
