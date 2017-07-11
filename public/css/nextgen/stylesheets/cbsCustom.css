@@ -265,3 +265,8 @@ input[type="checkbox"]:checked + label:before {
 .range-criteria-percentage-input-container{
 	padding: 10px;
 }
+
+
+#criteria-nav-pills{
+	margin-bottom: 20px;
+}

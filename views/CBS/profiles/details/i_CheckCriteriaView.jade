@@ -1,10 +1,10 @@
 .col-md-8
     .row
         .col-md-12
-            ul.nav.nav-pills
+            ul.nav.nav-pills#criteria-nav-pills
                 li(role="presentation" ng-repeat="criteria in master" ng-class="{'active':criteria.selected}" ng-click="selectCriteria(criteria)") 
                     a(href="" style="display:inline") {{criteria.id}}
-    .row#geo-criteria-dashboard(ng-if="currentSelectedCriteria === 'geo-criteria'")
+    .row#geo-criteria-dashboard(ng-if="currentSelectedCriteria === 'Geo-Criteria'")
         .col-md-12
             .panel.panel-default(ng-repeat="type in types" ng-if="type.group1Count > 0")
                 .panel-heading
@@ -13,12 +13,16 @@
                     .row
                         .col-md-4(ng-repeat="option in type.options|filter: {selected : true}")
                             span {{option.caption}}
-    .row#quick-pick-dashboard(ng-if="currentSelectedCriteria === 'quick-pick'")
+    .row#quick-pick-dashboard(ng-if="currentSelectedCriteria === 'Quick-Pick'")
         .col-md-12
-            ul.list-group
-                .col-md-4(ng-repeat="quickPickType in quickPickTypes" ng-if="quickPickType.selected")
-                    li.list-group-item {{quickPickType.caption}}
-    .row#range-criteria-dashboard(ng-if="currentSelectedCriteria === 'range-criteria'")
+            .panel.panel-default
+                .panel-heading
+                    .panel-title Quick-Pick
+                .panel-body
+                    .row
+                        .col-md-4(ng-repeat = "quickPickType in quickPickTypes" ng-if="quickPickType.selected")
+                            span {{quickPickType.caption}}
+    .row#range-criteria-dashboard(ng-if="currentSelectedCriteria === 'Range-Criteria'")
         .col-md-12
             .panel.panel-default(ng-repeat="group in groups" ng-if="group.selectedAttributeCount > 0")
                 .panel-heading

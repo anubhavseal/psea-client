@@ -11,7 +11,7 @@ app.controller('cbs.profileDetails.controller', function($scope) {
     $scope.updateQuickPickCount = updateQuickPickCount;
     $scope.updateRangeCriteriaCount = updateRangeCriteriaCount;
     $scope.selectCriteria = selectCriteria;
-    $scope.currentSelectedCriteria = 'geo-criteria';
+    $scope.currentSelectedCriteria = 'Geo-Criteria';
         
          function getTypes(callback) {
             callback([{
@@ -421,7 +421,7 @@ app.controller('cbs.profileDetails.controller', function($scope) {
                 percentageRangeAndAccess = percentageRangeAndAccess || [];
                 angular.forEach(percentageRangeAndAccess,function(percentageRangeAndAccess){
                     var attribute = attributeMap[percentageRangeAndAccess.attrID];
-                    if(attribute != null){
+                    if(attribute != null && percentageRangeAndAccess.selected === true){
                         attribute.selected = percentageRangeAndAccess.selected;
                         attribute.minValue = percentageRangeAndAccess.minValue;
                         attribute.maxValue = percentageRangeAndAccess.maxValue;
@@ -436,7 +436,6 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             })
             group.selected = true;
             $scope.selectedGroup = group;
-            console.log($scope.selectedGroup);
         }
 
         function getSelectedAttributesCount(attributes){
@@ -465,18 +464,17 @@ app.controller('cbs.profileDetails.controller', function($scope) {
                         group.selectedAttributeCount++;
                     }
                 })
-                console.log(group.caption + ':' + group.selectedAttributeCount);
             })
         }
 
         $scope.master = [{
-            'id':'geo-criteria',
+            'id':'Geo-Criteria',
             'selected':true
         },{
-            'id':'quick-pick',
+            'id':'Quick-Pick',
             'selected':false
         },{
-            'id':'range-criteria',
+            'id':'Range-Criteria',
             'selected':false
         }];
 
@@ -529,7 +527,7 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             'caption':'Geo Criteria',
             'selected':true
         },{
-            'id':'quick-pick-criteria',
+            'id':'quick-pick',
             'img':'/images/psea-assets/quick/quick.png',
             'imgSelected':'/images/psea-assets/quick-selected/shape.png',
             'caption':'Quick Pick',
@@ -553,7 +551,7 @@ app.controller('cbs.profileDetails.controller', function($scope) {
             'url':'/views/CBS/profiles/details/i_GeoCriteriaView',
             'selected':true
         },{
-            'id':'quick-pick-criteria',
+            'id':'quick-pick',
             'url':'/views/CBS/profiles/details/i_QuickTypesView',
             'selected':false
         },{
