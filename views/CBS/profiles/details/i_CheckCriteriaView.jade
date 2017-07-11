@@ -18,5 +18,22 @@
             ul.list-group
                 .col-md-4(ng-repeat="quickPickType in quickPickTypes" ng-if="quickPickType.selected")
                     li.list-group-item {{quickPickType.caption}}
-        
-    
+    .row#range-criteria-dashboard(ng-if="currentSelectedCriteria === 'range-criteria'")
+        .col-md-12
+            .panel.panel-default(ng-repeat="group in groups" ng-if="group.selectedAttributeCount > 0")
+                .panel-heading
+                    .panel-title {{group.caption}}
+                .panel-body
+                    .row(ng-repeat="attribute in group.attributes")
+                        .col-md-4
+                            span {{attribute.caption}}
+                        .col-md-2
+                            span {{attribute.value}}
+                        .col-md-1
+                            span {{attribute.minimumPercentage}}
+                        .col-md-2
+                            span {{attribute.minValue}}
+                        .col-md-1
+                            span {{attribute.maximumPercentage}}
+                        .col-md-2
+                            span {{attribute.maxValue}}

@@ -459,13 +459,13 @@ app.controller('cbs.profileDetails.controller', function($scope) {
 
         function updateRangeCriteriaCount(){
             angular.forEach($scope.groups,function(group){
-                group.attributeCount = 0;
+                group.selectedAttributeCount = 0;
                 angular.forEach(group.attributes,function(attribute){
                     if(attribute.selected === true){
-                        group.attributeCount++;
+                        group.selectedAttributeCount++;
                     }
                 })
-                console.log(group.attributeCount);
+                console.log(group.caption + ':' + group.selectedAttributeCount);
             })
         }
 
