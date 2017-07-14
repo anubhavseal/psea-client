@@ -1,7 +1,7 @@
 var app = angular.module('cbs');
 
-app.controller('cbs.profileDetails.controller',['$scope','$dataService','$routeParams',
-function($scope,$dataService,$routeParams) {
+app.controller('cbs.profileDetails.controller',['$scope','$dataService','$routeParams','cbsCache',
+function($scope,$dataService,$routeParams,$cbsCache) {
     $scope.getSelectedCount = getSelectedCount;
     $scope.selectType = selectType;
     $scope.selectGroup = selectGroup;
@@ -145,20 +145,37 @@ function($scope,$dataService,$routeParams) {
         }
 
         function populateQuickPickTypeAccess(){
-            getQuickPickTypesAccess(function(permissions){
-                permissions = permissions || [];
-                var quickPickTypeMap = {};
-                angular.forEach($scope.quickPickTypes,function(type){
-                    quickPickTypeMap[type.id] = type;
-                    type.selected = false;
-                })
-                angular.forEach(permissions,function(permission){
-                   var quickPickType = quickPickTypeMap[permission.id];
-                   if(quickPickType != null && permission.access === true){
-                        quickPickType.selected = true;
-                   }
-                })
+
+            $dataService.get('CBSprofiles/' + $scope.cbsProfileId,function(profile){
+                console.log(profile);
+                angular.forEach($scope.quickPickTypes,function(quickPickType){
+                    if(quickPickType.hierarchyType === 521){
+                        quickPickType.selected = profile[0].quickCluster;
+                    }else if(quickPickType.hierarchyType === 522){
+                        quickPickType.selected = profile[0].quickRegion;
+                    }else if(quickPickType.hierarchyType === 523){
+                        quickPickType.selected = profile[0].quickIU;
+                    }else{
+                        quickPickType.selected = profile[0].quickCounty;
+                    }
+                });
+                console.log($scope.quickPickTypes);
             })
+
+            // getQuickPickTypesAccess(function(permissions){
+            //     permissions = permissions || [];
+            //     var quickPickTypeMap = {};
+            //     angular.forEach($scope.quickPickTypes,function(type){
+            //         quickPickTypeMap[type.id] = type;
+            //         type.selected = false;
+            //     })
+            //     angular.forEach(permissions,function(permission){
+            //        var quickPickType = quickPickTypeMap[permission.id];
+            //        if(quickPickType != null && permission.access === true){
+            //             quickPickType.selected = true;
+            //        }
+            //     })
+            // })
         }
 
         function updateQuickPickCount(){
@@ -378,9 +395,10 @@ function($scope,$dataService,$routeParams) {
 
         function init(){
 
-            //get the routeParameter i.e profile id
-            $scope.cbsProfileId = $routeParams.id;
-
+            //get the routeParameter i.e profile id and home district id
+            $scope.cbsProfileId = $routeParams.profileId;
+            $scope.homeHierarchyId = $routeParams.homeDistrictId;
+            console.log($scope.homeHierarchyId);
             $dataService.get('lookups?lookupType=HierarchyTypes',function(hierarchyTypes){
                 $scope.types = hierarchyTypes;
                 $dataService.get('hierarchy',function(hierarchy){
@@ -390,25 +408,51 @@ function($scope,$dataService,$routeParams) {
                 });
             });
 
-            $dataService.get('lookups?lookupType=RangeGroups',function(rangeGroups){
-                $scope.groups = rangeGroups;
-                if($scope.groups != null){
-                    fetchAttributes(criteriaRange);
-                }
-            });
+            // $dataService.get('lookups?lookupType=RangeGroups',function(rangeGroups){
+            //     $scope.groups = rangeGroups;
+            //     if($scope.groups != null){
+            //         fetchAttributes(criteriaRange);
+            //     }
+            // });
             
-            getQuickPickTypes(function(quickPickTypes){
-                $scope.quickPickTypes = quickPickTypes;
-                if($scope.quickPickTypes){
-                    populateQuickPickTypeAccess();
-                }
-            });
+            
+            $dataService.get('CBSprofiles/' + $scope.homeHierarchyId + '/homedata',
+            function(homeData){
+                console.log(homeData);
+                var districtId = homeData[0].districtId;
+                var countyId = homeData[0].countyId;
+                var iuId = homeData[0].iuId;
+                var regionId = homeData[0].regionId;
+                var clusterId = homeData[0].clusterId;
+
+                var str = countyId+','+iuId+','+regionId+','+clusterId;
+                console.log('str',str);
+
+                $dataService.get('hierarchy?hierarchyId.in=' + 
+                str,function(data){
+                    console.log(50);
+                    
+                    if(data != null){
+                        $scope.quickPickTypes = data;
+                        populateQuickPickTypeAccess();
+                    }
+                    
+                })
+            })
+            
+            // getQuickPickTypes(function(quickPickTypes){
+            //     $scope.quickPickTypes = quickPickTypes;
+            //     if($scope.quickPickTypes){
+            //         populateQuickPickTypeAccess();
+            //     }
+            // });
 
             getGroups(function(groups){
                 $scope.groups = groups;
                 fetchAttributes(PercentageRangeAndAccess);
                 //console.log($scope.groups);
             });            
+            console.log($cbsCache.get('homeDistrictId'));
 }
 
         $scope.links = [{
@@ -458,6 +502,8 @@ function($scope,$dataService,$routeParams) {
         init();
     }
 ]);
+
+
 
 
 

@@ -9,7 +9,7 @@
                         .col-md-4(ng-repeat='profile in profiles.slice(1,profiles.length)')
                             .panel.panel-default.profile
                                 .panel-heading.profile-heading 
-                                    a(href="/details/{{profile.cbSprofileId}}"){{profile.cbSprofileName}}
+                                    a(href="/details/{{profile.cbSprofileId}}/{{profile.homeHierarchyId}}" ng-click="changeProfile(profile)"){{profile.cbSprofileName}}
                                 .panel-body.profile-body
                                     span 
                                         em Last accessed some days back

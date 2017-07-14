@@ -2,6 +2,6 @@
     .row
         ul.list-group
             li.col-md-4.list-group-item.quick-types-list(ng-repeat="quickPickType in quickPickTypes")
-                input.cbs-input-box(type="checkbox" id="{{quickPickType.caption}}" ng-checked="{{quickPickType.selected}}" ng-model="quickPickType.selected")
-                label(for="{{quickPickType.caption}}" style="font-family:'Lato', sans-serif !important;") &nbsp; {{quickPickType.caption}}
+                input.cbs-input-box(type="checkbox" id="{{quickPickType.hierarchyName}}" ng-checked="{{quickPickType.selected}}" ng-model="quickPickType.selected")
+                label(for="{{quickPickType.hierarchyName}}" style="font-family:'Lato', sans-serif !important;") &nbsp; {{quickPickType.hierarchyName}}
     button.btn.btn-success.btn-lg.pull-right#quick-pick-type(ng-click="updateQuickPickCount()") Apply

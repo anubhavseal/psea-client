@@ -3,8 +3,11 @@ var app = angular.module('cbs');
 app.controller('cbs.profileLists.controller', ['$scope',
 '$dataService',
 '$accessService',
-function($scope,$dataService,$accessService) {
+'cbsCache',
+function($scope,$dataService,$accessService,$cbsCache) {
     $scope.createProfile = createProfile;
+    $scope.changeProfile = changeProfile;
+
         function createProfile(){
             var profile = {
                 "cbSprofileName": $scope.profileName,
@@ -16,6 +19,12 @@ function($scope,$dataService,$accessService) {
 
             })
         }
+
+        function changeProfile(profile){
+            $cbsCache.put('homeDistrictId',profile.homeHierarchyId);
+            $scope.recentProfile = profile;
+        }
+
         function init(){
 
             //get current logged in user
@@ -41,3 +50,7 @@ function($scope,$dataService,$accessService) {
 
         init();
 }]);
+
+app.factory('cbsCache',function($cacheFactory){
+    return $cacheFactory('cbsCache');
+})
