@@ -13,27 +13,27 @@
                                 .panel-body.profile-body
                                     span 
                                         em Last accessed some days back
-                        button.btn.btn-success.btn-lg.pull-right(type="button" data-toggle='modal', data-target='#createProfile') Create New Profile
-                        #createProfile.modal.fade(role='dialog' tabindex="-1")
-                            .modal-dialog
-                                .modal-content
-                                    .modal-header
-                                        button.close(type='button', data-dismiss='modal')&times;
-                                        h4.modal-title Modal Header
-                                            Create New Profile
-                                    .modal-body
-                                        form(name="createProfile")
-                                            .form-group
-                                                label(for="profileName") Profile Name
-                                                input.form-control(type="text" id="profileName" ng-model="profileName" placeholder="Profile Name")
-                                            .form-group
-                                                label(for="district") Select Home District
-                                                select.form-control(id="district" ng-model="homeDistrict" ng-options="district for district in districts")
-                                            .form-group
-                                                label.radio-inline EA
-                                                    input(type="radio" name="w" ng-model="eaespFlag" ng-value="false" ng-checked="true") 
-                                                label.radio-inline ESP
-                                                    input(type="radio" name="w" ng-model="eaespFlag" ng-value="true") 
-                                    .modal-footer
-                                        button.btn.btn-default(type='submit', data-dismiss='modal' ng-click="createProfile()") Create Profile
-                        
+                button.btn.btn-success.btn-lg.pull-right(type="button" data-toggle='modal', data-target='#createProfile') Create New Profile
+                #createProfile.modal.fade(role='dialog' tabindex="-1")
+                    .modal-dialog
+                        .modal-content
+                            .modal-header
+                                button.close(type='button', data-dismiss='modal')&times;
+                                h4.modal-title Modal Header
+                                    Create New Profile
+                            .modal-body
+                                form(name="createProfile")
+                                    .form-group
+                                        label(for="profileName") Profile Name
+                                        input.form-control(type="text" id="profileName" ng-model="profileName" placeholder="Profile Name")
+                                    .form-group
+                                        label(for="district") Select Home District
+                                        select.form-control(id="district" ng-model="homeDistrict" ng-options="district for district in districts")
+                                    .form-group
+                                        label.radio-inline EA
+                                            input(type="radio" name="w" ng-model="eaespFlag" ng-value="false" ng-checked="true") 
+                                        label.radio-inline ESP
+                                            input(type="radio" name="w" ng-model="eaespFlag" ng-value="true") 
+                            .modal-footer
+                                button.btn.btn-default(type='submit', data-dismiss='modal' ng-click="createProfile()") Create Profile
+                    
