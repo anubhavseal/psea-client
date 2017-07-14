@@ -44,7 +44,7 @@ angular.module('base')
 		}
 		
 		function toggleMenu() {
-			angular.element('body').toggleClass('nav-open');
+			//angular.element('body').toggleClass('nav-open');
 		}
 		
 		function changePassword() {

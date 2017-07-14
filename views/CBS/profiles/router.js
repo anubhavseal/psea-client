@@ -1,12 +1,20 @@
 angular.module('cbs')
 .config(['$routeProvider',function($routeProvider){
     $routeProvider
+    .when('/profiles/:profileId/:homeDistrictId/criteria',{
+        templateUrl:'/views/CBS/profiles/details/view',
+        controller:'cbs.profileDetails.controller'
+    })
     .when('/profiles',{
         templateUrl:'/views/CBS/profiles/list/view',
         controller:'cbs.profileLists.controller'
     })
-    .when('/details/:profileId/:homeDistrictId',{
-        templateUrl:'/views/CBS/profiles/details/view',
-        controller:'cbs.profileDetails.controller'
+    .when('/reports',{
+        templateUrl:'/views/CBS/profiles/reports/view',
+        controller:'cbs.reports.controller'
+    })
+    .when('/report',{
+        templateUrl:'/views/CBS/profiles/report/view',
+        controller:'cbs.report.controller'
     });
 }]);

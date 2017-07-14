@@ -14,7 +14,8 @@
                 .col-md-12
             .row
                 .col-md-6(style="padding:2px;")
-                    button.btn.btn-primary.btn-lg(style="width:100%;" ng-click="populateAccess()") Analysis
+                    button.btn.btn-primary.btn-lg(style="width:100%;" ng-click="populateAccess()") 
+                        a(href="/reports" style="color:white") Analysis
                 .col-md-6(style="padding:2px;")
                     button.btn.btn-primary.btn-lg(style="width:100%;") 
-                        a(href="/details/{{recentProfile.cbSprofileId}}/{{recentProfile.homeHierarchyId}}" style="color:white") Criteria
+                        a(href="/profiles/{{recentProfile.cbSprofileId}}/{{recentProfile.homeHierarchyId}}/criteria" style="color:white") Criteria

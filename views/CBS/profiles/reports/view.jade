@@ -1,0 +1,15 @@
+.container-fluid
+    .app-container(style='padding-top:53px')
+        .row
+            .col-md-4
+                include ../shared/i_SideProfileView
+            .div#content-holder
+                .col-md-8.profile-container
+                    div(ng-repeat='report in reports')
+                        h1 {{report.reportName}}
+                        .row
+                            div(ng-repeat='innerreport in reportTabs')
+                                .panel.panel-default.profile(ng-if='innerreport.reportId==report.reportId')
+                                    .panel-heading.profile-heading 
+                                        a(href="/report"){{innerreport.tabName}}
+                            

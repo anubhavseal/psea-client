@@ -282,3 +282,8 @@ input[type="checkbox"]:checked + label:before {
 	font-size: 14px;
 }
 
+
+.powerbi-frame--dotted {
+    border: 2px dashed #cecece;
+	height: 80vh;
+}
