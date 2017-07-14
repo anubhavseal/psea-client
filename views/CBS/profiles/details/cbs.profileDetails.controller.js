@@ -1,12 +1,14 @@
 var app = angular.module('cbs');
 
-app.controller('cbs.profileDetails.controller',function($scope) {
+app.controller('cbs.profileDetails.controller',['$scope','$dataService',function($scope,$dataService) {
     $scope.getSelectedCount = getSelectedCount;
     $scope.selectType = selectType;
     $scope.selectGroup = selectGroup;
     $scope.getSelectedAttributesCount = getSelectedAttributesCount;
     $scope.increasePercentage = increasePercentage;
     $scope.decreasePercentage = decreasePercentage;
+    $scope.changeMinimumPercentage = changeMinimumPercentage;
+    $scope.changeMaximumPercentage = changeMaximumPercentage;
     $scope.updateGeoCriteriaCount = updateGeoCriteriaCount;
     $scope.updateQuickPickCount = updateQuickPickCount;
     $scope.updateRangeCriteriaCount = updateRangeCriteriaCount;
@@ -147,28 +149,53 @@ app.controller('cbs.profileDetails.controller',function($scope) {
             ]);
         }
 
-        function fetchOptions(callback, index) {
+        function fetchOptions(hierarchy, callback, index) {
             index = index || 0 ;
-            if ($scope.types == null || $scope.types.length <= index) {
+            if ($scope.types.length <= index) {
                 callback();
                 return;
             }
 
             var type = $scope.types[index];
+            type.options = [];
+            angular.forEach(hierarchy,function(data){
+                if(data.hierarchyType === type.lookupId){
+                    type.options.push(data);
+                }
+            })
+            fetchOptions(hierarchy, callback, index + 1);
+        }
 
-            if (type.dataFunction == null || type.dataFunction == ''){
-                fetchOptions(callback, index + 1);
-                return;
-            }
+        function criteriaHierarchy(){
 
-            var afterFetchOptions = function(options) {
-                type.options = options || [];
+            var optionMap = {};
+            var typeMap = {};
+            
+            $dataService.get('criteriaHierarchy',function(permissions){
+                permissions = permissions || [];
+                angular.forEach($scope.types, function(type){
+                    typeMap[type.lookupId] = type;
+                    type.group1Count = 0;
+                    type.group2Count = 0;
+                    angular.forEach(type.options, function(option){
+                        optionMap[type.lookupId + '$' + option.hierarchyId] = option;
+                        option.group = 2;
+                        option.selected = false;
+                        type.group2Count++;
+                    });
+                });
 
-                fetchOptions(callback, index + 1);
-                return;
-            }
-
-            eval(type.dataFunction + '(afterFetchOptions)');
+                angular.forEach(permissions, function(permission){
+                    var option = optionMap[permission.type + '$' + permission.id];
+                    if (option != null && permission.access === true) {
+                        option.group = 1;
+                        option.selected = true;
+                        var type = typeMap[permission.type];
+                        type.group1Count++;
+                        type.group2Count--;
+                    }
+                });
+            })
         }
 
         function populateAccess(){
@@ -379,12 +406,9 @@ app.controller('cbs.profileDetails.controller',function($scope) {
         function fetchAttributes(callback){
             var groupMap = {};
             var attributeMap = {};
-            if($scope.groups == null){
-                return;
-            }
-        
+
             angular.forEach($scope.groups,function(group){
-                groupMap[group.id] = group; 
+                groupMap[group.lookupId] = group; 
                 group.selected = false;
             });
 
@@ -437,37 +461,37 @@ app.controller('cbs.profileDetails.controller',function($scope) {
             return count;
         }
 
-        $scope.validate = function(attribute){
-            var id = attribute.id;
-            // $scope.valid = false;
-            //  if(attribute.minimumValue < attribute.value){
-            //      $scope.valid = true;
-            //  }
-            //  else{
-            //      $scope.valid = false;
-            //  }
-            // angular.element('#' + attribute.id).val('');
-            // angular.element('#' + attribute.id).focus();
-            // $notifier.error('Email is mandatory.');
-            // console.log(5);
-            //$scope.frm.id.setValidity('val',false);
-            //$scope.forms.minimumPercentageForm.$setPristine();
-            // console.log(5);
-            //$scope.myForm.$setUntouched();
-            //console.log(5);
-        }
-
-        // $scope.setFormName = function(form){
-        //     $scope.myForm = form;
-        //     console.log(form);
-        // }
-
         function increasePercentage(attribute){
-            attribute.maximumValue = attribute.value + (attribute.maximumPercentage*attribute.value)/100 ;
+            if(attribute.maximumPercentage === null){
+                attribute.maximumValue = null;
+            }else{
+                attribute.maximumValue = attribute.value + (attribute.maximumPercentage*attribute.value)/100 ;
+            }
         }
 
         function decreasePercentage(attribute){
-            attribute.minimumValue = attribute.value - (attribute.minimumPercentage*attribute.value)/100 ;
+            if(attribute.minimumPercentage === null){
+                attribute.minimumValue = null;
+            }
+            else{
+                attribute.minimumValue = attribute.value - (attribute.minimumPercentage*attribute.value)/100 ;
+            }
+        }
+
+        function changeMinimumPercentage(attribute){
+            if(attribute.minimumValue === null){
+                attribute.minimumPercentage =null;
+            }else{
+                attribute.minimumPercentage = ((attribute.value - attribute.minimumValue)/attribute.value)*100;
+            }
+        }
+
+        function changeMaximumPercentage(attribute){
+            if(attribute.maximumValue === null){
+                attribute.maximumPercentage = null;
+            }else{
+                attribute.maximumPercentage = ((attribute.maximumValue - attribute.value)/attribute.value)*100;
+            }
         }
 
         function updateRangeCriteriaCount(){
@@ -515,11 +539,24 @@ app.controller('cbs.profileDetails.controller',function($scope) {
         }
 
         function init(){
-            getTypes(function(types){
-                $scope.types = types;
-                fetchOptions(populateAccess);
+            $dataService.get('lookups?lookupType=HierarchyTypes',function(hierarchyTypes){
+                $scope.types = hierarchyTypes;
+                $dataService.get('hierarchy?hierarchyType.in=521,522,523,524,525',function(hierarchy){
+                if($scope.types != null && hierarchy != null){
+                    fetchOptions(hierarchy,criteriaHierarchy);
+                }
+                });
             });
 
+            
+
+            $dataService.get('lookups?lookupType=RangeGroups',function(rangeGroups){
+                $scope.groups = rangeGroups;
+                if($scope.groups != null){
+                    fetchAttributes(criteriaRange);
+                }
+            });
+            
             getQuickPickTypes(function(quickPickTypes){
                 $scope.quickPickTypes = quickPickTypes;
                 if($scope.quickPickTypes){
@@ -530,9 +567,9 @@ app.controller('cbs.profileDetails.controller',function($scope) {
             getGroups(function(groups){
                 $scope.groups = groups;
                 fetchAttributes(PercentageRangeAndAccess);
-                console.log($scope.groups);
-            });
-        }
+                //console.log($scope.groups);
+            });            
+}
 
         $scope.links = [{
             'id':'geo-criteria',
@@ -580,23 +617,30 @@ app.controller('cbs.profileDetails.controller',function($scope) {
 
         init();
     }
-);
+]);
 
 
-// app.directive('validate',function(){
-//     return{
-//         require:'ngModel',
-//         link:function(scope,element,attr,mCtrl){
-//             var input = attr.text;
-//             console.log(input);
-//             function custom(input){
-//                 if(input < attribute.value){
-//                     mCtrl.$setValidity('val',false);
-//                 }
-//                 console.log(input);
-//                 return input;
-//             }
-//             mCtrl.$parsers.push(custom);
+// $scope.validate = function(attribute){
+//             var id = attribute.id;
+//             // $scope.valid = false;
+//             //  if(attribute.minimumValue < attribute.value){
+//             //      $scope.valid = true;
+//             //  }
+//             //  else{
+//             //      $scope.valid = false;
+//             //  }
+//             // angular.element('#' + attribute.id).val('');
+//             // angular.element('#' + attribute.id).focus();
+//             // $notifier.error('Email is mandatory.');
+//             // console.log(5);
+//             //$scope.frm.id.setValidity('val',false);
+//             //$scope.forms.minimumPercentageForm.$setPristine();
+//             // console.log(5);
+//             //$scope.myForm.$setUntouched();
+//             //console.log(5);
 //         }
-//     }
-// })
+
+//         // $scope.setFormName = function(form){
+//         //     $scope.myForm = form;
+//         //     console.log(form);
+//         // }

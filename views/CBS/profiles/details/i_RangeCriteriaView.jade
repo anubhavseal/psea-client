@@ -24,10 +24,12 @@
             input.percentage-input(type="number" oninput="validity.valid||(value='');" min="0" step="0.1" ng-model="attribute.minimumPercentage" ng-disabled="!attribute.selected" ng-change="decreasePercentage(attribute)")
         .col-md-2.range-criteria-percentage-value-container
             form(name="minimumPercentageForm" )
-                input.percentage-input(type="number" name="{{attribute.id}}" max="{{attribute.value}}" ng-model="attribute.minimumValue" ng-disabled="!attribute.selected")
+                input.percentage-input(type="number" name="{{attribute.id}}" max="{{attribute.value}}" ng-model="attribute.minimumValue" ng-disabled="!attribute.selected" ng-change="changeMinimumPercentage(attribute)")
             span.error-text(ng-show="minimumPercentageForm.{{attribute.id}}.$invalid") Should be less than {{attribute.value}}
         .col-md-1.range-criteria-percentage-input-container
             input.percentage-input(type="number" oninput="validity.valid||(value='');" min="0" step="0.1" ng-model="attribute.maximumPercentage" ng-disabled="!attribute.selected" ng-change="increasePercentage(attribute)")
         .col-md-2.range-criteria-percentage-value-container
-            span {{attribute.maximumValue|number:2}}
+            form(name="maximumPercentageForm")
+                input.percentage-input(type="number" name="{{attribute.id}}" min="{{attribute.value}}" ng-model="attribute.maximumValue" ng-disabled="!attribute.selected" ng-change="changeMaximumPercentage(attribute)")
+            span.error-text(ng-show="maximumPercentageForm.{{attribute.id}}.$invalid") Should be greater than {{attribute.value}}
     button.btn.btn-success.btn-lg.pull-right#quick-pick-type(ng-click="updateRangeCriteriaCount()") Apply
