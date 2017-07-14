@@ -1,7 +1,7 @@
 'use strict';
 angular.module('shared').constant('$constants', {
-    'AppBasePath' : 'http://localhost:82/',
-    'APIBasePath' : 'http://localhost:8080/api/v1/',
+    'AppBasePath' : 'http://localhost:3000/',
+    'APIBasePath' : 'http://pseaserver.eastus.cloudapp.azure.com:8080/api/v1/',
 	'HideMenuBar': false, 
 	'HomePage': '/home',
 	'LoginPage': '/security/login',
