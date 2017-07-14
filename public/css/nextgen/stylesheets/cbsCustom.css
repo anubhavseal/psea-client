@@ -1,9 +1,11 @@
+html,body,.page-container,main{
+	height: 100%;
+	background-color: white;
+}
+
 .col-md-8{
 	font-family: 'Lato', sans-serif !important;
 }
-/*#profile-listing,#geo-criteria,#quick-pick-criteria,#range-criteria,#check-criteria{
-	visibility: hidden;
-}*/
 
 .profile-container{
 	padding-right: 75px;
@@ -54,7 +56,7 @@
     border: 2px solid red;*/
 	padding: 20px;
 	padding-bottom: 5px;
-	max-width: 70%;
+	max-width: 100%;
     margin: auto;
 	margin-bottom: 10px;
 	color:white;
