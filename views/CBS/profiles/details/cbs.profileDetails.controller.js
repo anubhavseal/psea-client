@@ -23,6 +23,9 @@ function($scope,$dataService,$routeParams) {
                 callback();
                 return;
             }
+            angular.forEach(hierarchy,function(data){
+                
+            })
 
             var type = $scope.types[index];
             type.options = [];
@@ -46,7 +49,7 @@ function($scope,$dataService,$routeParams) {
                     type.group1Count = 0;
                     type.group2Count = 0;
                     angular.forEach(type.options, function(option){
-                        optionMap[type.lookupId + '$' + option.hierarchyId] = option;
+                        optionMap[option.hierarchyId] = option;
                         option.group = 2;
                         option.selected = false;
                         type.group2Count++;
@@ -54,16 +57,19 @@ function($scope,$dataService,$routeParams) {
                 });
 
                 angular.forEach(permissions, function(permission){
-                    var option = optionMap[permission.type + '$' + permission.id];
-                    if (option != null && permission.access === true) {
+                    var option = optionMap[permission.hierarchyId];
+                    if (option != null) {
                         option.group = 1;
                         option.selected = true;
-                        var type = typeMap[permission.type];
+                        var type = typeMap[option.hierarchyType];
                         type.group1Count++;
                         type.group2Count--;
                     }
                 });
             })
+            if ($scope.types != null && $scope.types.length > 0) {
+                    $scope.selectType($scope.types[0]);
+                }
         }
 
         function selectType(selectedType){

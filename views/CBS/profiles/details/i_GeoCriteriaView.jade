@@ -15,7 +15,7 @@
                 .div(ng-class="{ 'panel-collapse collapse in' : type.selected, 'panel-collapse collapse': !type.selected}")
                     .panel-body
                         .row.checked-container(ng-show='type.group1Count > 0' style='padding:10px;{{type.group1Count > 0 && type.group2Count > 0 ? "border-bottom:1px solid lightgray" : ""}}')
-                                .col-md-4(ng-repeat="option in type.options | filter: { group: 1, caption: searchData, orderBy:lookupId, reverse:false }" )
+                                .col-md-4(ng-repeat="option in type.options | filter: { group: 1, caption: searchData}" )
                                     input.cbs-input-box(type="checkbox"  ng-model="option.selected" ng-attr-id="{{option.hierarchyName}}")
                                     label(for="{{option.hierarchyName}}") &nbsp;{{option.hierarchyName}}
                         .row.unchecked-container(ng-show='type.group2Count > 0' style='padding:10px;')
