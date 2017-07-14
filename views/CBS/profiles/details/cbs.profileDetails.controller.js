@@ -1,6 +1,7 @@
 var app = angular.module('cbs');
 
-app.controller('cbs.profileDetails.controller',['$scope','$dataService',function($scope,$dataService) {
+app.controller('cbs.profileDetails.controller',['$scope','$dataService','$routeParams',
+function($scope,$dataService,$routeParams) {
     $scope.getSelectedCount = getSelectedCount;
     $scope.selectType = selectType;
     $scope.selectGroup = selectGroup;
@@ -38,7 +39,7 @@ app.controller('cbs.profileDetails.controller',['$scope','$dataService',function
             var optionMap = {};
             var typeMap = {};
             
-            $dataService.get('criteriaHierarchy',function(permissions){
+            $dataService.get('criteriaHierarchy?cbSprofileId='+ $scope.cbsProfileId,function(permissions){
                 permissions = permissions || [];
                 angular.forEach($scope.types, function(type){
                     typeMap[type.lookupId] = type;
@@ -370,6 +371,10 @@ app.controller('cbs.profileDetails.controller',['$scope','$dataService',function
         }
 
         function init(){
+
+            //get the routeParameter i.e profile id
+            $scope.cbsProfileId = $routeParams.id;
+
             $dataService.get('lookups?lookupType=HierarchyTypes',function(hierarchyTypes){
                 $scope.types = hierarchyTypes;
                 $dataService.get('hierarchy',function(hierarchy){
@@ -378,8 +383,6 @@ app.controller('cbs.profileDetails.controller',['$scope','$dataService',function
                 }
                 });
             });
-
-            
 
             $dataService.get('lookups?lookupType=RangeGroups',function(rangeGroups){
                 $scope.groups = rangeGroups;
@@ -451,27 +454,4 @@ app.controller('cbs.profileDetails.controller',['$scope','$dataService',function
 ]);
 
 
-// $scope.validate = function(attribute){
-//             var id = attribute.id;
-//             // $scope.valid = false;
-//             //  if(attribute.minimumValue < attribute.value){
-//             //      $scope.valid = true;
-//             //  }
-//             //  else{
-//             //      $scope.valid = false;
-//             //  }
-//             // angular.element('#' + attribute.id).val('');
-//             // angular.element('#' + attribute.id).focus();
-//             // $notifier.error('Email is mandatory.');
-//             // console.log(5);
-//             //$scope.frm.id.setValidity('val',false);
-//             //$scope.forms.minimumPercentageForm.$setPristine();
-//             // console.log(5);
-//             //$scope.myForm.$setUntouched();
-//             //console.log(5);
-//         }
 
-//         // $scope.setFormName = function(form){
-//         //     $scope.myForm = form;
-//         //     console.log(form);
-//         // }

@@ -3,7 +3,7 @@ angular.module('shared').constant('$constants', {
     'AppBasePath' : 'http://localhost:3000/',
     'APIBasePath' : 'http://pseaserver.eastus.cloudapp.azure.com:8080/api/v1/',
 	'HideMenuBar': false, 
-	'HomePage': '/home',
+	'HomePage': '/profiles',
 	'LoginPage': '/security/login',
 	'AcceptAgreementPage': '/acceptagreement',
 	'ChangePasswordPage': '/changepassword',

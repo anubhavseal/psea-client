@@ -8,7 +8,7 @@
                         em My Recent Profile
             .row
                 .col-md-12
-                    h3 York City
+                    h3 {{recentProfile.cbSprofileName}}
                     span Last accessed
             .row(style="padding-bottom:15px;")
                 .col-md-12
@@ -16,4 +16,5 @@
                 .col-md-6(style="padding:2px;")
                     button.btn.btn-primary.btn-lg(style="width:100%;" ng-click="populateAccess()") Analysis
                 .col-md-6(style="padding:2px;")
-                    button.btn.btn-primary.btn-lg(style="width:100%;") Criteria
+                    button.btn.btn-primary.btn-lg(style="width:100%;") 
+                        a(href="/details/{{recentProfile.cbSprofileId}}" style="color:white") Criteria

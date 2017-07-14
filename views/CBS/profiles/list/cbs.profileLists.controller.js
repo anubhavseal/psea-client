@@ -1,6 +1,9 @@
 var app = angular.module('cbs');
 
-app.controller('cbs.profileLists.controller', ['$scope','$dataService',function($scope,$dataService) {
+app.controller('cbs.profileLists.controller', ['$scope',
+'$dataService',
+'$accessService',
+function($scope,$dataService,$accessService) {
     $scope.createProfile = createProfile;
         function createProfile(){
             var profile = {
@@ -10,15 +13,23 @@ app.controller('cbs.profileLists.controller', ['$scope','$dataService',function(
                 "eaespFlag": $scope.eaespFlag
             }
             $dataService.post('CBSprofiles',profile,function(response){
-                
+
             })
         }
         function init(){
-            $dataService.get('CBSprofiles',function(profiles){
+
+            //get current logged in user
+            var activeUser = $accessService.getActiveUser();
+            var ownerId = activeUser.userId;
+            
+            //fetch all profiles under current logged in user
+            $dataService.get('CBSprofiles?ownerId='+ ownerId,function(profiles){
                 if(profiles != null){
                     $scope.profiles = profiles;
+                    $scope.recentProfile = profiles[0];
                 }
             })
+
             $dataService.get('lookups?lookupId=525',function(hierarchy){
                 $dataService.get('hierarchy?hierarchyType=525',function(districts){
                     if(hierarchy != null && districts != null){
@@ -27,5 +38,6 @@ app.controller('cbs.profileLists.controller', ['$scope','$dataService',function(
                 })
             })
         }
+
         init();
 }]);

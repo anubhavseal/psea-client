@@ -5,7 +5,7 @@ angular.module('cbs')
         templateUrl:'/views/CBS/profiles/list/view',
         controller:'cbs.profileLists.controller'
     })
-    .when('/details',{
+    .when('/details/:id',{
         templateUrl:'/views/CBS/profiles/details/view',
         controller:'cbs.profileDetails.controller'
     });

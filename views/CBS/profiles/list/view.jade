@@ -1,37 +1,39 @@
 .container-fluid
     .app-container(style='padding-top:53px')
         .row
-            .col-md-4
+            .col-md-3
                 include ../shared/i_SideProfileView
             .div#content-holder
-                .col-md-8.profile-container
+                .col-md-9.profile-container
                     .row
-                        .col-md-4(ng-repeat='profile in profiles')
+                        .col-md-4(ng-repeat='profile in profiles.slice(1,profiles.length)')
                             .panel.panel-default.profile
-                                .panel-heading.profile-heading {{profile.cbSprofileName}}
+                                .panel-heading.profile-heading 
+                                    a(href="/details/{{profile.cbSprofileId}}"){{profile.cbSprofileName}}
                                 .panel-body.profile-body
                                     span 
                                         em Last accessed some days back
-                    button.btn.btn-success.btn-lg.pull-right(type="button" data-toggle='modal', data-target='#createProfile') Create New Profile
-                    #createProfile.modal.fade(role='dialog' tabindex="-1")
-                        .modal-dialog
-                            .modal-content
-                                .modal-header
-                                    button.close(type='button', data-dismiss='modal')&times;
-                                    h4.modal-title Modal Header
-                                        Create New Profile
-                                .modal-body
-                                    form(name="createProfile")
-                                        .form-group
-                                            label(for="profileName") Profile Name
-                                            input.form-control(type="text" id="profileName" ng-model="profileName" placeholder="Profile Name")
-                                        .form-group
-                                            label(for="district") Select Home District
-                                            select.form-control(id="district" ng-model="homeDistrict" ng-options="district for district in districts")
-                                        .form-group
-                                            label.radio-inline EA
-                                                input(type="radio" name="w" ng-model="eaespFlag" ng-value="false" ng-checked="true") 
-                                            label.radio-inline ESP
-                                                input(type="radio" name="w" ng-model="eaespFlag" ng-value="true") 
-                                .modal-footer
-                                    button.btn.btn-default(type='submit', data-dismiss='modal' ng-click="createProfile()") Create Profile
+                        button.btn.btn-success.btn-lg.pull-right(type="button" data-toggle='modal', data-target='#createProfile') Create New Profile
+                        #createProfile.modal.fade(role='dialog' tabindex="-1")
+                            .modal-dialog
+                                .modal-content
+                                    .modal-header
+                                        button.close(type='button', data-dismiss='modal')&times;
+                                        h4.modal-title Modal Header
+                                            Create New Profile
+                                    .modal-body
+                                        form(name="createProfile")
+                                            .form-group
+                                                label(for="profileName") Profile Name
+                                                input.form-control(type="text" id="profileName" ng-model="profileName" placeholder="Profile Name")
+                                            .form-group
+                                                label(for="district") Select Home District
+                                                select.form-control(id="district" ng-model="homeDistrict" ng-options="district for district in districts")
+                                            .form-group
+                                                label.radio-inline EA
+                                                    input(type="radio" name="w" ng-model="eaespFlag" ng-value="false" ng-checked="true") 
+                                                label.radio-inline ESP
+                                                    input(type="radio" name="w" ng-model="eaespFlag" ng-value="true") 
+                                    .modal-footer
+                                        button.btn.btn-default(type='submit', data-dismiss='modal' ng-click="createProfile()") Create Profile
+                        
