@@ -150,12 +150,16 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 console.log(profile);
                 angular.forEach($scope.quickPickTypes,function(quickPickType){
                     if(quickPickType.hierarchyType === 521){
+                        quickPickType.hierarchyName = 'Cluster:' + quickPickType.hierarchyName;
                         quickPickType.selected = profile[0].quickCluster;
                     }else if(quickPickType.hierarchyType === 522){
+                        quickPickType.hierarchyName = quickPickType.hierarchyName + ' ' + 'Region';
                         quickPickType.selected = profile[0].quickRegion;
                     }else if(quickPickType.hierarchyType === 523){
+                        quickPickType.hierarchyName = quickPickType.hierarchyName + ' ' +'IU';
                         quickPickType.selected = profile[0].quickIU;
                     }else{
+                        quickPickType.hierarchyName = quickPickType.hierarchyName + ' ' +'County';
                         quickPickType.selected = profile[0].quickCounty;
                     }
                 });
@@ -398,7 +402,6 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             //get the routeParameter i.e profile id and home district id
             $scope.cbsProfileId = $routeParams.profileId;
             $scope.homeHierarchyId = $routeParams.homeDistrictId;
-            console.log($scope.homeHierarchyId);
             $dataService.get('lookups?lookupType=HierarchyTypes',function(hierarchyTypes){
                 $scope.types = hierarchyTypes.reverse();
                 $dataService.get('hierarchy',function(hierarchy){
@@ -418,7 +421,6 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             
             $dataService.get('CBSprofiles/' + $scope.homeHierarchyId + '/homedata',
             function(homeData){
-                console.log(homeData);
                 var districtId = homeData[0].districtId;
                 var countyId = homeData[0].countyId;
                 var iuId = homeData[0].iuId;
@@ -431,7 +433,7 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 $dataService.get('hierarchy?hierarchyId.in=' + 
                 str,function(data){
                     if(data != null){
-                        $scope.quickPickTypes = data;
+                        $scope.quickPickTypes = data.reverse();
                         populateQuickPickTypeAccess();
                     }
                     
