@@ -20,4 +20,12 @@
                 div(ng-repeat="option in type.options | filter: { group: 2, hierarchyName: searchData}" ng-class="{'col-md-6':type.lookupId === 523 || type.lookupId === 525, 'col-md-4':lookupId != 523 || type.lookupId != 525}" )
                     input.cbs-input-box(type="checkbox" ng-checked="option.selected" ng-model="option.selected" ng-attr-id="{{option.hierarchyId}}")
                     label.text-muted(for="{{option.hierarchyId}}") &nbsp;{{option.hierarchyName}}
-button.btn.btn-success.btn-lg.pull-right Select Profile
+.row.school-type-container
+    .col-md-3
+        span School Type
+    div(ng-repeat="schoolType in schoolTypes" ng-class="{'col-md-2':schoolType.lookupId === 502,'col-md-3':schoolType.lookupId != 502}")
+        input.cbs-input-box(type="checkbox" ng-attr-id="{{schoolType.lookupName}}")
+        label(ng-attr-for="{{schoolType.lookupName}}") &nbsp;{{schoolType.lookupName}}
+.row
+    .col-md-12
+        button.btn.btn-success.btn-lg.pull-right Select Profile

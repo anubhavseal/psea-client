@@ -5,4 +5,12 @@
             input.cbs-input-box(type="checkbox" ng-attr-id="{{quickPickType.hierarchyId}}" ng-checked="{{quickPickType.selected}}" ng-model="quickPickType.selected")
             label(for="{{quickPickType.hierarchyId}}" style="font-family:'Lato', sans-serif !important;") &nbsp; 
                 span(ng-class="{'text-muted':!quickPickType.selected}") {{quickPickType.hierarchyName}}
-button.btn.btn-success.btn-lg.pull-right#quick-pick-type(ng-click="updateQuickPickCount()") Apply
+.row.school-type-container
+    .col-md-3
+        span School Type
+    div(ng-repeat="schoolType in schoolTypes" ng-class="{'col-md-2':schoolType.lookupId === 502,'col-md-3':schoolType.lookupId != 502}")
+        input.cbs-input-box(type="checkbox" ng-attr-id="{{schoolType.lookupName}}")
+        label(ng-attr-for="{{schoolType.lookupName}}") &nbsp;{{schoolType.lookupName}}
+.row
+    .col-md-12
+        button.btn.btn-success.btn-lg.pull-right#quick-pick-type(ng-click="updateQuickPickCount()") Apply

@@ -105,45 +105,6 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             })
         }
 
-        function getQuickPickTypes(callback){
-            callback([{
-                'id':1,
-                'caption':'Montogomery County'
-            },{
-                'id':2,
-                'caption':'IU Montgomery'
-            },{
-                'id':3,
-                'caption':'Mideastern Region',
-            },{
-                'id':4,
-                'caption':'Cluster:STRANZ, KAREN'
-            },
-            {
-                'id':5,
-                'caption':'Contiguous District'
-            }])
-        }
-
-        function getQuickPickTypesAccess(callback){
-            callback([{
-                'id':1,
-                'access':true
-            },{
-                'id':2,
-                'access':false
-            },{
-                'id':3,
-                'access':false
-            },{
-                'id':4,
-                'access':false
-            },{
-                'id':5,
-                'access':false
-            }])
-        }
-
         function populateQuickPickTypeAccess(){
 
             $dataService.get('CBSprofiles/' + $scope.cbsProfileId,function(profile){
@@ -165,21 +126,6 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 });
                 console.log($scope.quickPickTypes);
             })
-
-            // getQuickPickTypesAccess(function(permissions){
-            //     permissions = permissions || [];
-            //     var quickPickTypeMap = {};
-            //     angular.forEach($scope.quickPickTypes,function(type){
-            //         quickPickTypeMap[type.id] = type;
-            //         type.selected = false;
-            //     })
-            //     angular.forEach(permissions,function(permission){
-            //        var quickPickType = quickPickTypeMap[permission.id];
-            //        if(quickPickType != null && permission.access === true){
-            //             quickPickType.selected = true;
-            //        }
-            //     })
-            // })
         }
 
         function updateQuickPickCount(){
@@ -397,26 +343,33 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             
         }
 
+        function filterSchoolTypes(type){
+            if(type.lookupId === 501 || type.lookupId === 502 || type.lookupId === 503){
+                return type;
+            }
+        }
+
+        function filterHierarchyTypes(type){
+            if(type.lookupId === 521 || type.lookupId === 522 || type.lookupId === 523
+            || type.lookupId === 524 || type.lookupId === 525){
+                return type;
+            }
+        }
+
         function init(){
 
             //get the routeParameter i.e profile id and home district id
             $scope.cbsProfileId = $routeParams.profileId;
             $scope.homeHierarchyId = $routeParams.homeDistrictId;
-            $dataService.get('lookups?lookupType=HierarchyTypes',function(hierarchyTypes){
-                $scope.types = hierarchyTypes.reverse();
+            $dataService.get('lookups?lookupType.in=HierarchyTypes,SchoolTypes',function(hierarchyTypes){
+                $scope.schoolTypes = hierarchyTypes.filter(filterSchoolTypes);
+                $scope.types = hierarchyTypes.filter(filterHierarchyTypes).reverse();
                 $dataService.get('hierarchy',function(hierarchy){
                 if($scope.types != null && hierarchy != null){
                     fetchOptions(hierarchy,criteriaHierarchy);
                 }
                 });
             });
-
-            // $dataService.get('lookups?lookupType=RangeGroups',function(rangeGroups){
-            //     $scope.groups = rangeGroups;
-            //     if($scope.groups != null){
-            //         fetchAttributes(criteriaRange);
-            //     }
-            // });
             
             
             $dataService.get('CBSprofiles/' + $scope.homeHierarchyId + '/homedata',
@@ -440,17 +393,9 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 })
             })
             
-            // getQuickPickTypes(function(quickPickTypes){
-            //     $scope.quickPickTypes = quickPickTypes;
-            //     if($scope.quickPickTypes){
-            //         populateQuickPickTypeAccess();
-            //     }
-            // });
-
             getGroups(function(groups){
                 $scope.groups = groups;
                 fetchAttributes(PercentageRangeAndAccess);
-                //console.log($scope.groups);
             });            
             console.log($cbsCache.get('homeDistrictId'));
 }

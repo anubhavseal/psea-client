@@ -9,5 +9,4 @@
                             img(ng-src="{{link.selected ? link.imgSelected : link.img}}") 
                         a(ng-click="setLayout(link)" style="cursor:pointer;") {{link.caption}} 
         .col-md-9
-            .div#content-holder
-                .div(ng-repeat="view in views" ng-attr-id="{{view.id}}" ng-include="view.url" ng-if='view.selected')
+            .div#content-holder(ng-repeat="view in views" ng-attr-id="{{view.id}}" ng-include="view.url" ng-if='view.selected')
