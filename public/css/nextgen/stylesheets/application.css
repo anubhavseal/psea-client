@@ -10046,7 +10046,6 @@ canvas {
   -moz-transition: -moz-transform 0.25s ease 0s;
   -o-transition: -o-transform 0.25s ease 0s;
   transition: transform 0.25s ease 0s;
-  display: none;
 }
 
 @media (min-width: 1200px) {

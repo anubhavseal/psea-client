@@ -3,4 +3,4 @@ angular.module('cbs',[
     'ngRoute',
     'ngSanitize',
     'ui.bootstrap',
-    'base', 'security', 'powerbi']);
+    'base', 'security']);
