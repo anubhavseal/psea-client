@@ -400,7 +400,7 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             $scope.homeHierarchyId = $routeParams.homeDistrictId;
             console.log($scope.homeHierarchyId);
             $dataService.get('lookups?lookupType=HierarchyTypes',function(hierarchyTypes){
-                $scope.types = hierarchyTypes;
+                $scope.types = hierarchyTypes.reverse();
                 $dataService.get('hierarchy',function(hierarchy){
                 if($scope.types != null && hierarchy != null){
                     fetchOptions(hierarchy,criteriaHierarchy);
@@ -430,8 +430,6 @@ function($scope,$dataService,$routeParams,$cbsCache) {
 
                 $dataService.get('hierarchy?hierarchyId.in=' + 
                 str,function(data){
-                    console.log(50);
-                    
                     if(data != null){
                         $scope.quickPickTypes = data;
                         populateQuickPickTypeAccess();

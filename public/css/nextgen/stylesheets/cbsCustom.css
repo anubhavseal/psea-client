@@ -106,14 +106,17 @@ html,body,.page-container,main{
 ###################################################################################						
 */
 
-.panel.panel-default{
+.geo-criteria.panel.panel-default{
 	border: 2px solid rgba(200,199,209,0.4);
 	border-radius: 6px;
 	background-color: #FFFFFF;
 	box-shadow: 0 12px 24px 0 rgba(0,0,0,0.05);
 }
+.geo-criteria > .panel-heading{
+		border-bottom: 1px solid #EEEEF1;
+}
 
-.panel-heading .btn{
+.geo-criteria  .btn{
 	color: white;
     background-color: #21cc71;
     border-color: #21CC71;
