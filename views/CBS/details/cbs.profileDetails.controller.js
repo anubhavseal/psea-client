@@ -401,19 +401,19 @@ function($scope,$dataService,$routeParams,$cbsCache) {
 
         $scope.views=[{
             'id':'geo-criteria',
-            'url':'/views/CBS/profiles/details/i_GeoCriteriaView',
+            'url':'/views/CBS/details/i_GeoCriteriaView',
             'selected':true
         },{
             'id':'quick-pick',
-            'url':'/views/CBS/profiles/details/i_QuickTypesView',
+            'url':'/views/CBS/details/i_QuickTypesView',
             'selected':false
         },{
             'id':'range-criteria',
-            'url':'/views/CBS/profiles/details/i_RangeCriteriaView',
+            'url':'/views/CBS/details/i_RangeCriteriaView',
             'selected':false
         },{
             'id':'check-criteria',
-            'url':'/views/CBS/profiles/details/i_CheckCriteriaView',
+            'url':'/views/CBS/details/i_CheckCriteriaView',
             'selected':false
         }];
 
