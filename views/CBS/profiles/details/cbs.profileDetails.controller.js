@@ -311,7 +311,7 @@ function($scope,$dataService,$routeParams,$cbsCache) {
         function init(){
 
             //get the routeParameter i.e profile id and home district id
-
+            $scope.recentProfile = $cbsCache.get('recentProfile');
             $scope.cbsProfileId = $routeParams.profileId;
             $scope.homeHierarchyId = $routeParams.homeDistrictId;
             $dataService.get('lookups?lookupType.in=HierarchyTypes,SchoolTypes,RangeGroups',

@@ -8,21 +8,12 @@ function($scope,$dataService,$accessService,$cbsCache) {
     $scope.createProfile = createProfile;
     $scope.changeProfile = changeProfile;
 
-        function createProfile(){
-            var profile = {
-                "cbSprofileName": $scope.profileName,
-                "ownerId": 505,
-                "homeHierarchyId": $scope.homeDistrict,
-                "eaespFlag": $scope.eaespFlag
-            }
-            $dataService.post('CBSprofiles',profile,function(response){
-
-            })
-        }
-
+        //Before Going to any other route cache the clicked profile object 
+        //and the index at which it was stored in the profiles Array
         function changeProfile(profile){
             $cbsCache.put('homeDistrictId',profile.homeHierarchyId);
-            $scope.recentProfile = profile;
+            $cbsCache.put('recentProfile',profile)
+            $cbsCache.put('index',$scope.profiles.indexOf(profile));
         }
 
         function init(){
@@ -35,7 +26,16 @@ function($scope,$dataService,$accessService,$cbsCache) {
             $dataService.get('CBSprofiles?ownerId='+ ownerId,function(profiles){
                 if(profiles != null){
                     $scope.profiles = profiles;
-                    $scope.recentProfile = profiles[0];
+                    //fetch from cache the most recent profile
+                    //and the index at which it was stored in profiles Array
+                    var recentProfile = $cbsCache.get('recentProfile');
+                    if(recentProfile){
+                        $scope.recentProfile = recentProfile;
+                        $scope.index = $cbsCache.get('index');
+                    }else{
+                        $scope.recentProfile = $scope.profiles[0];
+                        $scope.index = 0;
+                    }
                 }
             })
 
@@ -46,6 +46,9 @@ function($scope,$dataService,$accessService,$cbsCache) {
                     }
                 })
             })
+
+            
+            
         }
 
         init();

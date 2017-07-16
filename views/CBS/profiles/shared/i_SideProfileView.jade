@@ -18,4 +18,4 @@
                         a(href="/reports" style="color:white") Analysis
                 .col-md-6(style="padding:2px;")
                     button.btn.btn-primary.btn-lg(style="width:100%;") 
-                        a(href="/profiles/{{recentProfile.cbSprofileId}}/{{recentProfile.homeHierarchyId}}/criteria" style="color:white") Criteria
+                        a(href="/profiles/{{recentProfile.cbSprofileId}}/{{recentProfile.homeHierarchyId}}/criteria" style="color:white" ng-click="changeProfile(recentProfile)") Criteria

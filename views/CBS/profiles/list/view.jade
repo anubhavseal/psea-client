@@ -6,7 +6,7 @@
             .div#content-holder
                 .col-md-9.profile-container
                     .row
-                        .col-md-4(ng-repeat='profile in profiles.slice(1,profiles.length)')
+                        .col-md-4(ng-repeat='profile in profiles' ng-if="$index != index")
                             .panel.panel-default.profile
                                 .panel-heading.profile-heading 
                                     a(href="/profiles/{{profile.cbSprofileId}}/{{profile.homeHierarchyId}}/criteria" ng-click="changeProfile(profile)"){{profile.cbSprofileName}}
