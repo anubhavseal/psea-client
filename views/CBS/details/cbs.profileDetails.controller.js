@@ -437,7 +437,10 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             link.selected = true;
             viewMap[link.id].selected = true;
         }
-
+        // function changeProfile(profile){
+        //     $cbsCache.put('recentProfile',profile)
+        //     $cbsCache.put('index',$scope.profiles.indexOf(profile));
+        // }
         init();
     }
 ]);

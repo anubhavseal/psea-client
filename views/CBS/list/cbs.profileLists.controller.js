@@ -14,6 +14,9 @@ function($scope,$dataService,$accessService,$cbsCache) {
             $cbsCache.put('homeDistrictId',profile.homeHierarchyId);
             $cbsCache.put('recentProfile',profile)
             $cbsCache.put('index',$scope.profiles.indexOf(profile));
+            // console.log($scope.profiles);
+            // console.log(profile)
+            // console.log('first'+$cbsCache.get('index'))
         }
 
         function init(){
@@ -32,6 +35,7 @@ function($scope,$dataService,$accessService,$cbsCache) {
                     if(recentProfile){
                         $scope.recentProfile = recentProfile;
                         $scope.index = $cbsCache.get('index');
+                        console.log($scope.index);
                     }else{
                         $scope.recentProfile = $scope.profiles[0];
                         $scope.index = 0;

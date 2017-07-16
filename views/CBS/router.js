@@ -9,7 +9,7 @@ angular.module('cbs')
         templateUrl:'/views/CBS/list/view',
         controller:'cbs.profileLists.controller'
     })
-    .when('/reports',{
+    .when('/profiles/:profileId/reports',{
         templateUrl:'/views/CBS/reports/view',
         controller:'cbs.reports.controller'
     })

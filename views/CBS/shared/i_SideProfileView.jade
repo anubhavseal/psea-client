@@ -15,7 +15,7 @@
     .row
         .col-md-6(style="padding:2px;")
             button.btn.btn-primary.btn-lg(style="width:100%;" ng-click="changeProfile(recentProfile)") 
-                a(href="/reports" style="color:white" ) Analysis
+                a(href="/profiles/{{recentProfile.cbSprofileId}}/reports" style="color:white" ) Analysis
         .col-md-6(style="padding:2px;")
             button.btn.btn-primary.btn-lg(style="width:100%;" ng-click="changeProfile(recentProfile)") 
                 a(href="/profiles/{{recentProfile.cbSprofileId}}/{{recentProfile.homeHierarchyId}}/criteria" style="color:white" ) Criteria

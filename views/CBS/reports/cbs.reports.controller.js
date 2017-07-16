@@ -1,7 +1,11 @@
 var app = angular.module('cbs');
 
-app.controller('cbs.reports.controller', ['$scope','$dataService','cbsCache',
-function($scope,$dataService,$cbsCache) {
+app.controller('cbs.reports.controller', [
+'$scope',
+'$dataService',
+'$routeParams',
+'cbsCache',
+function($scope,$dataService,$routeParams,$cbsCache) {
 
         function init(){
             //fetch the recent profile form cache
