@@ -38,7 +38,8 @@ function($scope,$dataService,$accessService,$cbsCache) {
                     }
                 }
             })
-
+            
+            //fetch all districts to populate the dropdown for selecting Home District
             $dataService.get('lookups?lookupId=525',function(hierarchy){
                 $dataService.get('hierarchy?hierarchyType=525',function(districts){
                     if(hierarchy != null && districts != null){
@@ -46,9 +47,6 @@ function($scope,$dataService,$accessService,$cbsCache) {
                     }
                 })
             })
-
-            
-            
         }
 
         init();

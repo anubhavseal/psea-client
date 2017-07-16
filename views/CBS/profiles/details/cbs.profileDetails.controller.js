@@ -1,6 +1,10 @@
 var app = angular.module('cbs');
 
-app.controller('cbs.profileDetails.controller',['$scope','$dataService','$routeParams','cbsCache',
+app.controller('cbs.profileDetails.controller',[
+'$scope',
+'$dataService',
+'$routeParams',
+'cbsCache',
 function($scope,$dataService,$routeParams,$cbsCache) {
     $scope.getSelectedCount = getSelectedCount;
     $scope.selectType = selectType;

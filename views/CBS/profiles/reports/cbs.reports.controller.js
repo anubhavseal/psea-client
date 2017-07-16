@@ -1,8 +1,11 @@
 var app = angular.module('cbs');
 
-app.controller('cbs.reports.controller', ['$scope','$dataService',function($scope,$dataService) {
+app.controller('cbs.reports.controller', ['$scope','$dataService','cbsCache',
+function($scope,$dataService,$cbsCache) {
 
         function init(){
+            //fetch the recent profile form cache
+            $scope.recentProfile = $cbsCache.get('recentProfile');
             //fetch reportGroups first - there's only 1 group for now
             //Hence this will not be visible on front-end, but group GUID maybe required for PBI token generation
             $dataService.get('reportGroups',function(reportGroups){
