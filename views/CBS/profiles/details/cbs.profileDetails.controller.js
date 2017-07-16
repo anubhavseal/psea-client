@@ -4,12 +4,14 @@ app.controller('cbs.profileDetails.controller',['$scope','$dataService','$routeP
 function($scope,$dataService,$routeParams,$cbsCache) {
     $scope.getSelectedCount = getSelectedCount;
     $scope.selectType = selectType;
-    $scope.selectGroup = selectGroup;
+
+    $scope.selectRangeGroup = selectRangeGroup;
     $scope.getSelectedAttributesCount = getSelectedAttributesCount;
     $scope.increasePercentage = increasePercentage;
     $scope.decreasePercentage = decreasePercentage;
     $scope.changeMinimumPercentage = changeMinimumPercentage;
     $scope.changeMaximumPercentage = changeMaximumPercentage;
+
     $scope.updateGeoCriteriaCount = updateGeoCriteriaCount;
     $scope.updateQuickPickCount = updateQuickPickCount;
     $scope.updateRangeCriteriaCount = updateRangeCriteriaCount;
@@ -23,9 +25,6 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 callback();
                 return;
             }
-            angular.forEach(hierarchy,function(data){
-                
-            })
 
             var type = $scope.types[index];
             type.options = [];
@@ -33,7 +32,8 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 if(data.hierarchyType === type.lookupId){
                     type.options.push(data);
                 }
-            })
+            });
+
             fetchOptions(hierarchy, callback, index + 1);
         }
 
@@ -108,7 +108,6 @@ function($scope,$dataService,$routeParams,$cbsCache) {
         function populateQuickPickTypeAccess(){
 
             $dataService.get('CBSprofiles/' + $scope.cbsProfileId,function(profile){
-                console.log(profile);
                 angular.forEach($scope.quickPickTypes,function(quickPickType){
                     if(quickPickType.hierarchyType === 521){
                         quickPickType.hierarchyName = 'Cluster:' + quickPickType.hierarchyName;
@@ -124,7 +123,6 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                         quickPickType.selected = profile[0].quickCounty;
                     }
                 });
-                console.log($scope.quickPickTypes);
             })
         }
 
@@ -136,124 +134,57 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 }
             });
         }
-
-        function getGroups(callback){
-            callback([{
-                'id':'g1',
-                'caption':'Range 1'
-            },{
-                'id':'g2',
-                'caption':'Range 2'
-            },{
-                'id':'g3',
-                'caption':'Range 3'
-            },{
-                'id':'g4',
-                'caption':'Range 4'
-            },{
-                'id':'g5',
-                'caption':'Range 5'
-            }]);
-        }
-
-        function getAttributes(callback){
-            callback([{
-                'id':'a1',
-                'caption':'Starting Salary',
-                'value':529792,
-                'rangeID':'g1'
-            },{
-                'id':'a2',
-                'caption':'Career Rate',
-                'value':89652,
-                'rangeID':'g1'
-
-            },{
-                'id':'a3',
-                'caption':'Average BU Salary',
-                'value':77098,
-                'rangeID':'g1'
-
-            },{
-                'id':'a4',
-                'caption':'% with Master Degree',
-                'value':726,
-                'rangeID':'g2'
-
-            },{
-                'id':'a5',
-                'caption':'Career Earnings',
-                'value':2523674,
-                'rangeID':'g2'
-
-            }]);
-        }
-
-        function getPercentageRangeAndAccess(callback){
-            callback([{
-                'attrID':'a1',
-                'selected':true
-            },{
-                'attrID':'a2',
-                'selected':false
-            },{
-                'attrID':'a3',
-                'selected':false
-            },{
-                'attrID':'a4',
-                'selected':true
-            },{
-                'attrID':'a5',
-                'selected':true
-            }]);
-        }
-
-        function fetchAttributes(callback){
-            var groupMap = {};
+        
+        function fetchAttributes(attributes,callback){
+            var rangeGroupMap = {};
             var attributeMap = {};
 
-            angular.forEach($scope.groups,function(group){
-                groupMap[group.lookupId] = group; 
-                group.selected = false;
+            angular.forEach($scope.rangeGroups,function(rangeGroup){
+                rangeGroupMap[rangeGroup.lookupId] = rangeGroup; 
+                rangeGroup.selected = false;
             });
 
-            $scope.groups[0].selected = true;
-            $scope.selectedGroup = $scope.groups[0];
-            
-            getAttributes(function(attributes){
-                attributes = attributes || [];
+            $scope.rangeGroups[0].selected = true;
+            $scope.selectedRangeGroup = $scope.rangeGroups[0];
+
+            $dataService.getFromCache('CBSprofiles/' + $scope.homeHierarchyId + '/homedata',
+            function(homeData){
                 angular.forEach(attributes,function(attribute){
-                    attributeMap[attribute.id] = attribute;
-                    var group = groupMap[attribute.rangeID]; 
-                    if(group != null){
-                        group.attributes = group.attributes || [];
-                        group.attributes.push(attribute);
+                    var temp = attribute.sourceLookup.toLowerCase();
+                    attribute.homeValue = homeData[0][temp];
+                    attributeMap[attribute.attributeId] = attribute;
+                    var rangeGroup = rangeGroupMap[attribute.attributeGroupId]; 
+                    if(rangeGroup != null){
+                        rangeGroup.attributes = rangeGroup.attributes || [];
+                        rangeGroup.attributes.push(attribute);
                     }
-                })
-                callback(attributeMap);
-                return;
+                });
+            }); 
+
+            callback(attributeMap);
+            return;
+        }
+
+        function criteriaRange(attributeMap){
+            $dataService.getFromCache('criteriaRanges?cbSprofileId=',function(permissions){
+                permissions = permissions || [];
+                angular.forEach(permissions,function(permission){
+                    var attribute = attributeMap[permission.attributeId];
+                    if(attribute != null){
+                        attribute.minPercent = permission.minPercent;
+                        attribute.maxPercent = permission.maxPercent;
+                        attribute.selected = true;
+                    }
+                });
             });
         }
-        
 
-        function PercentageRangeAndAccess(attributeMap){
-            getPercentageRangeAndAccess(function(percentageRangeAndAccess){
-                percentageRangeAndAccess = percentageRangeAndAccess || [];
-                angular.forEach(percentageRangeAndAccess,function(percentageRangeAndAccess){
-                    var attribute = attributeMap[percentageRangeAndAccess.attrID];
-                    if(attribute != null && percentageRangeAndAccess.selected === true){
-                        attribute.selected = percentageRangeAndAccess.selected;
-                    }
-                })
+        function selectRangeGroup(rangeGroup){
+            angular.forEach($scope.rangeGroups,function(rangeGroup){
+                rangeGroup.selected = false;
             })
-        }
-
-        function selectGroup(group){
-            angular.forEach($scope.groups,function(group){
-                group.selected = false;
-            })
-            group.selected = true;
-            $scope.selectedGroup = group;
+            rangeGroup.selected = true;
+            $scope.selectedRangeGroup = rangeGroup;
         }
 
         function getSelectedAttributesCount(attributes){
@@ -267,44 +198,44 @@ function($scope,$dataService,$routeParams,$cbsCache) {
         }
 
         function increasePercentage(attribute){
-            if(attribute.maximumPercentage === null){
-                attribute.maximumValue = null;
+            if(attribute.maxPercent === null){
+                attribute.maxValue = null;
             }else{
-                attribute.maximumValue = attribute.value + (attribute.maximumPercentage*attribute.value)/100 ;
+                attribute.maxValue = attribute.homeValue + (attribute.maxPercent*attribute.homeValue)/100 ;
             }
         }
 
         function decreasePercentage(attribute){
-            if(attribute.minimumPercentage === null){
-                attribute.minimumValue = null;
+            if(attribute.minPercent === null){
+                attribute.minValue = null;
             }
             else{
-                attribute.minimumValue = attribute.value - (attribute.minimumPercentage*attribute.value)/100 ;
+                attribute.minValue = attribute.homeValue - (attribute.minPercent*attribute.homeValue)/100 ;
             }
         }
 
         function changeMinimumPercentage(attribute){
-            if(attribute.minimumValue === null){
-                attribute.minimumPercentage =null;
+            if(attribute.minValue === null){
+                attribute.minPercent =null;
             }else{
-                attribute.minimumPercentage = ((attribute.value - attribute.minimumValue)/attribute.value)*100;
+                attribute.minPercent = ((attribute.homeValue - attribute.minValue)/attribute.homeValue)*100;
             }
         }
 
         function changeMaximumPercentage(attribute){
-            if(attribute.maximumValue === null){
-                attribute.maximumPercentage = null;
+            if(attribute.maxValue === null){
+                attribute.maxPercent = null;
             }else{
-                attribute.maximumPercentage = ((attribute.maximumValue - attribute.value)/attribute.value)*100;
+                attribute.maxPercent = ((attribute.maxValue - attribute.homeValue)/attribute.homeValue)*100;
             }
         }
 
         function updateRangeCriteriaCount(){
-            angular.forEach($scope.groups,function(group){
-                group.selectedAttributeCount = 0;
-                angular.forEach(group.attributes,function(attribute){
+            angular.forEach($scope.rangeGroups,function(rangeGroup){
+                rangeGroup.selectedAttributeCount = 0;
+                angular.forEach(rangeGroup.attributes,function(attribute){
                     if(attribute.selected === true){
-                        group.selectedAttributeCount++;
+                        rangeGroup.selectedAttributeCount++;
                     }
                 })
             })
@@ -356,19 +287,34 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             }
         }
 
+        function filterRangeGroups(type){
+            if(type.lookupId === 511 || type.lookupId === 512 ||
+            type.lookupId === 513 || type.lookupId === 514 || type.lookupId === 515){
+                return type;
+            }
+        }
+
         function init(){
 
             //get the routeParameter i.e profile id and home district id
+
             $scope.cbsProfileId = $routeParams.profileId;
             $scope.homeHierarchyId = $routeParams.homeDistrictId;
-            $dataService.get('lookups?lookupType.in=HierarchyTypes,SchoolTypes',function(hierarchyTypes){
-                $scope.schoolTypes = hierarchyTypes.filter(filterSchoolTypes);
-                $scope.types = hierarchyTypes.filter(filterHierarchyTypes).reverse();
+            $dataService.get('lookups?lookupType.in=HierarchyTypes,SchoolTypes,RangeGroups',
+            function(lookUpTypes){
+                $scope.schoolTypes = lookUpTypes.filter(filterSchoolTypes);
+                $scope.types = lookUpTypes.filter(filterHierarchyTypes).reverse();
+                $scope.rangeGroups = lookUpTypes.filter(filterRangeGroups);
                 $dataService.get('hierarchy',function(hierarchy){
-                if($scope.types != null && hierarchy != null){
-                    fetchOptions(hierarchy,criteriaHierarchy);
-                }
+                    if($scope.types != null && hierarchy != null){
+                        fetchOptions(hierarchy,criteriaHierarchy);
+                    }
                 });
+                $dataService.get('attributes',function(attributes){
+                    if($scope.rangeGroups != null & attributes != null){
+                        fetchAttributes(attributes,criteriaRange);
+                    }
+                })
             });
             
             
@@ -381,9 +327,8 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 var clusterId = homeData[0].clusterId;
 
                 var str = countyId+','+iuId+','+regionId+','+clusterId;
-                console.log('str',str);
 
-                $dataService.get('hierarchy?hierarchyId.in=' + 
+                $dataService.getFromCache('hierarchy?hierarchyId.in=' + 
                 str,function(data){
                     if(data != null){
                         $scope.quickPickTypes = data.reverse();
@@ -391,13 +336,7 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                     }
                     
                 })
-            })
-            
-            getGroups(function(groups){
-                $scope.groups = groups;
-                fetchAttributes(PercentageRangeAndAccess);
-            });            
-            console.log($cbsCache.get('homeDistrictId'));
+            })            
 }
 
         $scope.links = [{
