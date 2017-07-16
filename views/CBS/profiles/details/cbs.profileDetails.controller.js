@@ -19,6 +19,12 @@ function($scope,$dataService,$routeParams,$cbsCache) {
     $scope.currentSelectedCriteria = 'Geo-Criteria';
     $scope.valid = false;
         
+    /*
+    ################################################################################
+                            Geo Criteria
+    ################################################################################
+    */
+
         function fetchOptions(hierarchy, callback, index) {
             index = index || 0 ;
             if ($scope.types.length <= index) {
@@ -105,6 +111,17 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             })
         }
 
+    /*
+    ################################################################################
+                            End of Geo Criteria
+    ################################################################################
+    */
+    /*
+    ################################################################################
+                                 Quick Pick
+    ################################################################################
+    */
+    
         function populateQuickPickTypeAccess(){
 
             $dataService.get('CBSprofiles/' + $scope.cbsProfileId,function(profile){
@@ -134,7 +151,17 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 }
             });
         }
-        
+    /*
+    ################################################################################
+                            End of Quick Pick
+    ################################################################################
+    */    
+    /*
+    ################################################################################
+                            Range Criteria
+    ################################################################################
+    */
+
         function fetchAttributes(attributes,callback){
             var rangeGroupMap = {};
             var attributeMap = {};
@@ -241,17 +268,6 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             })
         }
 
-        $scope.master = [{
-            'id':'Geo-Criteria',
-            'selected':true
-        },{
-            'id':'Quick-Pick',
-            'selected':false
-        },{
-            'id':'Range-Criteria',
-            'selected':false
-        }];
-
         function selectCriteria(criteria){
             angular.forEach($scope.master,function(criteria){
                 criteria.selected = false;
@@ -271,9 +287,19 @@ function($scope,$dataService,$routeParams,$cbsCache) {
            })
             link.selected = true;
             viewMap[link.id].selected = true;
-            
         }
 
+    /*
+    ################################################################################
+                           End of Range Criteria
+    ################################################################################
+    */
+    /*
+    ################################################################################
+                           Filtering Out Received LookUp Array
+    ################################################################################
+    */
+    
         function filterSchoolTypes(type){
             if(type.lookupId === 501 || type.lookupId === 502 || type.lookupId === 503){
                 return type;
@@ -293,7 +319,16 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 return type;
             }
         }
-
+    /*
+    ################################################################################
+                            End of Filtering
+    ################################################################################
+    */
+    /*
+    ################################################################################
+                            Initialization
+    ################################################################################
+    */
         function init(){
 
             //get the routeParameter i.e profile id and home district id
@@ -337,7 +372,23 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                     
                 })
             })            
-}
+        }
+    /*
+    ################################################################################
+                            End of Initialization
+    ################################################################################
+    */
+
+        $scope.master = [{
+            'id':'Geo-Criteria',
+            'selected':true
+        },{
+            'id':'Quick-Pick',
+            'selected':false
+        },{
+            'id':'Range-Criteria',
+            'selected':false
+        }];
 
         $scope.links = [{
             'id':'geo-criteria',
