@@ -268,27 +268,6 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             })
         }
 
-        function selectCriteria(criteria){
-            angular.forEach($scope.master,function(criteria){
-                criteria.selected = false;
-            })
-             criteria.selected = true;
-             $scope.currentSelectedCriteria = criteria.id;
-        }
-
-        $scope.setLayout = function(link){
-           var viewMap = {};
-           angular.forEach($scope.views,function(view){
-               viewMap[view.id]=view;
-               view.selected = false;
-           })
-           angular.forEach($scope.links,function(link){
-               link.selected = false;
-           })
-            link.selected = true;
-            viewMap[link.id].selected = true;
-        }
-
     /*
     ################################################################################
                            End of Range Criteria
@@ -299,7 +278,7 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                            Filtering Out Received LookUp Array
     ################################################################################
     */
-    
+
         function filterSchoolTypes(type){
             if(type.lookupId === 501 || type.lookupId === 502 || type.lookupId === 503){
                 return type;
@@ -433,6 +412,27 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             'url':'/views/CBS/profiles/details/i_CheckCriteriaView',
             'selected':false
         }];
+
+        function selectCriteria(criteria){
+            angular.forEach($scope.master,function(criteria){
+                criteria.selected = false;
+            })
+             criteria.selected = true;
+             $scope.currentSelectedCriteria = criteria.id;
+        }
+
+        $scope.setLayout = function(link){
+           var viewMap = {};
+           angular.forEach($scope.views,function(view){
+               viewMap[view.id]=view;
+               view.selected = false;
+           })
+           angular.forEach($scope.links,function(link){
+               link.selected = false;
+           })
+            link.selected = true;
+            viewMap[link.id].selected = true;
+        }
 
         init();
     }
