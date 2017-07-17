@@ -5,7 +5,7 @@
                 include ../shared/i_SideProfileView
             .col-md-9.profile-container
                 .row
-                    .col-md-4(ng-repeat='profile in profiles' ng-if="$index != index")
+                    .col-md-4(ng-repeat='profile in profiles' ng-if="profile.cbSprofileId != id")
                         .panel.panel-default.profile
                             .panel-heading.profile-heading 
                                 a(href="/profiles/{{profile.cbSprofileId}}/{{profile.homeHierarchyId}}/criteria" ng-click="changeProfile(profile)"){{profile.cbSprofileName}}

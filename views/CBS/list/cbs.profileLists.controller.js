@@ -13,7 +13,7 @@ function($scope,$dataService,$accessService,$cbsCache) {
         function changeProfile(profile){
             $cbsCache.put('homeDistrictId',profile.homeHierarchyId);
             $cbsCache.put('recentProfile',profile)
-            $cbsCache.put('index',$scope.profiles.indexOf(profile));
+            $cbsCache.put('id',profile.cbSprofileId);
             // console.log($scope.profiles);
             // console.log(profile)
             // console.log('first'+$cbsCache.get('index'))
@@ -34,11 +34,11 @@ function($scope,$dataService,$accessService,$cbsCache) {
                     var recentProfile = $cbsCache.get('recentProfile');
                     if(recentProfile){
                         $scope.recentProfile = recentProfile;
-                        $scope.index = $cbsCache.get('index');
-                        console.log($scope.index);
+                        $scope.id = $cbsCache.get('id');
+                        //console.log($scope.index);
                     }else{
                         $scope.recentProfile = $scope.profiles[0];
-                        $scope.index = 0;
+                        $scope.id = $scope.profiles[0].cbSprofileId;
                     }
                 }
             })
