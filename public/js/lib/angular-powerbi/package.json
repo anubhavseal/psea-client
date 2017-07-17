@@ -1,0 +1,129 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "angular-powerbi",
+        "scope": null,
+        "escapedName": "angular-powerbi",
+        "name": "angular-powerbi",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "D:\\Projects\\PSEA\\PSEAClient"
+    ]
+  ],
+  "_from": "angular-powerbi@latest",
+  "_id": "angular-powerbi@1.0.0",
+  "_inCache": true,
+  "_location": "/angular-powerbi",
+  "_nodeVersion": "6.5.0",
+  "_npmOperationalInternal": {
+    "host": "packages-16-east.internal.npmjs.com",
+    "tmp": "tmp/angular-powerbi-1.0.0.tgz_1472772584932_0.07491902471520007"
+  },
+  "_npmUser": {
+    "name": "powerbi",
+    "email": "nugetpowerbi@microsoft.com"
+  },
+  "_npmVersion": "3.10.3",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "angular-powerbi",
+    "scope": null,
+    "escapedName": "angular-powerbi",
+    "name": "angular-powerbi",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/angular-powerbi/-/angular-powerbi-1.0.0.tgz",
+  "_shasum": "7cf4788785abae65edd3e2985fe424cd8f9f1ebf",
+  "_shrinkwrap": null,
+  "_spec": "angular-powerbi",
+  "_where": "D:\\Projects\\PSEA\\PSEAClient",
+  "author": {
+    "name": "Microsoft PowerBI Team"
+  },
+  "dependencies": {
+    "angular": "^1.5.3",
+    "powerbi-client": "^2.1.0"
+  },
+  "description": "Angular library which contains components to embed PowerBi visuals.",
+  "devDependencies": {
+    "angular-mocks": "^1.5.3",
+    "del": "^2.2.1",
+    "gulp": "^3.9.1",
+    "gulp-header": "^1.8.7",
+    "gulp-help": "^1.6.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-tslint": "^6.1.1",
+    "gulp-typescript": "^2.12.2",
+    "gulp-uglify": "^1.5.3",
+    "jasmine": "^2.4.1",
+    "jquery": "^2.2.3",
+    "karma": "^0.13.22",
+    "karma-chrome-launcher": "^0.2.3",
+    "karma-coverage": "^0.5.5",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-jasmine": "^0.3.8",
+    "karma-ng-html2js-preprocessor": "^0.2.1",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-spec-reporter": "0.0.25",
+    "merge2": "^1.0.2",
+    "phantomjs-prebuilt": "^2.1.7",
+    "run-sequence": "^1.1.5",
+    "ts-loader": "^0.8.1",
+    "tslint": "^3.15.1",
+    "typescript": "^1.8.10",
+    "typings": "^1.3.3",
+    "webpack": "^1.12.14",
+    "webpack-stream": "^3.1.0",
+    "yargs": "^4.4.0"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "7cf4788785abae65edd3e2985fe424cd8f9f1ebf",
+    "tarball": "https://registry.npmjs.org/angular-powerbi/-/angular-powerbi-1.0.0.tgz"
+  },
+  "files": [
+    "dist"
+  ],
+  "gitHead": "c706e994ee8dafc4d424fb7c0c7836e81fecdd26",
+  "keywords": [
+    "microsoft",
+    "angular",
+    "powerbi",
+    "embedded",
+    "visuals"
+  ],
+  "license": "MIT",
+  "main": "dist/angular-powerbi.js",
+  "maintainers": [
+    {
+      "name": "powerbi",
+      "email": "nugetpowerbi@microsoft.com"
+    }
+  ],
+  "name": "angular-powerbi",
+  "optionalDependencies": {},
+  "publishConfig": {
+    "tag": "beta"
+  },
+  "readme": "ERROR: No README data found!",
+  "scripts": {
+    "build": "gulp build",
+    "gulp": "gulp",
+    "prepublish": "typings install && gulp build",
+    "test": "gulp test",
+    "typings": "typings",
+    "version": "gulp build && git add ."
+  },
+  "typings": "dist/angular-powerbi.d.ts",
+  "version": "1.0.0"
+}
