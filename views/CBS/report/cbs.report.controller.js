@@ -27,21 +27,6 @@ app.controller('cbs.report.controller', ['$scope','$dataService',function($scope
                 }
             })
 			
-			/*
-			  var config= {
-    type: 'report',
-    tokenType: models.TokenType.Embed,
-    accessToken: txtAccessToken,
-    embedUrl: txtEmbedUrl,
-    id: txtEmbedReportId,
-    permissions: permissions,
-    settings: {
-        filterPaneEnabled: true,
-        navContentPaneEnabled: true
-    }
-};
-			*/
-
             //Once we get the token, rest should be all view
             //Report needs to be rendered in an iFrame
             //Not sure if anything more is required here
