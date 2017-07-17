@@ -24,10 +24,10 @@ function($scope,$dataService,$accessService,$cbsCache) {
             //get current logged in user
             var activeUser = $accessService.getActiveUser();
             var ownerId = activeUser.userId;
-            
+            console.log(ownerId);
             //fetch all profiles under current logged in user
             $dataService.get('CBSprofiles?ownerId='+ ownerId,function(profiles){
-                if(profiles != null){
+                if(profiles.length != 0){
                     $scope.profiles = profiles;
                     //fetch from cache the most recent profile
                     //and the index at which it was stored in profiles Array
