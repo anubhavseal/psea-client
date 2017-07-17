@@ -7,6 +7,12 @@ html,body,.page-container,main{
 	font-family: 'Lato', sans-serif !important;
 }
 
+.label-ellipsis,.ellipsis{
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+
 .profile-container{
 	padding-right: 75px;
     padding-left: 30px;
@@ -19,9 +25,12 @@ html,body,.page-container,main{
 	border-radius: 3px;
     border-color:#e8e8e8;
     border-width: 2px;
+	height: 125px;
+    width: 90%;
 }
 
-.profile-heading{
+.panel-default .profile-heading{
+	color: #02b6ff;
 	padding: 2px 15px 15px 0px;
     font-size: large;
 	text-transform: capitalize;

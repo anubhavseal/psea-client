@@ -15,17 +15,17 @@
             .row.checked-container(ng-show='type.group1Count > 0' style='padding:10px;{{type.group1Count > 0 && type.group2Count > 0 ? "border-bottom:1px solid lightgray" : ""}}')
                 div(ng-repeat="option in type.options | filter: { group: 1, hierarchyName: searchData}" ng-class="{'col-md-6':type.lookupId === 523 || type.lookupId === 525, 'col-md-4':lookupId != 523 || type.lookupId != 525}" )
                     input.cbs-input-box(type="checkbox"  ng-checked="option.selected" ng-model="option.selected" ng-attr-id="{{option.hierarchyId}}")
-                    label(for="{{option.hierarchyId}}") &nbsp;{{option.hierarchyName}}                 
+                    label.label-ellipsis(for="{{option.hierarchyId}}") &nbsp;{{option.hierarchyName}}                 
             .row.unchecked-container(ng-show='type.group2Count > 0' style='padding:10px;')
-                div(ng-repeat="option in type.options | filter: { group: 2, hierarchyName: searchData}" ng-class="{'col-md-6':type.lookupId === 523 || type.lookupId === 525, 'col-md-4':lookupId != 523 || type.lookupId != 525}" )
+                .col-md-4(ng-repeat="option in type.options | filter: { group: 2, hierarchyName: searchData}"  style="")
                     input.cbs-input-box(type="checkbox" ng-checked="option.selected" ng-model="option.selected" ng-attr-id="{{option.hierarchyId}}")
-                    label.text-muted(for="{{option.hierarchyId}}") &nbsp;{{option.hierarchyName}}
+                    label.label-ellipsis.text-muted( for="{{option.hierarchyId}}") &nbsp;{{option.hierarchyName}}
 .row.school-type-container
     .col-md-3
         span School Type
     div(ng-repeat="schoolType in schoolTypes" ng-class="{'col-md-2':schoolType.lookupId === 502,'col-md-3':schoolType.lookupId != 502}")
         input.cbs-input-box(type="checkbox" ng-attr-id="{{schoolType.lookupName}}")
-        label(ng-attr-for="{{schoolType.lookupName}}") &nbsp;{{schoolType.lookupName}}
+        label.label-ellipsis(ng-attr-for="{{schoolType.lookupName}}") &nbsp;{{schoolType.lookupName}}
 .row
     .col-md-12
         button.btn.btn-success.btn-lg.pull-right Select Profile
