@@ -6,11 +6,9 @@ nav.navbar
 				span.icon-bar(style='background-color:#02b6ff')
 				span.icon-bar(style='background-color:#02b6ff')
 				span.icon-bar(style='background-color:#02b6ff')
-		div(class='pull-left' style="display:inline-block;margin: 15px 25px 0px 0px;")
-			a(href='#' ng-click="gotoHome()")
-				span.glyphicon.glyphicon-home(style="font-size:20px;")
 		div#Logo(class="navbar-left headerLogo" style="cursor:pointer" ng-click="gotoHome()")
-			img.img-responsive(src='/images/psea_logo.png')
+			a(href="/profiles")
+				img.img-responsive(src='/images/psea_logo.png')
 		ol.breadcrumb.pull-left(ng-show='user != null')
 			li(ng-repeat='breadcrumb in breadcrumbs')
 				a(href='#' ng-click='showBreadcrumb(breadcrumb)' style='text-transform: capitalize') {{breadcrumb.caption}}
@@ -25,7 +23,10 @@ nav.navbar
 			div(ng-if='user == null')
 				a.dropdown-toggle(aria-expanded='false' aria-haspopup='true' role='button' data-toggle='dropdown' href='#' ng-click='signIn()')
 					span#userdetails(data-userId="-" data-emailId="Sign In" data-userName="Sign In")
-						| Sign In					
+						| Sign In	
+		div(class='pull-right' style="display:inline-block;margin: 15px 25px 0px 0px;")
+			a(href='/profiles' ng-click="gotoHome()")
+				span.glyphicon.glyphicon-home(style="font-size:20px;")				
 		form.navbar-form.pull-right()
 			.has-icon-left(ng-if='searchPossible === true')
 				input.form-control.input-rounded(type='text', placeholder='Search Profiles', ng-change='search()', ng-keydown='onSearchTextKeyPress($event)', ng-model='searchOptions.text', style='width:250px')
