@@ -14,10 +14,33 @@ app.controller('cbs.report.controller', ['$scope','$dataService',function($scope
             $dataService.get('reports/1/token', function(report){
                 console.log(report)
                 if(report != null){
+					report.options = {
+						"tokenType": 1,
+						type: 'report',
+						settings: {
+							filterPaneEnabled: false,
+							navContentPaneEnabled: false
+						}
+					};
                     $scope.report = report;
                     $scope.report.IEmbedConfiguration = {};
                 }
             })
+			
+			/*
+			  var config= {
+    type: 'report',
+    tokenType: models.TokenType.Embed,
+    accessToken: txtAccessToken,
+    embedUrl: txtEmbedUrl,
+    id: txtEmbedReportId,
+    permissions: permissions,
+    settings: {
+        filterPaneEnabled: true,
+        navContentPaneEnabled: true
+    }
+};
+			*/
 
             //Once we get the token, rest should be all view
             //Report needs to be rendered in an iFrame
