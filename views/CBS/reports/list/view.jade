@@ -5,7 +5,7 @@
             .col-md-9.profile-container
                 .row(ng-repeat='report in reports')
                     h2 {{report.reportName}}
-                    .col-md-4(ng-repeat='innerreport in reportTabs')
+                    .col-md-4(ng-repeat='reportTab in report.reportTabs')
                         .panel.panel-default.profile
                             .panel-heading.profile-heading.ellipsis
-                                a(href="/reports/{{innerreport.reportTabId}}"){{innerreport.tabName}}
+                                a(href="/reports/{{reportTab.reportTabId}}") {{reportTab.tabName}}
