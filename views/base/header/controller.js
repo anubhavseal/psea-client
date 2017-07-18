@@ -238,7 +238,7 @@ angular.module('base')
 		function setLayout(){
 			var url = '' + $window.location;
 			var bHideMenuBar = $accessService.getActiveUser() == null || isURLSatisfied(url, $constants.MenuLessRoutes) || isURLSatisfied(url, [$constants.AcceptAgreementPage, $constants.ChangePasswordPage, $constants.SelectTenantPage]);
-			var bHideHeader = isURLSatisfied(url, $constants.HeaderLessRoutes) || isURLSatisfied(url, $constants.UnsecuredRoutes) || isURLSatisfied(url, []);
+			var bHideHeader = isURLSatisfied(url, $constants.HeaderLessRoutes) || isURLSatisfied(url, $constants.UnsecuredRoutes) || isURLSatisfied(url, [$constants.LoginPage]);
 			
 			if (bHideHeader) {
 				angular.element('body').addClass('nav-open');

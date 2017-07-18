@@ -39,4 +39,4 @@
 //= require base/dashboard/filter.service.js
 //= require base/dashboard/graph.service.js
 //= require base/dashboard/settings.controller.js
-
+//= require base/popup.service.js
