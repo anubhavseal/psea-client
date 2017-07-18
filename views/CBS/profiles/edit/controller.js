@@ -1,4 +1,4 @@
-angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$dataService', '$routeParams', '$loader', '$recentProfile', function($scope, $dataService, $routeParams, $loader, $recentProfile) {
+angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$dataService', '$routeParams', '$loader', '$recentProfile', '$notifier', function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier) {
 	$scope.showLink = showLink;
 	
     $scope.getSelectedCount = getSelectedCount;
@@ -16,6 +16,8 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
     $scope.selectCriteria = selectCriteria;
     $scope.currentSelectedCriteria = 'Geo-Criteria';
 	$scope.getSelectedAttributeCount = getSelectedAttributeCount;
+	
+	$scope.updateQuickPicks = updateQuickPicks;
         
     /*
     ################################################################################
@@ -100,9 +102,21 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 			
 			console.log('criteriaRanges', criteriaRanges);
 			
-			$dataService.synchronize(options, function(response){
-				console.log('response', response);
-				criteriaHierarchy();
+			$dataService.synchronize(options, function(results){
+				
+				var errorCount = 0;
+				angular.forEach(results, function(result){
+					if (result.status == 'E') {
+						errorCount++;
+					}
+				});
+				
+				if (errorCount > 0) {
+					$notifier.error('Error encountered.');
+				} else {
+					$notifier.success('Profile updated successfully.');
+					criteriaHierarchy();
+				}
 			});
         }
     /*
@@ -117,7 +131,18 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
     ################################################################################
     */
 
-        
+        function updateQuickPicks() {
+			var cbSprofileId = $scope.profile.cbSprofileId;
+			var profile = {};
+			
+			angular.forEach($scope.quickPickTypes, function(quickPickType){
+				profile[quickPickType.field] = quickPickType.selected;
+			});
+			
+			$dataService.put('CBSprofiles/' + cbSprofileId, profile, function(response){
+				$notifier.success('Profile updated successfully.');
+			});
+		}
 
         function criteriaRange(attributeMap){
             $dataService.get('criteriaRanges?cbSprofileId=' + $scope.profile.cbSprofileId,function(permissions){
