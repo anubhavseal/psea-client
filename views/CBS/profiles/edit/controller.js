@@ -34,11 +34,10 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 		}
 
         function criteriaHierarchy(){
-
             var optionMap = {};
             var typeMap = {};
             $dataService.get('criteriaHierarchy?cbSprofileId='+ $scope.profile.cbSprofileId, function(permissions){
-                permissions = permissions || [];
+				permissions = permissions || [];
                 angular.forEach($scope.types, function(type){
                     typeMap[type.lookupId] = type;
                     type.group1Count = 0;
@@ -47,6 +46,7 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
                         optionMap[option.hierarchyId] = option;
                         option.group = 2;
                         option.selected = false;
+						option.criteriaHierarchyId = null;
                         type.group2Count++;
                     });
                 });
@@ -56,6 +56,7 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
                     if (option != null) {
                         option.group = 1;
                         option.selected = true;
+						option.criteriaHierarchyId = permission.criteriaHierarchyId;
                         var type = typeMap[option.hierarchyType];
                         type.group1Count++;
                         type.group2Count--;
@@ -85,19 +86,24 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
         }
 
         function updateGeoCriteriaCount(type){
-            var selected = 0;
-            var unselected = 0;
-            angular.forEach(type.options,function(option){
-                if(option.selected === true){
-                    selected++;
-                    option.group = 1;
-                }else{
-                    unselected++;
-                    option.group =2;
-                }
-                type.group1Count = selected;
-                type.group2Count = unselected;
-            })
+			var criteriaRanges = [];
+			var cbSprofileId = $scope.profile.cbSprofileId;
+			var options = {'apiURL': 'criteriaHierarchy', 'primaryKeyField': 'criteriaHierarchyId', 'data': criteriaRanges};
+			
+			angular.forEach(type.options,function(option){
+				if (option.selected && option.criteriaHierarchyId == null) {
+					criteriaRanges.push({'cbSprofileId': cbSprofileId, 'hierarchyId': option.hierarchyId})
+				} else if (!option.selected && option.criteriaHierarchyId != null){
+					criteriaRanges.push({'__row_mode': 'D', 'criteriaHierarchyId': option.criteriaHierarchyId})
+				}
+			});
+			
+			console.log('criteriaRanges', criteriaRanges);
+			
+			$dataService.synchronize(options, function(response){
+				console.log('response', response);
+				criteriaHierarchy();
+			});
         }
     /*
     ################################################################################
