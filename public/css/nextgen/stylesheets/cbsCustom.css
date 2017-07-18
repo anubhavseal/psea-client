@@ -6,7 +6,9 @@ html,body,.page-container,main{
 .col-md-8{
 	font-family: 'Lato', sans-serif !important;
 }
-
+.label-left{
+	text-align: left !important;
+}
 .label-ellipsis,.ellipsis{
 	overflow:hidden;
 	text-overflow:ellipsis;
