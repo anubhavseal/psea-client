@@ -17,7 +17,7 @@ block content
                     select.form-control.pull-left(id="district" ng-model="homeDistrict" ng-options="district.hierarchyName for district in districts")
                 .col-md-2
             .form-group
-                .col-md-6
+                .col-md-4
                 .col-md-4
                     label.radio-inline.pull-left 
                         input(type="radio" name="w" ng-model="eaespFlag" ng-value="false" ng-checked="true")
@@ -25,4 +25,6 @@ block content
                     label.radio-inline.pull-left 
                         input(type="radio" name="w" ng-model="eaespFlag" ng-value="true") 
                         | &nbsp;&nbsp; ESP 
-                .col-md-2
+                .col-md-4
+        .col-md-12
+            button.btn.btn-success.pull-right(type="submit") Create Profile
