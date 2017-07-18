@@ -35,7 +35,7 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 			return selected;
 		}
 
-        function criteriaHierarchy(){
+        function populateHierarchyPermissions(){
             var optionMap = {};
             var typeMap = {};
             $dataService.get('criteriaHierarchy?cbSprofileId='+ $scope.profile.cbSprofileId, function(permissions){
@@ -100,7 +100,43 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 				}
 			});
 			
-			console.log('criteriaRanges', criteriaRanges);
+			$dataService.synchronize(options, function(results){
+				
+				var errorCount = 0;
+				angular.forEach(results, function(result){
+					if (result.status == 'E') {
+						errorCount++;
+					}
+				});
+				
+				if (errorCount > 0) {
+					$notifier.error('Error encountered.');
+				} else {
+					$notifier.success('Profile updated successfully.');
+					populateHierarchyPermissions();
+				}
+			});
+        }
+		
+		function updateRangeCriteriaCount(rangeGroup){
+			if (rangeGroup == null) {
+				angular.forEach($scope.rangeGroups,function(group){
+					if (group.selected) {
+						rangeGroup = group;
+					}
+				})
+			}
+			var criteriaRanges = [];
+			var cbSprofileId = $scope.profile.cbSprofileId;
+			var options = {'apiURL': 'criteriaRanges', 'primaryKeyField': 'criteriaRangeId', 'data': criteriaRanges};
+			
+			angular.forEach(rangeGroup.attributes,function(attribute){
+				if (attribute.selected && attribute.criteriaHierarchyId == null) {
+					criteriaRanges.push({'cbSprofileId': cbSprofileId, 'attributeId': attribute.attributeId, 'minPercent': attribute.minPercent, 'maxPercent': attribute.maxPercent, 'minValue': attribute.minValue, 'maxValue': attribute.maxValue})
+				} else if (!attribute.selected && attribute.criteriaRangeId != null){
+					criteriaRanges.push({'__row_mode': 'D', 'criteriaRangeId': attribute.criteriaRangeId})
+				}
+			});
 			
 			$dataService.synchronize(options, function(results){
 				
@@ -115,7 +151,7 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 					$notifier.error('Error encountered.');
 				} else {
 					$notifier.success('Profile updated successfully.');
-					criteriaHierarchy();
+					populateRangePermissions();
 				}
 			});
         }
@@ -144,7 +180,18 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 			});
 		}
 
-        function criteriaRange(attributeMap){
+        function populateRangePermissions(){
+			var attributeMap = {};
+			angular.forEach($scope.attributes, function(attribute){
+				attributeMap[attribute.attributeId] = attribute;
+				attribute.minPercent = null;
+				attribute.maxPercent = null;
+				attribute.minValue = null;
+				attribute.maxValue = null;
+				attribute.selected = false;
+				attribute.criteriaRangeId = null;
+			});
+			
             $dataService.get('criteriaRanges?cbSprofileId=' + $scope.profile.cbSprofileId,function(permissions){
                 permissions = permissions || [];
                 angular.forEach(permissions,function(permission){
@@ -152,7 +199,10 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
                     if(attribute != null){
                         attribute.minPercent = permission.minPercent;
                         attribute.maxPercent = permission.maxPercent;
+						attribute.minValue = permission.minValue;
+                        attribute.maxValue = permission.maxValue;
                         attribute.selected = true;
+						attribute.criteriaRangeId = permission.criteriaRangeId;
                     }
                 });
             });
@@ -209,16 +259,7 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
             }
         }
 
-        function updateRangeCriteriaCount(){
-            angular.forEach($scope.rangeGroups,function(rangeGroup){
-                rangeGroup.selectedAttributeCount = 0;
-                angular.forEach(rangeGroup.attributes,function(attribute){
-                    if(attribute.selected === true){
-                        rangeGroup.selectedAttributeCount++;
-                    }
-                })
-            })
-        }
+        
 
     /*
     ################################################################################
@@ -314,7 +355,7 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 					rangeGroup.attributes = [];
 				});
 				
-				var attributeMap = {};
+				
 				
 				angular.forEach(attributes, function(attribute){
 					attribute.homeValue = attribute.sourceLookup == null || attribute.sourceLookup == '' ? null : $scope.homeDistrict[attribute.sourceLookup.toLowerCase()];
@@ -324,14 +365,18 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 						rangeGroup.attributes.push(attribute);
 					}
 					
-					attributeMap[attribute.attributeId] = attribute;
+					
 				});
 				
 				if ($scope.rangeGroups != null && $scope.rangeGroups.length > 0) {
 					selectRangeGroup($scope.rangeGroups[0]);
 				}
 				
-				criteriaRange(attributeMap);
+				$scope.attributes = attributes;
+				
+				
+				
+				populateRangePermissions();
 			})
 		}
 		
@@ -352,7 +397,7 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 					}
 				});
 				
-				criteriaHierarchy();
+				populateHierarchyPermissions();
 			});
 		}
 	
