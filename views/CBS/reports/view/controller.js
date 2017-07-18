@@ -16,7 +16,7 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
 						type: 'report',
 						settings: {
 							filterPaneEnabled: false,
-							navContentPaneEnabled: false
+							navContentPaneEnabled: true
 						}
 					};
                     $scope.report = report;

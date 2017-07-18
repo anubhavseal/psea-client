@@ -28,20 +28,20 @@
 				.panel-title {{rangeGroup.lookupName}}
 			.panel-body
 				.row(ng-repeat="attribute in rangeGroup.attributes|filter:{selected:true}")
-					.col-md-4
-						span {{attribute.attributeName}}
 					.col-md-2
-						span.text-muted(ng-if="attribute.homeValue != null && attribute.homeValue != ''") Value:
+						span {{attribute.attributeName}}
+					.col-md-3
+						span.text-muted(ng-if="attribute.homeValue != null && attribute.homeValue != ''") Home District:&nbsp;
 						span {{attribute.homeValue}}
 					.col-md-1
-						span.text-muted(ng-if="attribute.minPercent != null && attribute.minPercent != ''") Min%:
+						span.text-muted(ng-if="attribute.minPercent != null && attribute.minPercent != ''") Min%:&nbsp;
 						span {{attribute.minPercent}}
 					.col-md-2
-						span.text-muted(ng-if="attribute.minValue != null && attribute.minValue != ''") Min Value:
+						span.text-muted(ng-if="attribute.minValue != null && attribute.minValue != ''") Min Value:&nbsp;
 						span {{attribute.minValue}}
-					.col-md-1
-						span.text-muted(ng-if="attribute.maxPercent != null && attribute.maxPercent != ''") Max %:
+					.col-md-2
+						span.text-muted(ng-if="attribute.maxPercent != null && attribute.maxPercent != ''") Max %:&nbsp;
 						span {{attribute.maxPercent}}
 					.col-md-2
-						span.text-muted(ng-if="attribute.maxValue != null && attribute.maxValue != ''") Max Value:
+						span.text-muted(ng-if="attribute.maxValue != null && attribute.maxValue != ''") Max Value:&nbsp;
 						span {{attribute.maxValue}}

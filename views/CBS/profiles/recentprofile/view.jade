@@ -9,7 +9,7 @@
 	.row
 		.col-md-12
 			h3 {{recentProfile.cbSprofileName}}
-			span {{$moment.fromNow(recentProfile.lastAccessedOn)}}
+			span {{$moment.fromNow(recentProfile.lastAccessedAt)}}
 			div(style='padding-top:20px') 
 				a(href="/profiles" style="color:white" ) (View All Profiles)
 	.row(style="padding-bottom:15px;")

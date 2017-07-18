@@ -13,7 +13,7 @@ angular.module('base')
 		
 		function setRecentProfile(profile) {
 			if (profile != null) {
-				profile.lastAccessedOn = new Date();
+				profile.lastAccessedAt = new Date();
 			}
 			$cache.session.put("cbs", "recent.profile", profile);
 		}

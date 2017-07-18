@@ -10,5 +10,5 @@
 								a(href="/profiles/{{profile.cbSprofileId}}") {{profile.cbSprofileName}}
 							.panel-body.profile-body
 								span 
-									em {{$moment.fromNow(profile.lastAccessedOn)}}
+									em {{$moment.fromNow(profile.lastAccessedAt)}}
 			button.btn.btn-success.btn-lg.pull-right(type="button" data-toggle='modal', data-target='#createProfile' ng-click="openCreateProfilePopup()") Create New Profile

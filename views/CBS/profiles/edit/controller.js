@@ -84,7 +84,7 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
                     selectedCount++;
                 }
             });
-            return selectedCount == 0 ? 'None Selected' : selectedCount;
+            return selectedCount;
         }
 
         function updateGeoCriteriaCount(type){
