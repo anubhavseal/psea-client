@@ -106,6 +106,7 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 if(option.selected === true){
                     selected++;
                     option.group = 1;
+                    console.log('##option:' , option)
                 }else{
                     unselected++;
                     option.group =2;
@@ -114,7 +115,6 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 type.group2Count = unselected;
             })
         }
-
     /*
     ################################################################################
                             End of Geo Criteria
