@@ -24,7 +24,7 @@ function($scope,$dataService,$accessService,$cbsCache,$modal) {
             var activeUser = $accessService.getActiveUser();
             var ownerId = activeUser.userId;
             //fetch all profiles under current logged in user
-            $dataService.get('CBSprofiles?ownerId='+ ownerId,function(profiles){
+            $dataService.getFromCache('CBSprofiles?ownerId='+ ownerId,function(profiles){
                 if(profiles.length != 0){
                     $scope.profiles = profiles;
                     //fetch from cache the most recent profile
@@ -48,7 +48,7 @@ function($scope,$dataService,$accessService,$cbsCache,$modal) {
                 animation: $scope.animationsEnabled,
                 templateUrl: '/views/CBS/createProfile/createProfileView',
                 controller: 'cbs.createProfile.controller',
-                size: 'lg',
+                size: 'md',
             });
          } 
 
