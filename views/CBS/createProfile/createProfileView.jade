@@ -1,0 +1,30 @@
+extends ../../layout/modalLayout
+block content
+    .row
+        .col-md-12
+            h3.text-center Create Profile
+        form.form-horizontal(name="createProfile")
+            .form-group
+                .col-md-2
+                label.col-md-3.control-label.label-left(for="profileName") Profile Name
+                .col-md-5
+                    input.form-control.pull-left(type="text" id="profileName" ng-model="profileName" placeholder="Profile Name")
+                .col-md-2
+            .form-group
+                .col-md-2
+                label.col-md-3.control-label.label-left(for="district") Select Home District
+                .col-md-5
+                    select.form-control.pull-left(id="district" ng-model="homeDistrict" ng-options="district.hierarchyName for district in districts")
+                .col-md-2
+            .form-group
+                .col-md-4
+                .col-md-4
+                    label.radio-inline.pull-left 
+                        input(type="radio" name="w" ng-model="eaespFlag" ng-value="false" ng-checked="true")
+                        | &nbsp;&nbsp; EA  
+                    label.radio-inline.pull-left 
+                        input(type="radio" name="w" ng-model="eaespFlag" ng-value="true") 
+                        | &nbsp;&nbsp; ESP 
+                .col-md-4
+        .col-md-12
+            button.btn.btn-success.pull-right(type="submit" ng-click="createProfile()") Create Profile

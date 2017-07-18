@@ -1,12 +1,14 @@
 var app = angular.module('cbs');
 
-app.controller('cbs.profileLists.controller', ['$scope',
+app.controller('cbs.profileLists.controller', [
+'$scope',
 '$dataService',
 '$accessService',
 'cbsCache',
-function($scope,$dataService,$accessService,$cbsCache) {
-    $scope.createProfile = createProfile;
+'$modal',
+function($scope,$dataService,$accessService,$cbsCache,$modal) {
     $scope.changeProfile = changeProfile;
+    $scope.modalInstance = modalInstance;
 
         //Before Going to any other route cache the clicked profile object 
         //and the index at which it was stored in the profiles Array
@@ -14,9 +16,6 @@ function($scope,$dataService,$accessService,$cbsCache) {
             $cbsCache.put('homeDistrictId',profile.homeHierarchyId);
             $cbsCache.put('recentProfile',profile)
             $cbsCache.put('id',profile.cbSprofileId);
-            // console.log($scope.profiles);
-            // console.log(profile)
-            // console.log('first'+$cbsCache.get('index'))
         }
 
         function init(){
@@ -24,9 +23,8 @@ function($scope,$dataService,$accessService,$cbsCache) {
             //get current logged in user
             var activeUser = $accessService.getActiveUser();
             var ownerId = activeUser.userId;
-            console.log(ownerId);
             //fetch all profiles under current logged in user
-            $dataService.get('CBSprofiles?ownerId='+ ownerId,function(profiles){
+            $dataService.getFromCache('CBSprofiles?ownerId='+ ownerId,function(profiles){
                 if(profiles.length != 0){
                     $scope.profiles = profiles;
                     //fetch from cache the most recent profile
@@ -43,15 +41,16 @@ function($scope,$dataService,$accessService,$cbsCache) {
                 }
             })
             
-            //fetch all districts to populate the dropdown for selecting Home District
-            $dataService.get('lookups?lookupId=525',function(hierarchy){
-                $dataService.get('hierarchy?hierarchyType=525',function(districts){
-                    if(hierarchy != null && districts != null){
-                        $scope.districts = districts;
-                    }
-                })
-            })
         }
+
+         function modalInstance(){
+            $modal.open({
+                animation: $scope.animationsEnabled,
+                templateUrl: '/views/CBS/createProfile/createProfileView',
+                controller: 'cbs.createProfile.controller',
+                size: 'md',
+            });
+         } 
 
         init();
 }]);

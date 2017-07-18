@@ -52,7 +52,7 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             var optionMap = {};
             var typeMap = {};
             
-            $dataService.get('criteriaHierarchy?cbSprofileId='+ $scope.cbsProfileId,function(permissions){
+            $dataService.getFromCache('criteriaHierarchy?cbSprofileId='+ $scope.cbsProfileId,function(permissions){
                 permissions = permissions || [];
                 angular.forEach($scope.types, function(type){
                     typeMap[type.lookupId] = type;
@@ -106,6 +106,7 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 if(option.selected === true){
                     selected++;
                     option.group = 1;
+                    console.log('##option:' , option)
                 }else{
                     unselected++;
                     option.group =2;
@@ -114,7 +115,6 @@ function($scope,$dataService,$routeParams,$cbsCache) {
                 type.group2Count = unselected;
             })
         }
-
     /*
     ################################################################################
                             End of Geo Criteria
@@ -128,7 +128,7 @@ function($scope,$dataService,$routeParams,$cbsCache) {
     
         function populateQuickPickTypeAccess(){
 
-            $dataService.get('CBSprofiles/' + $scope.cbsProfileId,function(profile){
+            $dataService.getFromCache('CBSprofiles/' + $scope.cbsProfileId,function(profile){
                 angular.forEach($scope.quickPickTypes,function(quickPickType){
                     if(quickPickType.hierarchyType === 521){
                         quickPickType.hierarchyName = 'Cluster:' + quickPickType.hierarchyName;
@@ -318,17 +318,17 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             $scope.recentProfile = $cbsCache.get('recentProfile');
             $scope.cbsProfileId = $routeParams.profileId;
             $scope.homeHierarchyId = $routeParams.homeDistrictId;
-            $dataService.get('lookups?lookupType.in=HierarchyTypes,SchoolTypes,RangeGroups',
+            $dataService.getFromCache('lookups?lookupType.in=HierarchyTypes,SchoolTypes,RangeGroups',
             function(lookUpTypes){
                 $scope.schoolTypes = lookUpTypes.filter(filterSchoolTypes);
                 $scope.types = lookUpTypes.filter(filterHierarchyTypes).reverse();
                 $scope.rangeGroups = lookUpTypes.filter(filterRangeGroups);
-                $dataService.get('hierarchy',function(hierarchy){
+                $dataService.getFromCache('hierarchy',function(hierarchy){
                     if($scope.types != null && hierarchy != null){
                         fetchOptions(hierarchy,criteriaHierarchy);
                     }
                 });
-                $dataService.get('attributes',function(attributes){
+                $dataService.getFromCache('attributes',function(attributes){
                     if($scope.rangeGroups != null & attributes != null){
                         fetchAttributes(attributes,criteriaRange);
                     }
@@ -336,7 +336,7 @@ function($scope,$dataService,$routeParams,$cbsCache) {
             });
             
             
-            $dataService.get('CBSprofiles/' + $scope.homeHierarchyId + '/homedata',
+            $dataService.getFromCache('CBSprofiles/' + $scope.homeHierarchyId + '/homedata',
             function(homeData){
                 var districtId = homeData[0].districtId;
                 var countyId = homeData[0].countyId;
