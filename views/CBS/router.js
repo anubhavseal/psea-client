@@ -4,8 +4,17 @@ angular.module('cbs')
     .when('/profiles',{
         templateUrl:'/views/CBS/profiles/list/view',
         controller:'cbs.profiles.list.controller'
-    }).when('/profiles/:profileId',{
+    })
+	.when('/profiles/:profileId',{
         templateUrl:'/views/CBS/profiles/edit/view',
         controller:'cbs.profiles.edit.controller'
+    })
+	.when('/reports',{
+        templateUrl:'/views/CBS/reports/list/view',
+        controller:'cbs.reports.list.controller'
+    })
+	.when('/reports/:reportId',{
+        templateUrl:'/views/CBS/reports/view/view',
+        controller:'cbs.reports.view.controller'
     });
 }]);

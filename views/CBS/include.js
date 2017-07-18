@@ -4,6 +4,6 @@
 //= require CBS/profiles/list/controller.js
 //= require CBS/profiles/createnew/controller.js
 //= require CBS/profiles/edit/controller.js
-//= require CBS/reports/cbs.reports.controller.js
-//= require CBS/report/cbs.report.controller.js
+//= require CBS/reports/list/controller.js
+//= require CBS/reports/view/controller.js
 

@@ -1,6 +1,4 @@
-var app = angular.module('cbs');
-
-app.controller('cbs.report.controller', ['$scope','$dataService',function($scope,$dataService) {
+angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$dataService','$routeParams', function($scope,$dataService, $routeParams) {
 
         function init(){
 
@@ -11,7 +9,7 @@ app.controller('cbs.report.controller', ['$scope','$dataService',function($scope
             // (2). check if valid token is already available in the $scope.reports object 
             //If yes, use the report token from there
             //Else, the code below will provide a new token
-            $dataService.get('reports/1/token', function(report){
+            $dataService.get('reports/' + $routeParams.reportId + '/token', function(report){
                 console.log(report)
                 if(report != null){
 					report.options = {
