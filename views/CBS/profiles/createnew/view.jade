@@ -1,0 +1,27 @@
+extends ../../../layout/modalLayout
+block content
+	.row
+		.col-md-12
+			form.form-horizontal(name="createProfile")
+				.form-group
+					.col-md-4
+						label.control-label(for="profileName") Profile Name
+					.col-md-8
+						input.form-control(type="text" id="profileName" ng-model="profile.cbSprofileName" placeholder="Profile Name")
+				.form-group
+					.col-md-4
+						label.control-label(for="district") Home District
+					.col-md-8
+						select.form-control(id="district" ng-model="profile.homeDistrict" ng-options="district.hierarchyName for district in districts")
+				.form-group
+					.col-md-4
+						label.control-label(for="profileType") Profile Type
+					.col-md-8
+						.row
+							.col-md-12
+								input(type="radio" name="profileType" ng-model="profile.profileType" value="EA")
+								| &nbsp;EA
+						.row
+							.col-md-12
+								input(type="radio" name="profileType" ng-model="profile.profileType" value="ESP")
+								| &nbsp;ESP

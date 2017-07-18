@@ -1,0 +1,6 @@
+.container-fluid
+	.app-container(style='padding-top:53px;margin-top:20px')
+		.row
+			.col-md-3(ng-include='"/views/CBS/profiles/recentprofile/view"')
+			.col-md-9
+				powerbi-report.powerbi-frame--dotted(embed-url='report.pbIembedURL', access-token='report.pbiAccessToken', reportid='report.pbIreportId', options='report.options')

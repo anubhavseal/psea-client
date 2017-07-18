@@ -1,0 +1,15 @@
+.app-container(style="padding-top:53px; margin-top:20px;")
+	.row
+		.col-md-3
+			.row
+				.col-md-12(ng-include='"/views/CBS/profiles/recentprofile/view"')
+			.row
+				.col-md-12
+					.div.side-menu-container
+						.list-group
+							li.list-group-item(ng-repeat="link in links")
+								div.side-menu-image-conatiner
+									img(ng-src="{{link.selected ? link.imgSelected : link.img}}") 
+								a(ng-click="showLink(link)" style="cursor:pointer;") {{link.caption}} 
+		.col-md-9
+			.div#content-holder(ng-repeat="view in links" ng-include="view.url" ng-if='view.selected')

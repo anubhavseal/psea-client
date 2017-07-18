@@ -1,9 +1,7 @@
-var app = angular.module('cbs');
-
-app.controller('cbs.report.controller', ['$scope','$dataService',function($scope,$dataService) {
+angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$dataService','$routeParams', '$recentProfile', function($scope,$dataService, $routeParams, $recentProfile) {
 
         function init(){
-
+			$recentProfile.show($scope);
             //Following code is always asking for report token from the API
             //It is also assuming hard-coded reportId = 1
             //This code needs to be refined to
@@ -11,15 +9,14 @@ app.controller('cbs.report.controller', ['$scope','$dataService',function($scope
             // (2). check if valid token is already available in the $scope.reports object 
             //If yes, use the report token from there
             //Else, the code below will provide a new token
-            $dataService.get('reports/1/token', function(report){
-                console.log(report)
+            $dataService.get('reports/' + $routeParams.reportId + '/token', function(report){
                 if(report != null){
 					report.options = {
 						"tokenType": 1,
 						type: 'report',
 						settings: {
 							filterPaneEnabled: false,
-							navContentPaneEnabled: false
+							navContentPaneEnabled: true
 						}
 					};
                     $scope.report = report;
