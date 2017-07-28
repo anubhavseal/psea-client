@@ -17,7 +17,7 @@ angular.module('base')
 					return inputParams[key];
 				}
 			});
-			
+
 			var modalInstance = $modal.open({
 				animation: true,
 				templateUrl: templateUrl1,

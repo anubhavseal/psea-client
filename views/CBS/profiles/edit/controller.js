@@ -1,4 +1,13 @@
-angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$dataService', '$routeParams', '$loader', '$recentProfile', '$notifier', function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier) {
+angular.module('cbs').controller('cbs.profiles.edit.controller',[
+'$scope',
+'$dataService',
+'$routeParams',
+'$loader',
+'$recentProfile',
+'$notifier',
+'$urlPath',
+'$popup',
+function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,$urlPath,$popup) {
 	$scope.showLink = showLink;
 	
     $scope.getSelectedCount = getSelectedCount;
@@ -18,21 +27,131 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 	$scope.getSelectedAttributeCount = getSelectedAttributeCount;
 	
 	$scope.updateQuickPicks = updateQuickPicks;
-        
+    $scope.clearAllQuickPick = clearAllQuickPick;
+    $scope.clearAllRangeCriteria = clearAllRangeCriteria;
+    $scope.clearAllGeoCriteria = clearAllGeoCriteria;
+    $scope.clearAllCriteria = clearAllCriteria;
+  
+    
     /*
+    ################################################################################
+                            Initialization
+    ################################################################################
+    */
+        function init(){
+			$loader.show();
+			$urlPath.get($scope);
+			$dataService.get('CBSprofiles/' + $routeParams.profileId, function(profiles) {
+				$scope.profile = profiles == null || profiles.length == 0 ? {} : profiles[0];
+				$recentProfile.set($scope.profile);
+				$recentProfile.show($scope);
+				
+				fetchHomeDistrict();
+			});         
+        }
+
+		function fetchHomeDistrict() {
+			$dataService.getFromCache('CBSprofiles/' + $scope.profile.homeHierarchyId + '/homedata', function(homeDisctricts){
+				$scope.homeDistrict = homeDisctricts == null || homeDisctricts.length == 0 ? {} : homeDisctricts[0];
+				fetchHomeDistrictHierarchy();
+				fetchConfigurationItems();
+			});
+		}
+		
+        function fetchHomeDistrictHierarchy() {
+			$scope.quickPickTypes = [
+				{'id': 'county',    'prefix': '', 'suffix': ' County', 'caption': 'County', 'field': 'quickCounty', 'relatedHierarchyId': $scope.homeDistrict.countyId},
+				{'id': 'iu',        'prefix': 'IU ', 'suffix': '', 'caption': 'IU 23', 'field': 'quickIU', 'relatedHierarchyId': $scope.homeDistrict.iuId},
+				{'id': 'region',    'prefix': '', 'suffix': ' Region', 'caption': 'Region', 'field': 'quickRegion', 'relatedHierarchyId': $scope.homeDistrict.regionId},
+				{'id': 'cluster',   'prefix': 'Cluster: ', 'suffix': '', 'caption': 'Cluster', 'field': 'quickCluster', 'relatedHierarchyId': $scope.homeDistrict.clusterId},
+				{'id': 'cdestrict', 'prefix': '', 'suffix': '', 'caption': 'Contiguous Districts', 'field': 'contiguousHierarchy'}
+			];
+			
+			angular.forEach($scope.quickPickTypes,function(quickPickType){
+				quickPickType.selected = $scope.profile[quickPickType.field];
+			});
+			
+			var hierarchyIds = [];
+			hierarchyIds.push($scope.homeDistrict.countyId);
+			hierarchyIds.push($scope.homeDistrict.iuId);
+			hierarchyIds.push($scope.homeDistrict.regionId);
+			hierarchyIds.push($scope.homeDistrict.clusterId);
+			
+			$dataService.getFromCache('hierarchy?hierarchyId.in=' + hierarchyIds.join(","), function(hierarchys){
+				angular.forEach(hierarchys, function(hierarchy){
+					angular.forEach($scope.quickPickTypes,function(quickPickType){
+						if (quickPickType.relatedHierarchyId != null && quickPickType.relatedHierarchyId == hierarchy.hierarchyId && hierarchy.hierarchyName != null && hierarchy.hierarchyName != "") {
+							quickPickType.caption = hierarchy.hierarchyName;
+							
+							if (quickPickType.suffix != null && quickPickType.suffix != "" && quickPickType.caption.toLowerCase().indexOf(quickPickType.suffix.toLowerCase()) == -1) {
+								quickPickType.caption = quickPickType.caption + quickPickType.suffix;
+							}
+							if (quickPickType.prefix != null && quickPickType.prefix != "" && quickPickType.caption.toLowerCase().indexOf(quickPickType.prefix.toLowerCase()) == -1) {
+								quickPickType.caption = quickPickType.prefix + quickPickType.caption;
+							}
+						}
+					});
+				});
+			});
+		}
+
+		function fetchConfigurationItems() {
+			$dataService.getFromCache('lookups?lookupType.in=HierarchyTypes,SchoolTypes,RangeGroups', function(lookups){
+				
+                $scope.schoolTypes = [];
+                $scope.types = [];
+                $scope.rangeGroups = [];
+				
+				angular.forEach(lookups, function(lookup){
+					if (lookup.lookupType == 'HierarchyTypes') {
+						$scope.types.push(lookup);
+					} else if (lookup.lookupType == 'SchoolTypes') {
+						$scope.schoolTypes.push({'hierarchyId': lookup.lookupId, 'hierarchyName': lookup.lookupName});
+					} else {
+						$scope.rangeGroups.push(lookup);
+					}
+				});
+				
+				$scope.types.push({"lookupId":"schoolTypes", "lookupName": "School Types", "options": $scope.schoolTypes});
+				
+                populateHierarchyTypeOptions();
+                populateRangeGroupAttributes();
+				
+				$loader.hide();
+            });
+		}
+    
+    /*
+    ################################################################################
+                            End of Initialization
+    ################################################################################
+    */
+
+     /*
     ################################################################################
                             Geo Criteria
     ################################################################################
     */
 
-        function getSelectedAttributeCount(rangeGroup) {
-			var selected = 0;
-			angular.forEach(rangeGroup.attributes, function(attribute){
-				if (attribute.selected) {
-					selected++;
-				}
-			})
-			return selected;
+        function populateHierarchyTypeOptions(){
+			$dataService.getFromCache('hierarchy', function(hierarchies){
+				hierarchies = hierarchies || [];
+				
+				var mapHierarchyType = {};
+				angular.forEach($scope.types, function(type){
+					type.options = type.options || [];
+					mapHierarchyType[type.lookupId] = type
+				});
+				
+				angular.forEach(hierarchies, function(hierarchy){
+					var type = mapHierarchyType[hierarchy.hierarchyType];
+					if (type != null) {
+						type.options.push(hierarchy);
+					}
+				});
+				
+				populateHierarchyPermissions();
+			});
 		}
 
         function populateHierarchyPermissions(){
@@ -99,7 +218,7 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 					criteriaRanges.push({'__row_mode': 'D', 'criteriaHierarchyId': option.criteriaHierarchyId})
 				}
 			});
-			
+
 			$dataService.synchronize(options, function(results){
 				
 				var errorCount = 0;
@@ -117,7 +236,156 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 				}
 			});
         }
-		
+
+        function clearAllGeoCriteria(flag){
+            alertify.confirm("Are you sure you want to clear all Geo Criteria?",function (e) {
+                if (e) {
+                    angular.forEach($scope.types,function(type){
+                        angular.forEach(type.options,function(option){
+                            option.selected = false;
+                        })
+                    })
+                $scope.$apply();
+                } 
+            });  
+        }
+
+    /*
+    ################################################################################
+                            End of Geo Criteria
+    ################################################################################
+    */
+
+    /*
+    ################################################################################
+                            Range Criteria
+    ################################################################################
+    */
+    
+    function populateRangeGroupAttributes() {
+			$dataService.getFromCache('attributes',function(attributes){
+				attributes = attributes || {};
+				
+				var rangeGroupMap = {};
+				angular.forEach($scope.rangeGroups,function(rangeGroup){
+					rangeGroupMap[rangeGroup.lookupId] = rangeGroup; 
+					rangeGroup.selected = false;
+					rangeGroup.attributes = [];
+				});
+				
+				angular.forEach(attributes, function(attribute){
+					attribute.homeValue = attribute.sourceLookup == null || attribute.sourceLookup == '' ? null : $scope.homeDistrict[attribute.sourceLookup.toLowerCase()];
+					
+					var rangeGroup = rangeGroupMap[attribute.attributeGroupId];
+					if (rangeGroup != null) {
+						rangeGroup.attributes.push(attribute);
+					}
+				});
+				
+				if ($scope.rangeGroups != null && $scope.rangeGroups.length > 0) {
+					selectRangeGroup($scope.rangeGroups[0]);
+				}
+				
+				$scope.attributes = attributes;
+				populateRangePermissions();
+			})
+		}
+
+        function populateRangePermissions(){
+			var attributeMap = {};
+			angular.forEach($scope.attributes, function(attribute){
+				attributeMap[attribute.attributeId] = attribute;
+				attribute.minPercent = 5;
+				attribute.maxPercent = 5;
+				attribute.minValue = decreasePercentage(attribute);
+				attribute.maxValue = increasePercentage(attribute);
+				attribute.selected = false;
+				attribute.criteriaRangeId = null;
+                //console.log('attribute.maxValue:' + attribute.maxValue,'attribute.attributeName:',attribute.attributeName);
+			});
+			
+            $dataService.get('criteriaRanges?cbSprofileId=' + $scope.profile.cbSprofileId,function(permissions){
+                permissions = permissions || [];
+                angular.forEach(permissions,function(permission){
+                    var attribute = attributeMap[permission.attributeId];
+                    if(attribute != null){
+                        attribute.minPercent = permission.minPercent;
+                        attribute.maxPercent = permission.maxPercent;
+						attribute.minValue = permission.minValue;
+                        attribute.maxValue = permission.maxValue;
+                        attribute.selected = true;
+						attribute.criteriaRangeId = permission.criteriaRangeId;
+                        //console.log('attribute.maxPercent:' + attribute.maxPercent,'attribute.attributeName:',attribute.attributeName);
+                    }
+                });
+            });
+        }
+
+        function selectRangeGroup(rangeGroup){
+            angular.forEach($scope.rangeGroups,function(rangeGroup){
+                rangeGroup.selected = false;
+            })
+            rangeGroup.selected = true;
+            $scope.selectedRangeGroup = rangeGroup;
+        }
+
+        function getSelectedAttributesCount(attributes){
+            var count = 0;
+            angular.forEach(attributes,function(attribute){
+                if(attribute.selected === true){
+                    count++;
+                }
+            })
+            return count;
+        }
+
+        function increasePercentage(attribute){
+            if(attribute.maxPercent === null){
+                //console.log("inside increasePercentage");
+                attribute.maxValue = null;
+            }else{
+                //console.log("inside increasePercentage");
+                return attribute.maxValue = attribute.homeValue + (attribute.maxPercent*attribute.homeValue)/100 ;
+                //console.log('attribute.maxValue :',attribute.maxValue,'attribute.attributeName:',attribute.attributeName);
+            }
+        }
+
+        function decreasePercentage(attribute){
+            if(attribute.minPercent === null){
+                attribute.minValue = null;
+            }
+            else{
+               return attribute.minValue = attribute.homeValue - (attribute.minPercent*attribute.homeValue)/100 ;
+            }
+        }
+
+        function changeMinimumPercentage(attribute){
+            if(attribute.minValue === null){
+                attribute.minPercent =null;
+            }else{
+                attribute.minPercent = ((attribute.homeValue - attribute.minValue)/attribute.homeValue)*100;
+            }
+        }
+
+        function changeMaximumPercentage(attribute){
+            if(attribute.maxValue === null){
+                console.log(5);
+                attribute.maxPercent = null;
+            }else{
+                attribute.maxPercent = ((attribute.maxValue - attribute.homeValue)/attribute.homeValue)*100;
+            }
+        }
+
+        function getSelectedAttributeCount(rangeGroup) {
+			var selected = 0;
+			angular.forEach(rangeGroup.attributes, function(attribute){
+				if (attribute.selected) {
+					selected++;
+				}
+			})
+			return selected;
+		}
+
 		function updateRangeCriteriaCount(rangeGroup){
 			if (rangeGroup == null) {
 				angular.forEach($scope.rangeGroups,function(group){
@@ -155,17 +423,43 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 				}
 			});
         }
+
+        function clearAllRangeCriteria(){
+            alertify.confirm("Are you sure you want to clear all Range Criteria?",function (e) {
+                if (e) {
+                    angular.forEach($scope.rangeGroups,function(rangeGroup){
+                        angular.forEach(rangeGroup.attributes,function(attribute){
+                            attribute.selected = false;
+                        })
+                    })
+                    $scope.$apply();
+                } 
+            });  
+        }
     /*
     ################################################################################
-                            End of Geo Criteria
+                           End of Range Criteria
     ################################################################################
     */
-   
-    /*
-    ################################################################################
-                            Range Criteria
-    ################################################################################
-    */
+
+      function clearAllCriteria(){
+          alertify.confirm("Are you sure you want to clear All Criteria?",function (e) {
+                if (e) {
+                    angular.forEach($scope.types,function(type){
+                        angular.forEach(type.options,function(option){
+                            option.selected = false;
+                        })
+                    })
+                    angular.forEach($scope.rangeGroups,function(rangeGroup){
+                        angular.forEach(rangeGroup.attributes,function(attribute){
+                            attribute.selected = false;
+                        })
+                    })
+                    $scope.$apply();
+                } 
+            });
+        }
+    
 
         function updateQuickPicks() {
 			var cbSprofileId = $scope.profile.cbSprofileId;
@@ -180,243 +474,27 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[ '$scope', '$da
 			});
 		}
 
-        function populateRangePermissions(){
-			var attributeMap = {};
-			angular.forEach($scope.attributes, function(attribute){
-				attributeMap[attribute.attributeId] = attribute;
-				attribute.minPercent = null;
-				attribute.maxPercent = null;
-				attribute.minValue = null;
-				attribute.maxValue = null;
-				attribute.selected = false;
-				attribute.criteriaRangeId = null;
+        function clearAllQuickPick(quickPickType){
+            angular.forEach($scope.quickPickTypes,function(quickPickType){
+				quickPickType.selected = false;
 			});
-			
-            $dataService.get('criteriaRanges?cbSprofileId=' + $scope.profile.cbSprofileId,function(permissions){
-                permissions = permissions || [];
-                angular.forEach(permissions,function(permission){
-                    var attribute = attributeMap[permission.attributeId];
-                    if(attribute != null){
-                        attribute.minPercent = permission.minPercent;
-                        attribute.maxPercent = permission.maxPercent;
-						attribute.minValue = permission.minValue;
-                        attribute.maxValue = permission.maxValue;
-                        attribute.selected = true;
-						attribute.criteriaRangeId = permission.criteriaRangeId;
-                    }
-                });
-            });
-        }
-
-        function selectRangeGroup(rangeGroup){
-            angular.forEach($scope.rangeGroups,function(rangeGroup){
-                rangeGroup.selected = false;
-            })
-            rangeGroup.selected = true;
-            $scope.selectedRangeGroup = rangeGroup;
-        }
-
-        function getSelectedAttributesCount(attributes){
-            var count = 0;
-            angular.forEach(attributes,function(attribute){
-                if(attribute.selected === true){
-                    count++;
-                }
-            })
-            return count;
-        }
-
-        function increasePercentage(attribute){
-            if(attribute.maxPercent === null){
-                attribute.maxValue = null;
-            }else{
-                attribute.maxValue = attribute.homeValue + (attribute.maxPercent*attribute.homeValue)/100 ;
-            }
-        }
-
-        function decreasePercentage(attribute){
-            if(attribute.minPercent === null){
-                attribute.minValue = null;
-            }
-            else{
-                attribute.minValue = attribute.homeValue - (attribute.minPercent*attribute.homeValue)/100 ;
-            }
-        }
-
-        function changeMinimumPercentage(attribute){
-            if(attribute.minValue === null){
-                attribute.minPercent =null;
-            }else{
-                attribute.minPercent = ((attribute.homeValue - attribute.minValue)/attribute.homeValue)*100;
-            }
-        }
-
-        function changeMaximumPercentage(attribute){
-            if(attribute.maxValue === null){
-                attribute.maxPercent = null;
-            }else{
-                attribute.maxPercent = ((attribute.maxValue - attribute.homeValue)/attribute.homeValue)*100;
-            }
         }
 
         
 
-    /*
-    ################################################################################
-                           End of Range Criteria
-    ################################################################################
-    */
+        
+
+        
     
-    /*
-    ################################################################################
-                            Initialization
-    ################################################################################
-    */
-		function fetchHomeDistrictHierarchy() {
-			$scope.quickPickTypes = [
-				{'id': 'county',    'prefix': '', 'suffix': ' County', 'caption': 'County', 'field': 'quickCounty', 'relatedHierarchyId': $scope.homeDistrict.countyId},
-				{'id': 'iu',        'prefix': 'IU ', 'suffix': '', 'caption': 'IU 23', 'field': 'quickIU', 'relatedHierarchyId': $scope.homeDistrict.iuId},
-				{'id': 'region',    'prefix': '', 'suffix': ' Region', 'caption': 'Region', 'field': 'quickRegion', 'relatedHierarchyId': $scope.homeDistrict.regionId},
-				{'id': 'cluster',   'prefix': 'Cluster: ', 'suffix': '', 'caption': 'Cluster', 'field': 'quickCluster', 'relatedHierarchyId': $scope.homeDistrict.clusterId},
-				{'id': 'cdestrict', 'prefix': '', 'suffix': '', 'caption': 'Contiguous Districts', 'field': 'contiguousHierarchy'}
-			];
-			
-			angular.forEach($scope.quickPickTypes,function(quickPickType){
-				quickPickType.selected = $scope.profile[quickPickType.field];
-			});
-			
-			var hierarchyIds = [];
-			hierarchyIds.push($scope.homeDistrict.countyId);
-			hierarchyIds.push($scope.homeDistrict.iuId);
-			hierarchyIds.push($scope.homeDistrict.regionId);
-			hierarchyIds.push($scope.homeDistrict.clusterId);
-			
-			$dataService.getFromCache('hierarchy?hierarchyId.in=' + hierarchyIds.join(","), function(hierarchys){
-				angular.forEach(hierarchys, function(hierarchy){
-					angular.forEach($scope.quickPickTypes,function(quickPickType){
-						if (quickPickType.relatedHierarchyId != null && quickPickType.relatedHierarchyId == hierarchy.hierarchyId && hierarchy.hierarchyName != null && hierarchy.hierarchyName != "") {
-							quickPickType.caption = hierarchy.hierarchyName;
-							
-							if (quickPickType.suffix != null && quickPickType.suffix != "" && quickPickType.caption.toLowerCase().indexOf(quickPickType.suffix.toLowerCase()) == -1) {
-								quickPickType.caption = quickPickType.caption + quickPickType.suffix;
-							}
-							if (quickPickType.prefix != null && quickPickType.prefix != "" && quickPickType.caption.toLowerCase().indexOf(quickPickType.prefix.toLowerCase()) == -1) {
-								quickPickType.caption = quickPickType.prefix + quickPickType.caption;
-							}
-						}
-					});
-				});
-			});
-		}
+    
+		
+		
+		
+		
+		
 	
-		function fetchHomeDistrict() {
-			$dataService.getFromCache('CBSprofiles/' + $scope.profile.homeHierarchyId + '/homedata', function(homeDisctricts){
-				$scope.homeDistrict = homeDisctricts == null || homeDisctricts.length == 0 ? {} : homeDisctricts[0];
-				fetchHomeDistrictHierarchy();
-				fetchConfigurationItems();
-			});
-		}
-		
-		function fetchConfigurationItems() {
-			$dataService.getFromCache('lookups?lookupType.in=HierarchyTypes,SchoolTypes,RangeGroups', function(lookups){
-				
-                $scope.schoolTypes = [];
-                $scope.types = [];
-                $scope.rangeGroups = [];
-				
-				angular.forEach(lookups, function(lookup){
-					if (lookup.lookupType == 'HierarchyTypes') {
-						$scope.types.push(lookup);
-					} else if (lookup.lookupType == 'SchoolTypes') {
-						$scope.schoolTypes.push({'hierarchyId': lookup.lookupId, 'hierarchyName': lookup.lookupName});
-					} else {
-						$scope.rangeGroups.push(lookup);
-					}
-				});
-				
-				$scope.types.push({"lookupId":"schoolTypes", "lookupName": "School Types", "options": $scope.schoolTypes});
-				
-                populateHierarchyTypeOptions();
-				
-                populateRangeGroupAttributes();
-				
-				$loader.hide();
-            });
-		}
-		
-		function populateRangeGroupAttributes() {
-			$dataService.getFromCache('attributes',function(attributes){
-				attributes = attributes || {};
-				
-				var rangeGroupMap = {};
-				angular.forEach($scope.rangeGroups,function(rangeGroup){
-					rangeGroupMap[rangeGroup.lookupId] = rangeGroup; 
-					rangeGroup.selected = false;
-					rangeGroup.attributes = [];
-				});
-				
-				
-				
-				angular.forEach(attributes, function(attribute){
-					attribute.homeValue = attribute.sourceLookup == null || attribute.sourceLookup == '' ? null : $scope.homeDistrict[attribute.sourceLookup.toLowerCase()];
-					
-					var rangeGroup = rangeGroupMap[attribute.attributeGroupId];
-					if (rangeGroup != null) {
-						rangeGroup.attributes.push(attribute);
-					}
-					
-					
-				});
-				
-				if ($scope.rangeGroups != null && $scope.rangeGroups.length > 0) {
-					selectRangeGroup($scope.rangeGroups[0]);
-				}
-				
-				$scope.attributes = attributes;
-				
-				
-				
-				populateRangePermissions();
-			})
-		}
-		
-		function populateHierarchyTypeOptions(){
-			$dataService.getFromCache('hierarchy', function(hierarchies){
-				hierarchies = hierarchies || [];
-				
-				var mapHierarchyType = {};
-				angular.forEach($scope.types, function(type){
-					type.options = type.options || [];
-					mapHierarchyType[type.lookupId] = type
-				});
-				
-				angular.forEach(hierarchies, function(hierarchy){
-					var type = mapHierarchyType[hierarchy.hierarchyType];
-					if (type != null) {
-						type.options.push(hierarchy);
-					}
-				});
-				
-				populateHierarchyPermissions();
-			});
-		}
-	
-        function init(){
-			$loader.show();
-			
-			$dataService.get('CBSprofiles/' + $routeParams.profileId, function(profiles) {
-				$scope.profile = profiles == null || profiles.length == 0 ? {} : profiles[0];
-				$recentProfile.set($scope.profile);
-				$recentProfile.show($scope);
-				
-				fetchHomeDistrict();
-			});         
-        }
-    /*
-    ################################################################################
-                            End of Initialization
-    ################################################################################
-    */
+        
+    
 
         $scope.master = [{
             'id':'Geo-Criteria',

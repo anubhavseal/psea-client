@@ -5,11 +5,11 @@ angular.module('cbs')
         templateUrl:'/views/CBS/profiles/list/view',
         controller:'cbs.profiles.list.controller'
     })
-	.when('/profiles/:profileId',{
+	.when('/profiles/:profileId/criteria',{
         templateUrl:'/views/CBS/profiles/edit/view',
         controller:'cbs.profiles.edit.controller'
     })
-	.when('/reports',{
+	.when('/profiles/:profileId/reports',{
         templateUrl:'/views/CBS/reports/list/view',
         controller:'cbs.reports.list.controller'
     })

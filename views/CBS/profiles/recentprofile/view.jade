@@ -1,23 +1,23 @@
 .div.profile-image-container
 	.row
 		.col-md-12(style="padding-bottom:90px;")
-			h1.text-left Welcome Back
-	.row
-		.col-md-12(style="padding-bottom:15px;")
-			span 
-				em My Recent Profile
+			h1.text-left(ng-if="count === 0") Welcome Back
+			h1.text-left {{pathName}}
+	.row(style="padding-bottom:15px;")
+		.col-md-12
+			span(ng-if="!pathName") My Recent Profile
 	.row
 		.col-md-12
 			h3 {{recentProfile.cbSprofileName}}
 			span {{$moment.fromNow(recentProfile.lastAccessedAt)}}
 			div(style='padding-top:20px') 
-				a(href="/profiles" style="color:white" ) (View All Profiles)
+				a(href="/profiles" style="color:white" ng-if="pathName" ) (View All Profiles)
 	.row(style="padding-bottom:15px;")
 		.col-md-12
 	.row
 		.col-md-6(style="padding:2px;")
 			button.btn.btn-primary.btn-lg(style="width:100%;") 
-				a(href="/reports" style="color:white" ) Analysis
+				a(href="/profiles/{{recentProfile.cbSprofileId}}/reports" style="color:white" ) Analysis
 		.col-md-6(style="padding:2px;")
 			button.btn.btn-primary.btn-lg(style="width:100%;") 
-				a(href="/profiles/{{recentProfile.cbSprofileId}}" style="color:white" ) Criteria
+				a(href="/profiles/{{recentProfile.cbSprofileId}}/criteria" style="color:white" ) Criteria

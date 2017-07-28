@@ -1,9 +1,9 @@
-angular.module('cbs').controller('cbs.reports.list.controller', [ '$scope', '$dataService', '$routeParams', '$recentProfile', function($scope,$dataService,$routeParams,$recentProfile) {
+angular.module('cbs')
+.controller('cbs.reports.list.controller', [ '$scope', '$dataService', '$routeParams', '$recentProfile','$urlPath', function($scope,$dataService,$routeParams,$recentProfile,$urlPath) {
 		
 		function fetchReportTabs() {
 			$dataService.get('reportTabs',function(reportTabs){
 				reportTabs = reportTabs || [];
-				
 				var reportMap = {};
 				angular.forEach($scope.reports, function(report){
 					reportMap[report.reportId] = report;
@@ -22,6 +22,7 @@ angular.module('cbs').controller('cbs.reports.list.controller', [ '$scope', '$da
 		function fetchReports() {
 			$dataService.get('reports',function(reports){
 				$scope.reports = reports || [];
+				
 				fetchReportTabs();
             })
 		}
@@ -38,6 +39,7 @@ angular.module('cbs').controller('cbs.reports.list.controller', [ '$scope', '$da
             });
 			
 			fetchReports();
+			$urlPath.get($scope);
         }
 
         init();

@@ -9,6 +9,7 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
             // (2). check if valid token is already available in the $scope.reports object 
             //If yes, use the report token from there
             //Else, the code below will provide a new token
+
             $dataService.get('reports/' + $routeParams.reportId + '/token', function(report){
                 if(report != null){
 					report.options = {

@@ -42,6 +42,9 @@
 //= require lib/angular-bootstrap/ui-bootstrap-tpls.min.js
 //= require lib/lodash/lodash.min.js
 
+//= require lib/alertify.js/lib/alertify.js
+
+
 //= require lib/toastr/toastr.min.js
 // require main
 
