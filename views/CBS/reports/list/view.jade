@@ -8,4 +8,4 @@
                     .col-md-4(ng-repeat='reportTab in report.reportTabs')
                         .panel.panel-default.profile.panel-profile-tile
                             .panel-heading.profile-heading.ellipsis
-                                a(href="/reports/{{reportTab.reportTabId}}") {{reportTab.tabName}}
+                                a(href="/reports/{{profileId}}/{{reportTab.reportTabId}}") {{reportTab.tabName}}

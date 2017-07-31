@@ -9,10 +9,10 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[
 '$popup',
 function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,$urlPath,$popup) {
 	$scope.showLink = showLink;
-	
+	$scope.searchMap = {};
     $scope.getSelectedCount = getSelectedCount;
     $scope.selectType = selectType;
-
+    $scope.deleteSearchText = deleteSearchText;
     $scope.selectRangeGroup = selectRangeGroup;
     $scope.getSelectedAttributesCount = getSelectedAttributesCount;
     $scope.increasePercentage = increasePercentage;
@@ -30,9 +30,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
     $scope.clearAllQuickPick = clearAllQuickPick;
     $scope.clearAllRangeCriteria = clearAllRangeCriteria;
     $scope.clearAllGeoCriteria = clearAllGeoCriteria;
-    $scope.clearAllCriteria = clearAllCriteria;
-  
-    
+    $scope.clearAllCriteria = clearAllCriteria; 
     /*
     ################################################################################
                             Initialization
@@ -205,6 +203,11 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
             });
             return selectedCount;
         }
+        
+        function deleteSearchText(type){
+            if($scope.searchMap[type.lookupId])
+                $scope.searchMap[type.lookupId].searchData = '';
+        }
 
         function updateGeoCriteriaCount(type){
 			var criteriaRanges = [];
@@ -301,7 +304,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				attribute.maxValue = increasePercentage(attribute);
 				attribute.selected = false;
 				attribute.criteriaRangeId = null;
-                //console.log('attribute.maxValue:' + attribute.maxValue,'attribute.attributeName:',attribute.attributeName);
+                console.log('attribute.attributeName:',attribute.attributeName,'attribute.maxValue:' + attribute.maxValue);
 			});
 			
             $dataService.get('criteriaRanges?cbSprofileId=' + $scope.profile.cbSprofileId,function(permissions){
@@ -315,7 +318,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
                         attribute.maxValue = permission.maxValue;
                         attribute.selected = true;
 						attribute.criteriaRangeId = permission.criteriaRangeId;
-                        //console.log('attribute.maxPercent:' + attribute.maxPercent,'attribute.attributeName:',attribute.attributeName);
+                        console.log('attribute.attributeName:',attribute.attributeName,'attribute.maxPercent:' + attribute.maxPercent);
                     }
                 });
             });
@@ -368,11 +371,13 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
         }
 
         function changeMaximumPercentage(attribute){
-            if(attribute.maxValue === null){
+            if(attribute.selected === true){
+                if(attribute.maxValue === null){
                 console.log(5);
                 attribute.maxPercent = null;
             }else{
                 attribute.maxPercent = ((attribute.maxValue - attribute.homeValue)/attribute.homeValue)*100;
+                }
             }
         }
 
@@ -479,22 +484,6 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				quickPickType.selected = false;
 			});
         }
-
-        
-
-        
-
-        
-    
-    
-		
-		
-		
-		
-		
-	
-        
-    
 
         $scope.master = [{
             'id':'Geo-Criteria',

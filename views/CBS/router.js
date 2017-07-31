@@ -13,7 +13,7 @@ angular.module('cbs')
         templateUrl:'/views/CBS/reports/list/view',
         controller:'cbs.reports.list.controller'
     })
-	.when('/reports/:reportId',{
+	.when('/reports/:profileId/:reportId',{
         templateUrl:'/views/CBS/reports/view/view',
         controller:'cbs.reports.view.controller'
     });

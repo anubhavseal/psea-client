@@ -2,6 +2,7 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
 
         function init(){
 			$recentProfile.show($scope);
+            $scope.profileId = $routeParams.profileId;
             //Following code is always asking for report token from the API
             //It is also assuming hard-coded reportId = 1
             //This code needs to be refined to

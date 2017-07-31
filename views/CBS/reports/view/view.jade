@@ -2,4 +2,9 @@
 	.app-container(style='padding-top:53px;margin-top:20px')
 		.row
 			.col-md-12
+					a(href="/profiles/{{profileId}}/reports")
+						span.glyphicon.glyphicon-arrow-left(style="font-size:20px;padding-right:10px;")
+						h4(style="display:inline-block;") Reports
+		.row
+			.col-md-12
 				powerbi-report.powerbi-frame--dotted(embed-url='report.pbIembedURL', access-token='report.pbiAccessToken', reportid='report.pbIreportId', options='report.options')
