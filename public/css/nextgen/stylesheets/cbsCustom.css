@@ -1,11 +1,9 @@
 html,body,.page-container,main{
 	height: 100%;
 	background-color: white;
-}
-
-.col-md-8{
 	font-family: 'Lato', sans-serif !important;
 }
+
 .label-left{
 	text-align: left !important;
 }
@@ -291,4 +289,8 @@ html,body,.page-container,main{
 .powerbi-frame--dotted {
     border: 2px dashed #cecece;
 	height: 80vh;
+}
+
+.btn-clear-criteria{
+	width: 100%;
 }

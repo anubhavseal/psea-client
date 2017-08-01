@@ -1,12 +1,12 @@
 .div.profile-image-container
-	.row
-		.col-md-12(style="padding-bottom:90px;height:130px")
+	.row(style="padding-bottom:90px;height:130px")
+		.col-md-12
 			h1.text-left {{profileGreeting}}
 	.row(style="padding-bottom:15px;height:45px")
 		.col-md-12
 			span My Recent Profile
-	.row
-		.col-md-12(style="padding-bottom:90px;height:150px")
+	.row(style="padding-bottom:90px;height:150px")
+		.col-md-12
 			h3 {{recentProfile.cbSprofileName}}
 			span {{$moment.fromNow(recentProfile.lastAccessedAt)}}
 			div(style='padding-top:20px' ng-if='profileLocation != "/profiles"') 
