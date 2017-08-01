@@ -1,6 +1,6 @@
 'use strict';
 angular.module('base')
-	.factory('$recentProfile', ['$cache', '$moment', function($cache, $moment){
+	.factory('$recentProfile', ['$cache', '$moment', '$route', function($cache, $moment, $route){
 		return {
 			get :getRecentProfile,
 			set: setRecentProfile,
@@ -11,7 +11,7 @@ angular.module('base')
 			return $cache.session.get("cbs", "recent.profile");
 		}
 		
-		function setRecentProfile(profile) {
+		function setRecentProfile(profile, first) {
 			if (profile != null) {
 				profile.lastAccessedAt = new Date();
 			}
@@ -19,7 +19,22 @@ angular.module('base')
 		}
 		
 		function showRecentProfile($scope) {
+			var routePath = null;
+			try{
+				routePath = $route.current.$$route.originalPath;
+			}catch(e){
+			}
+			
+			var mapRouteHeading = {
+				'/profiles': 'Profiles',
+				'/reports': 'Reports',
+				'/profiles/:profileId': 'Criteria'
+			};
+			
 			$scope.recentProfile = getRecentProfile();
 			$scope.$moment = $moment;
+			$scope.profileGreeting = $cache.session.get("cbs", "recent.profile.accessed") == null ? "Welcome Back" : (mapRouteHeading[routePath] || " ");
+			$cache.session.put("cbs", "recent.profile.accessed", "true");
+			$scope.profileLocation = routePath;
 		}
 	}]);
