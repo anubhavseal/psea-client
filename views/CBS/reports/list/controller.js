@@ -22,8 +22,22 @@ angular.module('cbs')
 		function fetchReports() {
 			$dataService.get('reports',function(reports){
 				$scope.reports = reports || [];
+
+				var reportGroupMap = {};
+
+				angular.forEach($scope.reportGroups, function(reportGroup){
+					reportGroupMap[reportGroup.reportGroupId] = reportGroup;
+					reportGroup.reports = [];
+				});
+
+				angular.forEach($scope.reports, function(report){
+					var reportGroup = reportGroupMap[report.reportGroupId];
+					if (reportGroup != null) {
+						reportGroup.reports.push(report);
+					}
+				});
 				
-				fetchReportTabs();
+				//fetchReportTabs();
             })
 		}
 
@@ -33,12 +47,11 @@ angular.module('cbs')
             //fetch reportGroups first - there's only 1 group for now
             //Hence this will not be visible on front-end, but group GUID maybe required for PBI token generation
             $dataService.get('reportGroups',function(reportGroups){
-                if(reportGroups != null){
-                    $scope.reportGroups = reportGroups;
-                }
+				reportGroups = reportGroups || [];
+				$scope.reportGroups = reportGroups;
+				
+				fetchReports();
             });
-			
-			fetchReports();
         }
 
         init();
