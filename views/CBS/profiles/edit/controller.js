@@ -472,9 +472,15 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		}
 
         function clearAllQuickPick(quickPickType){
-            angular.forEach($scope.quickPickTypes,function(quickPickType){
-				quickPickType.selected = false;
-			});
+            alertify.confirm("Are you sure you want to clear all Quick Picks?",function (e) {
+                if (e) {
+                    angular.forEach($scope.quickPickTypes,function(quickPickType){
+				        quickPickType.selected = false;
+			        });
+                    $scope.$apply();
+                } 
+            });
+            
         }
 
         $scope.master = [{
