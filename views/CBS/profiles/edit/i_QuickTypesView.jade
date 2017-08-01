@@ -18,7 +18,9 @@
 				h4.panel-title.pull-left(style='padding-top:5px') School Type
 				button.btn.btn-success.apply.pull-right(ng-click="updateSchoolType()") Apply
 		.row.panel-body(style='border-top:1px solid lightgray')
-			.col-md-3(ng-repeat='schoolType in schoolTypes')
-				input.cbs-input-box(type="checkbox" ng-attr-id="schoolType_{{schoolType.lookupId}}" ng-model="schoolType.selected")
-				label(for="schoolType_{{schoolType.lookupId}}") &nbsp; 
-					span(ng-class="{'text-muted':!schoolType.selected}") {{schoolType.lookupName}}
+			.col-md-12
+				ul.list-group
+					li.col-md-12.list-group-item.quick-types-list(ng-repeat='schoolType in schoolTypes')
+						input.cbs-input-box(type="checkbox" ng-attr-id="schoolType_{{schoolType.lookupId}}" ng-model="schoolType.selected")
+						label(for="schoolType_{{schoolType.lookupId}}") &nbsp; 
+							span(ng-class="{'text-muted':!schoolType.selected}") {{schoolType.lookupName}}
