@@ -5,7 +5,6 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[
 '$loader',
 '$recentProfile',
 '$notifier',
-'$urlPath',
 '$popup',
 function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,$urlPath,$popup) {
 	$scope.showLink = showLink;
@@ -38,7 +37,6 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
     */
         function init(){
 			$loader.show();
-			//$urlPath.get($scope);
 			$dataService.get('CBSprofiles/' + $routeParams.profileId, function(profiles) {
 				$scope.profile = profiles == null || profiles.length == 0 ? {} : profiles[0];
 				$recentProfile.set($scope.profile);
@@ -304,7 +302,6 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				attribute.maxValue = increasePercentage(attribute);
 				attribute.selected = false;
 				attribute.criteriaRangeId = null;
-                //console.log('attribute.attributeName:',attribute.attributeName,'attribute.maxValue:',attribute);
 			});
 			
             $dataService.get('criteriaRanges?cbSprofileId=' + $scope.profile.cbSprofileId,function(permissions){
@@ -318,8 +315,6 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
                         attribute.maxValue = permission.maxValue;
                         attribute.selected = true;
 						attribute.criteriaRangeId = permission.criteriaRangeId;
-                        //console.log('attribute.attributeName:',attribute.attributeName,'attribute.maxValue:',attribute);
-                        //console.log(attribute.maxPercent)
                     }
                 });
             });
@@ -345,12 +340,9 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 
         function increasePercentage(attribute){
             if(attribute.maxPercent === null){
-                //console.log("inside increasePercentage");
                 attribute.maxValue = null;
             }else{
-                //console.log("inside increasePercentage");
                 return attribute.maxValue = attribute.homeValue + (attribute.maxPercent*attribute.homeValue)/100 ;
-                //console.log('attribute.maxValue :',attribute.maxValue,'attribute.attributeName:',attribute.attributeName);
             }
         }
 
@@ -374,13 +366,9 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
         function changeMaximumPercentage(attribute){
             if(attribute.selected === true){
                 if(attribute.maxValue === null){
-                //console.log(5);
                 attribute.maxPercent = null;
             }else{
-                //console.log(attribute)
-                //console.log(attribute.maxValue);
                 attribute.maxPercent = ((attribute.maxValue - attribute.homeValue)/attribute.homeValue)*100;
-                //console.log(attribute.maxValue);
                 }
             }
         }

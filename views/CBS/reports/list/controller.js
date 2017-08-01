@@ -1,5 +1,5 @@
 angular.module('cbs')
-.controller('cbs.reports.list.controller', [ '$scope', '$dataService', '$routeParams', '$recentProfile','$urlPath', function($scope,$dataService,$routeParams,$recentProfile,$urlPath) {
+.controller('cbs.reports.list.controller', [ '$scope', '$dataService', '$routeParams', '$recentProfile', function($scope,$dataService,$routeParams,$recentProfile,$urlPath) {
 		
 		function fetchReportTabs() {
 			$dataService.get('reportTabs',function(reportTabs){
@@ -39,7 +39,6 @@ angular.module('cbs')
             });
 			
 			fetchReports();
-			//$urlPath.get($scope);
         }
 
         init();
