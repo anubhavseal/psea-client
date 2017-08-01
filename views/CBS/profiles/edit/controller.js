@@ -14,8 +14,8 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
     $scope.deleteSearchText = deleteSearchText;
     $scope.selectRangeGroup = selectRangeGroup;
     $scope.getSelectedAttributesCount = getSelectedAttributesCount;
-    $scope.increasePercentage = increasePercentage;
-    $scope.decreasePercentage = decreasePercentage;
+    $scope.updateRangeMaxValue = updateRangeMaxValue;
+    $scope.updateRangeMinValue = updateRangeMinValue;
     $scope.changeMinimumPercentage = changeMinimumPercentage;
     $scope.changeMaximumPercentage = changeMaximumPercentage;
 
@@ -348,8 +348,8 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 			attributeMap[attribute.attributeId] = attribute;
 			attribute.minPercent = 5;
 			attribute.maxPercent = 5;
-			attribute.minValue = decreasePercentage(attribute);
-			attribute.maxValue = increasePercentage(attribute);
+			attribute.minValue = attribute.homeValue - (attribute.minPercent * attribute.homeValue) / 100;
+			attribute.maxValue = attribute.homeValue + (attribute.maxPercent * attribute.homeValue) / 100;
 			attribute.selected = false;
 			attribute.criteriaRangeId = null;
 		});
@@ -359,10 +359,10 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 			angular.forEach(permissions,function(permission){
 				var attribute = attributeMap[permission.attributeId];
 				if(attribute != null){
-					attribute.minPercent = permission.minPercent;
-					attribute.maxPercent = permission.maxPercent;
 					attribute.minValue = permission.minValue;
 					attribute.maxValue = permission.maxValue;
+					attribute.minPercent = permission.minPercent;
+					attribute.maxPercent = permission.maxPercent;
 					attribute.selected = true;
 					attribute.criteriaRangeId = permission.criteriaRangeId;
 				}
@@ -388,39 +388,24 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		return count;
 	}
 
-	function increasePercentage(attribute){
-		if(attribute.maxPercent === null){
-			attribute.maxValue = null;
-		}else{
-			return attribute.maxValue = attribute.homeValue + (attribute.maxPercent*attribute.homeValue)/100 ;
-		}
+	function updateRangeMaxValue(attribute){
+		var maxValue = attribute.maxPercent === null || attribute.homeValue == null || attribute.homeValue == 0 ? null : (attribute.homeValue + (attribute.maxPercent*attribute.homeValue)/100);
+		attribute.maxValue = maxValue;
 	}
 
-	function decreasePercentage(attribute){
-		if(attribute.minPercent === null){
-			attribute.minValue = null;
-		}
-		else{
-		   return attribute.minValue = attribute.homeValue - (attribute.minPercent*attribute.homeValue)/100 ;
-		}
+	function updateRangeMinValue(attribute){
+		var minValue = attribute.minPercent === null || attribute.homeValue == null || attribute.homeValue == 0 ? null : (attribute.homeValue - (attribute.minPercent*attribute.homeValue)/100);
+		attribute.minValue = minValue;
 	}
 
 	function changeMinimumPercentage(attribute){
-		if(attribute.minValue === null){
-			attribute.minPercent =null;
-		}else{
-			attribute.minPercent = ((attribute.homeValue - attribute.minValue)/attribute.homeValue)*100;
-		}
+		var minPercent = attribute.minValue === null || attribute.homeValue == null || attribute.homeValue == 0 ? null : (((attribute.homeValue - attribute.minValue)/attribute.homeValue)*100);
+		attribute.minPercent = minPercent;
 	}
 
 	function changeMaximumPercentage(attribute){
-		if(attribute.selected === true){
-			if(attribute.maxValue === null){
-			attribute.maxPercent = null;
-		}else{
-			attribute.maxPercent = ((attribute.maxValue - attribute.homeValue)/attribute.homeValue)*100;
-			}
-		}
+		var maxPercent = attribute.minValue === null || attribute.homeValue == null || attribute.homeValue == 0 ? null : (((attribute.maxValue - attribute.homeValue)/attribute.homeValue)*100);
+		attribute.maxPercent = maxPercent;
 	}
 
 	function getSelectedAttributeCount(rangeGroup) {

@@ -13,23 +13,22 @@
 		#MINIMUM MINIMUM
 	.col-md-3
 		#MAXIMUM MAXIMUM
-.row.range-criteria-container(ng-repeat="attribute in selectedRangeGroup.attributes")
-	.col-md-4 
-		ul.list-group
-			li.list-group-item(style="border:none;")
-				input.cbs-input-box(type="checkbox" id="{{attribute.attributeId}}" ng-model="attribute.selected" ng-checked="attribute.selected")
-				label(for="{{attribute.attributeId}}" ng-class="{'text-muted':!attribute.selected}")&nbsp;&nbsp;{{attribute.attributeName}}
-	.col-md-2.range-criteria-percentage-value-container#retrieved-value
-		span(ng-class="{'text-muted':!attribute.selected}") {{attribute.homeValue|number}}
-	.col-md-1.range-criteria-percentage-input-container
-		input.percentage-input(type="number" oninput="validity.valid||(value='');" min="0" step="0.1" ng-model="attribute.minPercent" ng-disabled="!attribute.selected" ng-blur="decreasePercentage(attribute)")
-	.col-md-2.range-criteria-percentage-value-container
-		form(name="minimumPercentageForm" )
-			input.percentage-input(type="number" name="{{'a' + attribute.attributeId}}" max="{{attribute.homeValue}}" ng-model="attribute.minValue" ng-disabled="!attribute.selected" ng-blur="changeMinimumPercentage(attribute)")
-		span.error-text(ng-show="minimumPercentageForm.{{'a' + attribute.attributeId}}.$invalid") Should be less than {{attribute.homeValue}}
-	.col-md-1.range-criteria-percentage-input-container
-		input.percentage-input(type="number" oninput="validity.valid||(value='');" min="0" step="0.1" ng-model="attribute.maxPercent" ng-disabled="!attribute.selected" ng-blur="increasePercentage(attribute)")
-	.col-md-2.range-criteria-percentage-value-container
-		form(name="maximumPercentageForm")
-			input.percentage-input(type="number" name="{{'a' + attribute.attributeId}}" min="{{attribute.homeValue}}" ng-model="attribute.maxValue" ng-disabled="!attribute.selected" ng-blur="changeMaximumPercentage(attribute)")
-		span.error-text(ng-show="maximumPercentageForm.{{'a' + attribute.attributeId}}.$invalid") Should be greater than {{attribute.homeValue}}
+form(name="minimumPercentageForm" ng-repeat='rangeGroup in rangeGroups' ng-show='rangeGroup.selected')
+	.row.range-criteria-container(ng-repeat="attribute in rangeGroup.attributes")
+		.col-md-4 
+			ul.list-group
+				li.list-group-item(style="border:none;")
+					input.cbs-input-box(type="checkbox" id="{{attribute.attributeId}}" ng-model="attribute.selected")
+					label(for="{{attribute.attributeId}}" ng-class="{'text-muted':!attribute.selected}")&nbsp;&nbsp;{{attribute.attributeName}}
+		.col-md-2.range-criteria-percentage-value-container#retrieved-value
+			span(ng-class="{'text-muted':!attribute.selected}") {{attribute.homeValue|number}}
+		.col-md-1.range-criteria-percentage-input-container
+			input.percentage-input(type="number" min="0" step="0.1" ng-model="attribute.minPercent" ng-disabled="!attribute.selected" ng-change="updateRangeMinValue(attribute)")
+		.col-md-2.range-criteria-percentage-value-container
+			input.percentage-input(type="number" name="min_{{'a' + attribute.attributeId}}" max="{{attribute.homeValue}}" ng-model="attribute.minValue" ng-disabled="!attribute.selected" ng-change="changeMinimumPercentage(attribute)")
+			span.error-text(ng-show="minimumPercentageForm.min_{{'a' + attribute.attributeId}}.$invalid") Should be less than {{attribute.homeValue}}
+		.col-md-1.range-criteria-percentage-input-container
+			input.percentage-input(type="number" min="0" step="0.1" ng-model="attribute.maxPercent" ng-disabled="!attribute.selected" ng-change="updateRangeMaxValue(attribute)")
+		.col-md-2.range-criteria-percentage-value-container
+			input.percentage-input(type="number" name="max_{{'a' + attribute.attributeId}}" min="{{attribute.homeValue}}" ng-model="attribute.maxValue" ng-disabled="!attribute.selected" ng-change="changeMaximumPercentage(attribute)")
+			span.error-text(ng-show="minimumPercentageForm.max_{{'a' + attribute.attributeId}}.$invalid") Should be greater than {{attribute.homeValue}}

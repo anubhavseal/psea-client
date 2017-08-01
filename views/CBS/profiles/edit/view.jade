@@ -12,4 +12,4 @@
 									img(ng-src="{{link.selected ? link.imgSelected : link.img}}") 
 								a(ng-click="showLink(link)" style="cursor:pointer;") {{link.caption}} 
 		.col-md-9
-			.div#content-holder(ng-repeat="view in links" ng-include="view.url" ng-if='view.selected')
+			.div#content-holder(ng-repeat="view in links" ng-include="view.url" ng-show='view.selected')
