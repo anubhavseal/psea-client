@@ -29,8 +29,6 @@ angular.module('cbs')
 
         function init(){
             //fetch the recent profile form cache
-			$scope.profileId = $routeParams.profileId;
-			console.log($scope.profileId)
             $recentProfile.show($scope);
             //fetch reportGroups first - there's only 1 group for now
             //Hence this will not be visible on front-end, but group GUID maybe required for PBI token generation
@@ -41,7 +39,7 @@ angular.module('cbs')
             });
 			
 			fetchReports();
-			$urlPath.get($scope);
+			//$urlPath.get($scope);
         }
 
         init();

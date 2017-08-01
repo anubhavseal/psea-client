@@ -7,7 +7,7 @@
 					.col-md-4.pull-left(ng-repeat='profile in profiles' ng-if="recentProfile == null || profile.cbSprofileId != recentProfile.cbSprofileId")
 						.panel.panel-default.panel-profile-tile
 							.panel-heading.profile-heading 
-								a(href="/profiles/{{profile.cbSprofileId}}/criteria") {{profile.cbSprofileName}}
+								a(href="/profiles/{{profile.cbSprofileId}}") {{profile.cbSprofileName}}
 							.panel-body.profile-body
 								p.ellipsis {{profile.homeHierarchyName}}
 								p 

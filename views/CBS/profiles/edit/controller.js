@@ -38,7 +38,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
     */
         function init(){
 			$loader.show();
-			$urlPath.get($scope);
+			//$urlPath.get($scope);
 			$dataService.get('CBSprofiles/' + $routeParams.profileId, function(profiles) {
 				$scope.profile = profiles == null || profiles.length == 0 ? {} : profiles[0];
 				$recentProfile.set($scope.profile);
@@ -304,7 +304,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				attribute.maxValue = increasePercentage(attribute);
 				attribute.selected = false;
 				attribute.criteriaRangeId = null;
-                console.log('attribute.attributeName:',attribute.attributeName,'attribute.maxValue:',attribute);
+                //console.log('attribute.attributeName:',attribute.attributeName,'attribute.maxValue:',attribute);
 			});
 			
             $dataService.get('criteriaRanges?cbSprofileId=' + $scope.profile.cbSprofileId,function(permissions){
@@ -318,8 +318,8 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
                         attribute.maxValue = permission.maxValue;
                         attribute.selected = true;
 						attribute.criteriaRangeId = permission.criteriaRangeId;
-                        console.log('attribute.attributeName:',attribute.attributeName,'attribute.maxValue:',attribute);
-                        console.log(attribute.maxPercent)
+                        //console.log('attribute.attributeName:',attribute.attributeName,'attribute.maxValue:',attribute);
+                        //console.log(attribute.maxPercent)
                     }
                 });
             });
@@ -374,13 +374,13 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
         function changeMaximumPercentage(attribute){
             if(attribute.selected === true){
                 if(attribute.maxValue === null){
-                console.log(5);
+                //console.log(5);
                 attribute.maxPercent = null;
             }else{
-                console.log(attribute)
-                console.log(attribute.maxValue);
+                //console.log(attribute)
+                //console.log(attribute.maxValue);
                 attribute.maxPercent = ((attribute.maxValue - attribute.homeValue)/attribute.homeValue)*100;
-                console.log(attribute.maxValue);
+                //console.log(attribute.maxValue);
                 }
             }
         }

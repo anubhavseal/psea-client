@@ -5,15 +5,15 @@ angular.module('cbs')
         templateUrl:'/views/CBS/profiles/list/view',
         controller:'cbs.profiles.list.controller'
     })
-	.when('/profiles/:profileId/criteria',{
+	.when('/profiles/:profileId',{
         templateUrl:'/views/CBS/profiles/edit/view',
         controller:'cbs.profiles.edit.controller'
     })
-	.when('/profiles/:profileId/reports',{
+	.when('/reports',{
         templateUrl:'/views/CBS/reports/list/view',
         controller:'cbs.reports.list.controller'
     })
-	.when('/reports/:profileId/:reportId',{
+	.when('/reports/:reportId',{
         templateUrl:'/views/CBS/reports/view/view',
         controller:'cbs.reports.view.controller'
     });
