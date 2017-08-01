@@ -5,7 +5,7 @@
 				a(href="" style="display:inline;border-bottom:none") {{rangeGroup.lookupName}}
 				span.badge.badge-info(style='width:40px;margin-bottom:12px;margin-top:5px;background-color:{{rangeGroup.selected ? "#02b6ff" : "lightgray"}}'){{getSelectedAttributesCount(rangeGroup.attributes)}}
 	.col-md-2
-		button.btn.btn-success.btn-lg.pull-right(ng-click="updateRangeCriteriaCount()") Apply
+		button.btn.btn-success.btn-lg.pull-right(ng-click="applyRangeCriteria()") Apply
 .row.range-criteria-header-container
 	.col-md-6
 		#HOME-CRITERIA HOME DISTRICT
@@ -16,10 +16,8 @@
 form(name="minimumPercentageForm" ng-repeat='rangeGroup in rangeGroups' ng-show='rangeGroup.selected')
 	.row.range-criteria-container(ng-repeat="attribute in rangeGroup.attributes")
 		.col-md-4 
-			ul.list-group
-				li.list-group-item(style="border:none;")
-					input.cbs-input-box(type="checkbox" id="{{attribute.attributeId}}" ng-model="attribute.selected")
-					label(for="{{attribute.attributeId}}" ng-class="{'text-muted':!attribute.selected}")&nbsp;&nbsp;{{attribute.attributeName}}
+			input.cbs-input-box(type="checkbox" id="{{attribute.attributeId}}" ng-model="attribute.selected")
+			label(for="{{attribute.attributeId}}" ng-class="{'text-muted':!attribute.selected}")&nbsp;&nbsp;{{attribute.attributeName}}
 		.col-md-2.range-criteria-percentage-value-container#retrieved-value
 			span(ng-class="{'text-muted':!attribute.selected}") {{attribute.homeValue|number}}
 		.col-md-1.range-criteria-percentage-input-container

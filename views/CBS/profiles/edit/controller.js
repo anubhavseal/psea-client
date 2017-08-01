@@ -19,8 +19,8 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
     $scope.changeMinimumPercentage = changeMinimumPercentage;
     $scope.changeMaximumPercentage = changeMaximumPercentage;
 
-    $scope.updateGeoCriteriaCount = updateGeoCriteriaCount;
-    $scope.updateRangeCriteriaCount = updateRangeCriteriaCount;
+    $scope.applySelectedGeoOptions = applySelectedGeoOptions;
+    $scope.applyRangeCriteria = applyRangeCriteria;
 	$scope.updateSchoolType = updateSchoolType;
     $scope.selectCriteria = selectCriteria;
     $scope.currentSelectedCriteria = 'Geo-Criteria';
@@ -57,10 +57,10 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 	
 	function fetchHomeDistrictHierarchy() {
 		$scope.quickPickTypes = [
-			{'id': 'county',    'prefix': '', 'suffix': ' County', 'caption': 'County', 'field': 'quickCounty', 'relatedHierarchyId': $scope.homeDistrict.countyId},
-			{'id': 'iu',        'prefix': 'IU ', 'suffix': '', 'caption': 'IU 23', 'field': 'quickIU', 'relatedHierarchyId': $scope.homeDistrict.iuId},
-			{'id': 'region',    'prefix': '', 'suffix': ' Region', 'caption': 'Region', 'field': 'quickRegion', 'relatedHierarchyId': $scope.homeDistrict.regionId},
-			{'id': 'cluster',   'prefix': 'Cluster: ', 'suffix': '', 'caption': 'Cluster', 'field': 'quickCluster', 'relatedHierarchyId': $scope.homeDistrict.clusterId},
+			{'id': 'countyId',  'prefix': '', 'suffix': ' County', 'caption': 'County', 'field': 'quickCounty', 'relatedHierarchyId': $scope.homeDistrict.countyId},
+			{'id': 'iuId',      'prefix': 'IU ', 'suffix': '', 'caption': 'IU 23', 'field': 'quickIU', 'relatedHierarchyId': $scope.homeDistrict.iuId},
+			{'id': 'regionId',  'prefix': '', 'suffix': ' Region', 'caption': 'Region', 'field': 'quickRegion', 'relatedHierarchyId': $scope.homeDistrict.regionId},
+			{'id': 'clusterId', 'prefix': 'Cluster: ', 'suffix': '', 'caption': 'Cluster', 'field': 'quickCluster', 'relatedHierarchyId': $scope.homeDistrict.clusterId},
 			{'id': 'cdestrict', 'prefix': '', 'suffix': '', 'caption': 'Contiguous Districts', 'field': 'contiguousHierarchy'}
 		];
 		
@@ -128,12 +128,13 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
                             Geo Criteria
     ################################################################################
     */
-	function populateSchoolTypePermissions(){
+	function populateSchoolTypePermissions(callback){
 		var schoolTypeMap = {};
 		$dataService.get('criteriaSchoolType?cbSprofileId='+ $scope.profile.cbSprofileId, function(permissions){
 			permissions = permissions || [];
 			angular.forEach($scope.schoolTypes, function(schoolType){
 				schoolType.selected = false;
+				schoolType.originalySelected = false;
 				schoolType.criteriaSchoolTypeId = null;
 				schoolTypeMap[schoolType.lookupId] = schoolType;
 			});
@@ -142,7 +143,12 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				var schoolType = schoolTypeMap[permission.schoolTypeId];
 				if (schoolType != null) {
 					schoolType.selected = true;
+					schoolType.originalySelected = true;
 					schoolType.criteriaSchoolTypeId = permission.criteriaSchoolTypeId;
+				}
+
+				if (callback) {
+					callback();
 				}
 			});
 		})
@@ -157,19 +163,23 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				type.options = type.options || [];
 				mapHierarchyType[type.lookupId] = type
 			});
-			
+
 			angular.forEach(hierarchies, function(hierarchy){
 				var type = mapHierarchyType[hierarchy.hierarchyType];
 				if (type != null) {
 					type.options.push(hierarchy);
 				}
 			});
+
+			if ($scope.types != null && $scope.types.length > 0) {
+				selectType($scope.types[0]);
+			}
 			
 			populateHierarchyPermissions();
 		});
 	}
 
-	function populateHierarchyPermissions(){
+	function populateHierarchyPermissions(callback){
 		var optionMap = {};
 		var typeMap = {};
 		$dataService.get('criteriaHierarchy?cbSprofileId='+ $scope.profile.cbSprofileId, function(permissions){
@@ -182,6 +192,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 					optionMap[option.hierarchyId] = option;
 					option.group = 2;
 					option.selected = false;
+					option.originalySelected = false;
 					option.criteriaHierarchyId = null;
 					type.group2Count++;
 				});
@@ -192,16 +203,18 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				if (option != null) {
 					option.group = 1;
 					option.selected = true;
+					option.originalySelected = true;
 					option.criteriaHierarchyId = permission.criteriaHierarchyId;
 					var type = typeMap[option.hierarchyType];
 					type.group1Count++;
 					type.group2Count--;
 				}
 			});
-		})
-		if ($scope.types != null && $scope.types.length > 0) {
-			$scope.selectType($scope.types[0]);
-		}
+
+			if (callback) {
+				callback();
+			}
+		});
 	}
 
 	function selectType(selectedType){
@@ -226,7 +239,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 			$scope.searchMap[type.lookupId].searchData = '';
 	}
 
-	function updateGeoCriteriaCount(type){
+	function applySelectedGeoOptions(type){
 		var data = [];
 		var cbSprofileId = $scope.profile.cbSprofileId;
 		var options = {'apiURL': 'criteriaHierarchy', 'primaryKeyField': 'criteriaHierarchyId', 'data': data};
@@ -252,7 +265,9 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				$notifier.error('Error encountered.');
 			} else {
 				$notifier.success('Profile updated successfully.');
-				populateHierarchyPermissions();
+				populateHierarchyPermissions(function(){
+					evaluateQualifyingDistricts();
+				});
 			}
 		});
 	}
@@ -283,7 +298,9 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				$notifier.error('Error encountered.');
 			} else {
 				$notifier.success('Profile updated successfully.');
-				populateSchoolTypePermissions();
+				populateSchoolTypePermissions(function(){
+					evaluateQualifyingDistricts();
+				});
 			}
 		});
 	}
@@ -325,7 +342,9 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 			});
 			
 			angular.forEach(attributes, function(attribute){
-				attribute.homeValue = attribute.sourceLookup == null || attribute.sourceLookup == '' ? null : $scope.homeDistrict[attribute.sourceLookup.toLowerCase()];
+				var fieldName = attribute.sourceLookup == null || attribute.sourceLookup == '' ? '' : attribute.sourceLookup.toLowerCase();
+				attribute.fieldName = fieldName.replace("*100", "");
+				attribute.homeValue = $scope.homeDistrict[attribute.fieldName];
 				
 				var rangeGroup = rangeGroupMap[attribute.attributeGroupId];
 				if (rangeGroup != null) {
@@ -342,7 +361,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		})
 	}
 
-	function populateRangePermissions(){
+	function populateRangePermissions(callback){
 		var attributeMap = {};
 		angular.forEach($scope.attributes, function(attribute){
 			attributeMap[attribute.attributeId] = attribute;
@@ -352,6 +371,9 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 			attribute.maxValue = attribute.homeValue + (attribute.maxPercent * attribute.homeValue) / 100;
 			attribute.selected = false;
 			attribute.criteriaRangeId = null;
+			attribute.originalSelected = attribute.selected;
+			attribute.originalMinValue = attribute.minValue;
+			attribute.originalMaxValue = attribute.maxValue;
 		});
 		
 		$dataService.get('criteriaRanges?cbSprofileId=' + $scope.profile.cbSprofileId,function(permissions){
@@ -365,8 +387,15 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 					attribute.maxPercent = permission.maxPercent;
 					attribute.selected = true;
 					attribute.criteriaRangeId = permission.criteriaRangeId;
+					attribute.originalSelected = attribute.selected;
+					attribute.originalMinValue = attribute.minValue;
+					attribute.originalMaxValue = attribute.maxValue;
 				}
 			});
+
+			if (callback) {
+				callback();
+			}
 		});
 	}
 
@@ -418,7 +447,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		return selected;
 	}
 
-	function updateRangeCriteriaCount(rangeGroup){
+	function applyRangeCriteria(rangeGroup){
 		if (rangeGroup == null) {
 			angular.forEach($scope.rangeGroups,function(group){
 				if (group.selected) {
@@ -451,7 +480,9 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				$notifier.error('Error encountered.');
 			} else {
 				$notifier.success('Profile updated successfully.');
-				populateRangePermissions();
+				populateRangePermissions(function(){
+					evaluateQualifyingDistricts();
+				});
 			}
 		});
 	}
@@ -502,6 +533,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		
 		$dataService.put('CBSprofiles/' + cbSprofileId, profile, function(response){
 			$notifier.success('Profile updated successfully.');
+			evaluateQualifyingDistricts();
 		});
 	}
 
@@ -570,6 +602,99 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 			link.selected = false;
 		})
 		link.selected = true;
+	}
+
+	function evaluateQualifyingDistricts() {
+		var typeFieldMap = {'CLSTR': 'clusterId', 'RGN': 'regionId', 'RGN': 'regionId', 'IU': 'iuId', 'CNTY': 'countyId', 'DSTRCT': 'districtId'};
+
+		var selectedHierarchyIdMap = {};
+		angular.forEach($scope.types, function(type){
+			var key = typeFieldMap[type.lookupCode];
+			var selectedHierarchyIds = [];
+			angular.forEach(type.options, function(option){
+				if (option.originalySelected && selectedHierarchyIds.indexOf(option.hierarchyId) == -1) {
+					selectedHierarchyIds.push(option.hierarchyId);
+				}
+			});
+			selectedHierarchyIdMap[key] = selectedHierarchyIds;
+		});
+
+		var contiguousDistrict = false;
+
+		angular.forEach($scope.quickPickTypes, function(quickPickType){
+			var selected = $scope.profile[quickPickType.field];
+			var id = quickPickType.relatedHierarchyId;
+			var selectedHierarchyIds = selectedHierarchyIdMap[quickPickType.id];
+			if (selected && id != null && id != '' && selectedHierarchyIds != null && selectedHierarchyIds.indexOf(id) == -1) {
+				selectedHierarchyIds.push(id);
+			}
+		});
+
+		var schoolTypeIds = [];
+		var schoolTypeField = "prstyp";
+		var schoolTypeReferenceField = "lookupCode";
+		angular.forEach($scope.schoolTypes, function(schoolType){
+			if (schoolType.originalySelected && schoolTypeIds.indexOf(schoolType[schoolTypeReferenceField]) == -1) {
+				schoolTypeIds.push(schoolType[schoolTypeReferenceField]);
+			}
+		});
+
+		var selectedAttributes = [];
+		angular.forEach($scope.attributes, function(attribute){
+			if (attribute.originalSelected ) {
+				selectedAttributes.push(attribute);
+			}
+		});
+
+		$dataService.getFromCache('contiguousHierarchy?hierarchyId=' + $scope.homeDistrict.districtId, function(contiguousDistricts){
+			var selectedDistrictIds = selectedHierarchyIdMap['districtId'];
+
+			angular.forEach(contiguousDistricts, function(contiguousDistrict){
+				if (contiguousDistrict.contiguousHierarchyId != null && selectedDistrictIds.indexOf(contiguousDistrict.contiguousHierarchyId) == -1) {
+					selectedDistrictIds.push(contiguousDistrict.contiguousHierarchyId);
+				}
+			});
+
+			$dataService.getFromCache('districts', function(districts){
+				districts = districts || [];
+
+				var qualifyingDistricts = [];
+				angular.forEach(districts, function(district){
+					var selected = false;
+
+					angular.forEach(selectedHierarchyIdMap, function(selectedHierarchyIds, fieldName) {
+						if (district[fieldName] != null && district[fieldName] != "" && selectedHierarchyIds.indexOf(district[fieldName]) >= 0) {
+							selected = true;
+						}
+					});
+
+					var schoolType = district[schoolTypeField] == 0 ? 'I' : (district[schoolTypeField] == 7 ? 'V' : 'B');
+
+					if (schoolTypeIds.indexOf(schoolType) == -1) {
+						selected = false;
+					}
+
+					angular.forEach(selectedAttributes, function(attribute){
+						var value = district[attribute.fieldName];
+						if (value != null && attribute.originalMinValue != null && attribute.originalMinValue > value) {
+							selected = false;
+						}
+						if (value != null && attribute.originalMaxValue != null && attribute.originalMaxValue < value) {
+							selected = false;
+						}
+					});
+
+					if (selected) {
+						qualifyingDistricts.push({'hierarchyId': district.districtId});
+					}
+				});
+
+				$dataService.post('CBSprofiles/' + $routeParams.profileId + '/qualifyingDistricts', qualifyingDistricts, function(response){
+					
+				});
+			});
+
+		});
 	}
 	
 	init();
