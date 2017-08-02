@@ -22,16 +22,9 @@ angular.module('shared').constant('$constants', {
 		'ManageGlobalProfile': 7,
 		'ManageVendors': 8,
 		'ManageUsers': 5,
-		'Administration': 4,
-		'Drives': 2
+		'Administration': 4
 	},
     'StartupTasks': [],
-	'SearchConfig': [
-		{'service': '$testDriveSearchService', 'method': 'searchTestDrives'},
-		{'service': '$testDriveSearchService', 'method': 'searchTestDriveInstances'},
-		{'service': '$testDriveSearchService', 'method': 'searchBaseEnvironments'}
-	],
-	'MenuConfig': [
-		{'service': '$testDriveSearchService', 'method': 'searchAccessibleDrives'}
-	]
+	'SearchConfig': [],
+	'MenuConfig': []
 });
