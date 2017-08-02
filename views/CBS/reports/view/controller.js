@@ -23,6 +23,30 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
 		angular.forEach($scope.actualReport, function(value, key){
 			report[key] = value;
 		});
+		var filters = [
+			{
+				"$schema": "http://powerbi.com/product/schema#basic",
+				"target": {
+					table: "Districts",
+					column: "DistId"
+				},
+				"operator": "In",
+				"values": getSelectedDistricts()
+			}
+		];
+		
+		if ($scope.homeDistrict != null) {
+			filters.push({
+				"$schema": "http://powerbi.com/product/schema#basic",
+				"target": {
+					table: "HomeDistricts",
+					column: "DistId"
+				},
+				"operator": "In",
+				"values": [$scope.homeDistrict.districtCode]
+			});
+		}
+		
 		report.options = {
 			"tokenType": 1,
 			type: 'report',
@@ -30,17 +54,7 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
 				filterPaneEnabled: false,
 				navContentPaneEnabled: true
 			},
-			filters: [
-				{
-					"$schema": "http://powerbi.com/product/schema#basic",
-					"target": {
-						table: "District",
-						column: "DISTID"
-					},
-					"operator": "In",
-					"values": getSelectedDistricts()
-				}
-			]
+			filters: filters
 		};
 		$scope.reports = [report];
 	}
@@ -48,9 +62,11 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
 	function fetchQualifyingDistricts(callback) {
 		$dataService.get('CBSprofiles/' + $recentProfile.get().cbSprofileId + '/qualifyingDistricts', function(qualifyingDistricts){
 			qualifyingDistricts = qualifyingDistricts || [];
-			
+			var homeDistrictId = $recentProfile.get().homeHierarchyId;
+			var homeDistrict = null;
 			$dataService.getFromCache('districts', function(districts){
 				districts = districts || [];
+				
 				var selectedDistrictIds = [];
 				var selectedDistricts = [];
 				
@@ -59,12 +75,16 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
 				});
 
 				angular.forEach(districts, function(district) {
+					if (homeDistrictId == district.districtId) {
+						homeDistrict = district;
+					}
 					if (selectedDistrictIds.indexOf(district.districtId) > -1){
-						selectedDistricts.push({'districtId': district.districtId, 'districtName': district.districtName, 'selected': true});
+						selectedDistricts.push({'districtId': district.districtCode, 'districtName': district.districtName, 'selected': true});
 					}
 				});
 
 				$scope.districts = selectedDistricts;
+				$scope.homeDistrict = homeDistrict;
 
 				callback();
 			});
