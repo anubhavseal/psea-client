@@ -27,8 +27,8 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
 			{
 				"$schema": "http://powerbi.com/product/schema#basic",
 				"target": {
-					table: "Districts",
-					column: "DistId"
+					table: "ALLDISTRICTS",
+					column: "DISTCODE"
 				},
 				"operator": "In",
 				"values": getSelectedDistricts()
@@ -39,8 +39,8 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
 			filters.push({
 				"$schema": "http://powerbi.com/product/schema#basic",
 				"target": {
-					table: "HomeDistricts",
-					column: "DistId"
+					table: "HOMEDISTRICT",
+					column: "DISTCODE"
 				},
 				"operator": "In",
 				"values": [$scope.homeDistrict.districtCode]
