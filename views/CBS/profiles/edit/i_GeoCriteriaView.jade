@@ -1,22 +1,22 @@
-.panel-group#accordian
+#accordian.panel-group
 	.panel.panel-default.geo-criteria(ng-repeat="type in types")
-		.panel-heading.clearfix
-			h4.panel-title.pull-left(style='padding-top:5px')
+		.panel-heading(data-parent="#accordion" data-target="#{{type.lookupId}}" ng-click='selectType(type)')
+			h4.panel-title.panel-geo-criteria-title
 				{{type.lookupName}}
 				label.text-muted &nbsp;({{getSelectedCount(type)}})
-			button.btn.btn-success.pull-right(ng-show='type.selected' ng-click="updateGeoCriteriaCount(type)") Apply	
-			.form-inline.pull-right(ng-show="type.selected")
-				.form-group.col-md-4
+			button.btn.btn-success.apply.pull-right(ng-show='type.selected' ng-click="applySelectedGeoOptions(type)") Apply
+			.search-box-container.pull-right
+				.form-inline(ng-show="type.selected" style="padding-left:15px")
 					.form-group.has-feedback
-						input.form-control.search-box(type="text" id="search" ng-model="searchData" placeholder="{{type.lookupName|uppercase}}" )
-						span.glyphicon.glyphicon-search.form-control-feedback
+						input.form-control.search-box(type="search" id="search" ng-model="searchMap[type.lookupId].searchData" placeholder="{{type.lookupName|uppercase}}" )
+					span.glyphicon.glyphicon-remove(style="cursor:pointer;padding-right:10px;" ng-click="deleteSearchText(type)")
 			span.glyphicon.glyphicon-menu-down.pull-right(style='cursor:pointer;font-size:20px;' ng-if='!type.selected' ng-click='selectType(type)')
-		.panel-body(ng-class="{ 'panel-collapse collapse in expanded' : type.selected, 'panel-collapse collapse': !type.selected}")
+		.panel-body(ng-attr-id="{{type.lookupId}}" ng-class="{ 'panel-collapse collapse in expanded' : type.selected, 'panel-collapse collapse': !type.selected}")
 			.row.checked-container(ng-show='type.group1Count > 0' style='padding:10px;{{type.group1Count > 0 && type.group2Count > 0 ? "border-bottom:1px solid lightgray" : ""}}')
-				.col-md-4(ng-repeat="option in type.options | filter: { group: 1, hierarchyName: searchData}")
+				.col-md-4(ng-repeat="option in type.options | filter: { group: 1}")
 					input.cbs-input-box(type="checkbox" ng-model="option.selected" ng-attr-id="a_{{type.lookupId}}_{{option.hierarchyId}}")
 					label.label-ellipsis(for="a_{{type.lookupId}}_{{option.hierarchyId}}") &nbsp;{{option.hierarchyName}}				 
 			.row.unchecked-container(ng-show='type.group2Count > 0' style='padding:10px;')
-				.col-md-4(ng-repeat="option in type.options | filter: { group: 2, hierarchyName: searchData}"  style="")
+				.col-md-4(ng-repeat="option in type.options | filter: { group: 2, hierarchyName: searchMap[type.lookupId].searchData}")
 					input.cbs-input-box(type="checkbox" ng-model="option.selected" ng-attr-id="a_{{type.lookupId}}_{{option.hierarchyId}}")
 					label.label-ellipsis.text-muted( for="a_{{type.lookupId}}_{{option.hierarchyId}}") &nbsp;{{option.hierarchyName}}

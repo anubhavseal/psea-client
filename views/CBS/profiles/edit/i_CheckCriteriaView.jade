@@ -1,9 +1,15 @@
 .row
-	.col-md-12
+	.col-md-6
 		ul.nav.nav-pills#criteria-nav-pills
 			li(role="presentation" ng-repeat="criteria in master" ng-class="{'active':criteria.selected}" ng-click="selectCriteria(criteria)") 
 				a(href="" style="display:inline") {{criteria.id}}
-.row#geo-criteria-dashboard(ng-if="currentSelectedCriteria === 'Geo-Criteria'")
+	.col-md-3
+		button.btn.btn-danger.btn-clear-criteria(ng-if="currentSelectedCriteria === 'Geo-Criteria'" ng-click="clearAllGeoCriteria()") Clear Geo-Criteria
+		button.btn.btn-danger.btn-clear-criteria(ng-if="currentSelectedCriteria === 'Quick-Pick'" ng-click="clearAllQuickPick()") Clear QuickPick
+		button.btn.btn-danger.btn-clear-criteria(ng-if="currentSelectedCriteria === 'Range-Criteria'" ng-click="clearAllRangeCriteria()") Clear Range-Criteria
+	.col-md-3
+		button.btn.btn-danger.btn-clear-criteria(ng-click="clearAllCriteria()") Clear All Criteria
+#geo-criteria-dashboard.row(ng-if="currentSelectedCriteria === 'Geo-Criteria'")
 	.col-md-12
 		.panel.panel-default(ng-repeat="type in types" ng-if="getSelectedCount(type) > 0")
 			.panel-heading
@@ -31,7 +37,7 @@
 					.col-md-2
 						span {{attribute.attributeName}}
 					.col-md-3
-						span.text-muted(ng-if="attribute.homeValue != null && attribute.homeValue != ''") Home District:&nbsp;
+						span.text-muted(ng-if="attribute.homeValue != null && attribute.homeValue != ''") Home Value:&nbsp;
 						span {{attribute.homeValue}}
 					.col-md-1
 						span.text-muted(ng-if="attribute.minPercent != null && attribute.minPercent != ''") Min%:&nbsp;

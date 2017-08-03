@@ -1,6 +1,24 @@
 .container-fluid
 	.app-container(style='padding-top:53px;margin-top:20px')
 		.row
-			.col-md-3(ng-include='"/views/CBS/profiles/recentprofile/view"')
-			.col-md-9
-				powerbi-report.powerbi-frame--dotted(embed-url='report.pbIembedURL', access-token='report.pbiAccessToken', reportid='report.pbIreportId', options='report.options')
+			.col-md-12
+					a(href="/reports")
+						span.glyphicon.glyphicon-arrow-left(style="font-size:20px;padding-right:10px;")
+						h3(style="display:inline-block;") Back To Report List
+		.row
+			.col-md-3(style='border: 1px solid lightgray;border-radius:5px' ng-hide='true')
+				.row
+					.col-md-12(style='border-bottom: 1px solid lightgray;padding-top:5px;padding-bottom:5px')
+						div(style='font-size:22px;color:darkgray;display:inline-block;padding-top:6px') 
+							| Districts
+							small &nbsp;({{selectedDistrictCount}})
+						button.btn-success.apply.pull-right(style='width: 240px; border: 1px solid #21cc71; padding: 10px; border-radius: 20px; cursor: pointer; outline: none' ng-click='applySelectedDistricts()') Apply Selected District(s)
+				.row
+					.col-md-12(style='padding-top:10px')
+						ul(style='list-style-type:none')
+							li(style='margin-left:-38px' ng-repeat='district in districts')
+								input.cbs-input-box(type="checkbox" ng-model="district.selected" ng-attr-id="a_{{district.districtId}}" ng-change='updateSelectCount()')
+								label.label-ellipsis.text-muted( for="a_{{district.districtId}}") &nbsp;&nbsp;&nbsp;{{district.districtName}}				
+			.col-md-12(ng-repeat='report in reports')
+				powerbi-report.powerbi-frame--dotted(style='border:1px solid lightgray;border-radius:5px' embed-url='report.pbIembedURL', access-token='report.pbiAccessToken', reportid='report.pbIreportId', options='report.options' ng-if='report != null')
+				i.fa.fa-spinner.fa-spin.fa-3x.fa-fw( ng-if='report == null')

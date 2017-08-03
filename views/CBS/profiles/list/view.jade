@@ -5,10 +5,14 @@
 			.col-md-9.profile-container
 				.row
 					.col-md-4.pull-left(ng-repeat='profile in profiles' ng-if="recentProfile == null || profile.cbSprofileId != recentProfile.cbSprofileId")
-						.panel.panel-default.profile
+						.panel.panel-default.panel-profile-tile
 							.panel-heading.profile-heading 
 								a(href="/profiles/{{profile.cbSprofileId}}") {{profile.cbSprofileName}}
 							.panel-body.profile-body
-								span 
+								p.ellipsis {{profile.homeHierarchyName}}
+								p 
 									em {{$moment.fromNow(profile.lastAccessedAt)}}
-			button.btn.btn-success.btn-lg.pull-right(type="button" data-toggle='modal', data-target='#createProfile' ng-click="openCreateProfilePopup()") Create New Profile
+				#pagination		
+		.row
+			.col-md-12
+				button.btn.btn-success.btn-lg.pull-left(type="button" ng-click="openCreateProfilePopup()") Create New Profile

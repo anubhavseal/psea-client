@@ -2,17 +2,25 @@
 	.col-md-12
 		.row
 			.col-md-12.panel-heading.clearfix
-				h4.panel-title.pull-left(style='padding-top:5px') QuickPick
-				button.btn.btn-success.pull-right(ng-click="updateQuickPicks()") Apply    
-				.form-inline.pull-right
-					.form-group.col-md-4
-						.form-group.has-feedback
-							input.form-control.search-box(type="text" id="search" ng-model="searchQuickPickType" placeholder="Quick Pick Type" )
-							span.glyphicon.glyphicon-search.form-control-feedback
+				h4.panel-title.pull-left(style='padding-top:5px') Quick Pick
+				button.btn.btn-success.apply.pull-right(ng-click="updateQuickPicks()") Apply    
 		.row.panel-body(style='border-top:1px solid lightgray')
 			.col-md-12
 				ul.list-group
-					li.col-md-12.list-group-item.quick-types-list(ng-repeat="quickPickType in quickPickTypes | filter: { caption: searchQuickPickType}")
-						input.cbs-input-box(type="checkbox" ng-attr-id="{{quickPickType.id}}" ng-model="quickPickType.selected")
-						label(for="{{quickPickType.id}}" style="font-family:'Lato', sans-serif !important;") &nbsp; 
+					li.col-md-12.list-group-item.quick-types-list(ng-repeat="quickPickType in quickPickTypes")
+						input.cbs-input-box(type="checkbox" ng-attr-id="quickPickType_{{quickPickType.id}}" ng-model="quickPickType.selected")
+						label(for="quickPickType_{{quickPickType.id}}") &nbsp; 
 							span(ng-class="{'text-muted':!quickPickType.selected}") {{quickPickType.caption}}
+.row.panel.panel-default
+	.col-md-12
+		.row
+			.col-md-12.panel-heading.clearfix
+				h4.panel-title.pull-left(style='padding-top:5px') School Type
+				button.btn.btn-success.apply.pull-right(ng-click="updateSchoolType()") Apply
+		.row.panel-body(style='border-top:1px solid lightgray')
+			.col-md-12
+				ul.list-group
+					li.col-md-12.list-group-item.quick-types-list(ng-repeat='schoolType in schoolTypes')
+						input.cbs-input-box(type="checkbox" ng-attr-id="schoolType_{{schoolType.lookupId}}" ng-model="schoolType.selected")
+						label(for="schoolType_{{schoolType.lookupId}}") &nbsp; 
+							span(ng-class="{'text-muted':!schoolType.selected}") {{schoolType.lookupName}}
