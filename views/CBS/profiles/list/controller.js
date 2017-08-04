@@ -12,20 +12,11 @@ app.controller('cbs.profiles.list.controller', [
 function($scope, $dataService, $accessService, $recentProfile, $moment, $loader, $popup,$cache) {
 	$scope.openCreateProfilePopup = openCreateProfilePopup;
 	function init(){
-		$scope.count = $cache.session.get("cbs", "count");
 		$loader.show();
 		$dataService.get('CBSprofiles?ownerId='+ $accessService.getUserId(), function(profiles){
 			profiles = profiles || [];
-
-			var recentProfile = $recentProfile.get();
-			if (recentProfile == null && profiles.length > 0) {
-				recentProfile = profiles[0];
-			}
-			$recentProfile.set(recentProfile);
-			$recentProfile.show($scope);
-			
 			$scope.profiles = profiles;
-
+			
 			var mapProfile = {};
 			angular.forEach($scope.profiles,function(profile){
 				mapProfile[profile.homeHierarchyId] = profile;
@@ -39,19 +30,21 @@ function($scope, $dataService, $accessService, $recentProfile, $moment, $loader,
 						profile.homeHierarchyName = hierarchy.hierarchyName;
 					}
 				});
-			});
+
+				var recentProfile = $recentProfile.get();
+				if (recentProfile == null && $scope.profiles.length > 0) {
+					recentProfile = $scope.profiles[0];
+				}
+				$recentProfile.set(recentProfile);
+				$recentProfile.show($scope);	
+				});
+			
+			
+
 			setTimeout(paginate,5);
 			$loader.hide();
 			
 		});	
-			if($scope.count == null){
-				$cache.session.put("cbs", "count",0);
-				$scope.count = $cache.session.get("cbs", "count");
-			}else{
-				$cache.session.put("cbs", "count",1);
-				$scope.count = $cache.session.get("cbs", "count"); 
-			}
-			
 	}
 	function openCreateProfilePopup(){
 		$popup.open('/views/CBS/profiles/createnew/view', 'cbs.profiles.createnew.controller', {'refreshProfileList': init}, 'md');
