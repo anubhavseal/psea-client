@@ -54,3 +54,5 @@
 
 //= require lib/adal/adal.js
 //= require lib/adal/adal-angular.js
+
+//= require lib/async/async.js

@@ -1,57 +1,65 @@
 angular.module('cbs')
 .controller('cbs.reports.list.controller', [ '$scope', '$dataService', '$routeParams', '$recentProfile', function($scope,$dataService,$routeParams,$recentProfile,$urlPath) {
 		
-		function fetchReportTabs() {
+		
+		/*function fetchReportTabs(callback) {
 			$dataService.get('reportTabs',function(reportTabs){
-				reportTabs = reportTabs || [];
-				var reportMap = {};
-				angular.forEach($scope.reports, function(report){
-					reportMap[report.reportId] = report;
-					report.reportTabs = [];
-				});
-				
-				angular.forEach(reportTabs, function(reportTab){
-					var report = reportMap[reportTab.reportId];
-					if (report != null) {
-						report.reportTabs.push(reportTab);
-					}
-				});
+				$scope.reportTabs = reportTabs || [];
+				callback();
             })
 		}
 		
-		function fetchReports() {
+		function mapReportTabToReports() {
+			var reportMap = {};
+			angular.forEach($scope.reports, function(report){
+				reportMap[report.reportId] = report;
+				report.reportTabs = [];
+			});
+			
+			angular.forEach($scope.reportTabs, function(reportTab){
+				var report = reportMap[reportTab.reportId];
+				if (report != null) {
+					report.reportTabs.push(reportTab);
+				}
+			});
+		}*/
+		
+		function fetchReports(callback) {
+			console.log(new Date().getTime() + ": fetchReports");
 			$dataService.get('reports',function(reports){
 				$scope.reports = reports || [];
+				callback();
+			});
+		}
+		
+		function fetchReportGroups(callback) {
+			console.log(new Date().getTime() + ": fetchReportGroups");
+			$dataService.get('reportGroups',function(reportGroups){
+				$scope.reportGroups = reportGroups || [];
+				callback();
+			});
+		}
+		
+		function mapReportsToReportGroup() {
+			console.log(new Date().getTime() + ": mapReportsToReportGroup");
+			var reportGroupMap = {};
 
-				var reportGroupMap = {};
+			angular.forEach($scope.reportGroups, function(reportGroup){
+				reportGroupMap[reportGroup.reportGroupId] = reportGroup;
+				reportGroup.reports = [];
+			});
 
-				angular.forEach($scope.reportGroups, function(reportGroup){
-					reportGroupMap[reportGroup.reportGroupId] = reportGroup;
-					reportGroup.reports = [];
-				});
-
-				angular.forEach($scope.reports, function(report){
-					var reportGroup = reportGroupMap[report.reportGroupId];
-					if (reportGroup != null) {
-						reportGroup.reports.push(report);
-					}
-				});
-				
-				//fetchReportTabs();
-            })
+			angular.forEach($scope.reports, function(report){
+				var reportGroup = reportGroupMap[report.reportGroupId];
+				if (reportGroup != null) {
+					reportGroup.reports.push(report);
+				}
+			});
 		}
 
         function init(){
-            //fetch the recent profile form cache
             $recentProfile.show($scope);
-            //fetch reportGroups first - there's only 1 group for now
-            //Hence this will not be visible on front-end, but group GUID maybe required for PBI token generation
-            $dataService.get('reportGroups',function(reportGroups){
-				reportGroups = reportGroups || [];
-				$scope.reportGroups = reportGroups;
-				
-				fetchReports();
-            });
+			async.parallel([fetchReports, fetchReportGroups], mapReportsToReportGroup);
         }
 
         init();
