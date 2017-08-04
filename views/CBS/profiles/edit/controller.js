@@ -40,9 +40,11 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		$loader.show();
 		$dataService.get('CBSprofiles/' + $routeParams.profileId, function(profiles) {
 			$scope.profile = profiles == null || profiles.length == 0 ? {} : profiles[0];
-			$recentProfile.set($scope.profile);
-			$recentProfile.show($scope);
-			
+				$dataService.getFromCache('hierarchy?hierarchyId.in=' + $scope.profile.homeHierarchyId,function(hierarchies){
+					$scope.profile.homeHierarchyName = hierarchies[0].hierarchyName;
+					$recentProfile.set($scope.profile);
+					$recentProfile.show($scope);
+			})
 			fetchHomeDistrict();
 		});         
 	}
@@ -365,8 +367,8 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		var attributeMap = {};
 		angular.forEach($scope.attributes, function(attribute){
 			attributeMap[attribute.attributeId] = attribute;
-			attribute.minPercent = 5;
-			attribute.maxPercent = 5;
+			attribute.minPercent = 3;
+			attribute.maxPercent = 3;
 			attribute.minValue = attribute.homeValue - (attribute.minPercent * attribute.homeValue) / 100;
 			attribute.maxValue = attribute.homeValue + (attribute.maxPercent * attribute.homeValue) / 100;
 			attribute.selected = false;

@@ -4,15 +4,16 @@
 			.col-md-3(ng-include='"/views/CBS/profiles/recentprofile/view"')
 			.col-md-9.profile-container
 				.row
-					.col-md-4.pull-left(ng-repeat='profile in profiles' ng-if="recentProfile == null || profile.cbSprofileId != recentProfile.cbSprofileId")
+					.col-md-4.pull-left(ng-repeat="profile in profiles|orderBy:'-lastAccessedAt'"  ng-if="recentProfile == null || profile.cbSprofileId != recentProfile.cbSprofileId")
 						.panel.panel-default.panel-profile-tile
 							.panel-heading.profile-heading 
 								a(href="/profiles/{{profile.cbSprofileId}}") {{profile.cbSprofileName}}
 							.panel-body.profile-body
 								p.ellipsis {{profile.homeHierarchyName}}
 								p 
-									em {{$moment.fromNow(profile.lastAccessedAt)}}
-				#pagination		
-		.row
-			.col-md-12
+									em {{$moment.fromNow(profile.lastAccessedAt)}}	
+		.row(style="position:absolute;bottom:10px;width:95%")
+			.col-md-3
 				button.btn.btn-success.btn-lg.pull-left(type="button" ng-click="openCreateProfilePopup()") Create New Profile
+			.col-md-9(style="padding-left:20px;margin:auto")
+				#pagination
