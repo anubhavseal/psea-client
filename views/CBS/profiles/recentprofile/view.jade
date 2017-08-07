@@ -8,16 +8,16 @@
 	.row(style="padding-bottom:30px;height:80px")
 		.col-md-12
 			h3 {{recentProfile.cbSprofileName}}
+			h5 {{recentProfile.homeHierarchyName}}
+	.row(style="height:50px")
+		.col-md-12
 			span{{$moment.fromNow(recentProfile.lastAccessedAt)}}
 			div( ng-if='profileLocation != "/profiles"') 
 				a(href="/profiles" style="color:white") (View All Profiles)
-	.row(style="height:50px")
-		.col-md-12
-			h5 {{recentProfile.homeHierarchyName}}
 	.row(style="padding-bottom:30px;height:60px")
 		.col-md-6(style="padding:2px;")
 			button.btn.btn-primary.btn-lg(style="width:100%;") 
 				a(href="/reports" style="color:white" ) Analysis
 		.col-md-6(style="padding:2px;")
 			button.btn.btn-primary.btn-lg(style="width:100%;") 
-				a(href="/profiles/{{recentProfile.cbSprofileId}}" style="color:white" ) Criteria
+				a(href="/profiles/{{recentProfile.cbSprofileId}}" style="color:white" ) Criteria	
