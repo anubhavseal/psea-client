@@ -8,8 +8,8 @@
 	.row(style="padding-bottom:30px;height:80px")
 		.col-md-12
 			h3 {{recentProfile.cbSprofileName}}
-			span {{$moment.fromNow(recentProfile.lastAccessedAt)}}
-			div(style='padding-top:20px' ng-if='profileLocation != "/profiles"') 
+			span{{$moment.fromNow(recentProfile.lastAccessedAt)}}
+			div( ng-if='profileLocation != "/profiles"') 
 				a(href="/profiles" style="color:white") (View All Profiles)
 	.row(style="height:50px")
 		.col-md-12
