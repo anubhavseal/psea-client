@@ -41,7 +41,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		$dataService.get('CBSprofiles/' + $routeParams.profileId, function(profiles) {
 			$scope.profile = profiles == null || profiles.length == 0 ? {} : profiles[0];
 				$dataService.getFromCache('hierarchy?hierarchyId.in=' + $scope.profile.homeHierarchyId,function(hierarchies){
-					$scope.profile.homeHierarchyName = hierarchies[0].hierarchyName;
+					$scope.profile.homeHierarchyName = hierarchies == null || hierarchies.length == 0 ? {} : hierarchies[0].hierarchyName;
 					$recentProfile.set($scope.profile);
 					$recentProfile.show($scope);
 			})
