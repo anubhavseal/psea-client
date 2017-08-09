@@ -11,7 +11,8 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 	$scope.searchMap = {};
     $scope.getSelectedCount = getSelectedCount;
     $scope.selectType = selectType;
-    $scope.deleteSearchText = deleteSearchText;
+	$scope.deleteSearchText = deleteSearchText;
+	$scope.getCriteriaHieracrhiesCount = getCriteriaHieracrhiesCount;
     $scope.selectRangeGroup = selectRangeGroup;
     $scope.getSelectedAttributesCount = getSelectedAttributesCount;
     $scope.updateRangeMaxValue = updateRangeMaxValue;
@@ -25,6 +26,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
     $scope.selectCriteria = selectCriteria;
     $scope.currentSelectedCriteria = 'Geo-Criteria';
 	$scope.getSelectedAttributeCount = getSelectedAttributeCount;
+	$scope.getCriteriaRangesCount = getCriteriaRangesCount;
 	
 	$scope.updateQuickPicks = updateQuickPicks;
     $scope.clearAllQuickPick = clearAllQuickPick;
@@ -236,6 +238,14 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		return selectedCount;
 	}
 	
+	function getCriteriaHieracrhiesCount(type){
+		var count = 0;
+		angular.forEach(type.options,function(option){
+			count = option.criteriaHierarchyId != null ? count = count + 1 : count;
+		})	
+		return count;
+	}
+
 	function deleteSearchText(type){
 		if($scope.searchMap[type.lookupId])
 			$scope.searchMap[type.lookupId].searchData = '';
@@ -356,7 +366,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				rangeGroup.selected = false;
 				rangeGroup.attributes = [];
 			});
-			
+
 			angular.forEach(attributes, function(attribute){
 				var fieldName = attribute.sourceLookup == null || attribute.sourceLookup == '' ? '' : attribute.sourceLookup.toLowerCase();
 				attribute.fieldName = fieldName.replace("*100", "");
@@ -433,6 +443,14 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		return count;
 	}
 
+	function getCriteriaRangesCount(rangeGroup){
+		var count = 0;
+		angular.forEach(rangeGroup.attributes,function(attribute){
+			count = attribute.criteriaRangeId != null ? count = count + 1 : count;
+		})
+		return count;
+	}
+
 	function updateRangeMaxValue(attribute){
 		var maxValue = attribute.maxPercent === null || attribute.homeValue == null || attribute.homeValue == 0 ? null : (attribute.homeValue + (attribute.maxPercent*attribute.homeValue)/100);
 		attribute.maxValue = maxValue;
@@ -468,20 +486,22 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		var cbSprofileId = $scope.profile.cbSprofileId;
 		var options = {'apiURL': 'criteriaRanges', 'primaryKeyField': 'criteriaRangeId', 'data': criteriaRanges};
 		
-		if (rangeGroup == null) {
-			angular.forEach($scope.rangeGroups,function(group){
-				if (group.selected) {
-					rangeGroup = group;
-				}
-			})
-			angular.forEach(rangeGroup.attributes,function(attribute){
-				if (attribute.selected && attribute.criteriaHierarchyId == null) {
-					criteriaRanges.push({'cbSprofileId': cbSprofileId, 'attributeId': attribute.attributeId, 'minPercent': attribute.minPercent, 'maxPercent': attribute.maxPercent, 'minValue': attribute.minValue, 'maxValue': attribute.maxValue})
-				} else if (!attribute.selected && attribute.criteriaRangeId != null){
-					criteriaRanges.push({'__row_mode': 'D', 'criteriaRangeId': attribute.criteriaRangeId})
-				}
-			});
-		}else{
+		// if (rangeGroup == null) {
+		// 	angular.forEach($scope.rangeGroups,function(group){
+		// 		if (group.selected) {
+		// 			rangeGroup = group;
+		// 		}
+		// 	})
+		// 	angular.forEach(rangeGroup.attributes,function(attribute){
+		// 		if (attribute.selected && attribute.criteriaHierarchyId == null) {
+		// 			criteriaRanges.push({'cbSprofileId': cbSprofileId, 'attributeId': attribute.attributeId, 'minPercent': attribute.minPercent, 'maxPercent': attribute.maxPercent, 'minValue': attribute.minValue, 'maxValue': attribute.maxValue})
+		// 		} else if (!attribute.selected && attribute.criteriaRangeId != null){
+		// 			criteriaRanges.push({'__row_mode': 'D', 'criteriaRangeId': attribute.criteriaRangeId})
+		// 		}
+		// 	});
+		// }else{
+			
+		// }
 			angular.forEach($scope.rangeGroups,function(rangeGroup){
 				angular.forEach(rangeGroup.attributes,function(attribute){
 					if (attribute.selected && attribute.criteriaHierarchyId == null) {
@@ -491,7 +511,6 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 					}
 				});
 			})
-		}
 		
 		$dataService.synchronize(options, function(results){
 			
@@ -521,7 +540,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 						attribute.selected = false;
 					})
 				})
-				applyRangeCriteria($scope.rangeGroups)
+				applyRangeCriteria()
 				$scope.$apply();
 			} 
 		});  
