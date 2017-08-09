@@ -59,7 +59,7 @@ function($scope, $dataService, $accessService, $recentProfile, $moment, $loader,
 	
 	function paginate(){
 		var profiles = $('.panel-profile-tile');
-		var numberOfProfiles = $scope.recentProfileIndicator  === true ? profiles.length - 1 : profiles.length;
+		var numberOfProfiles = $scope.recentProfileIndicator === true ? profiles.length - 1 : profiles.length;
 		var perPage = 9;
 		profiles.slice(perPage).hide();
 		$('#pagination').pagination({

@@ -13,10 +13,10 @@
 			span.glyphicon.glyphicon-menu-down.pull-right(style='cursor:pointer;font-size:20px;' ng-if='!type.selected' ng-click='selectType(type)')
 		.panel-body(ng-attr-id="{{type.lookupId}}" ng-class="{ 'panel-collapse collapse in expanded' : type.selected, 'panel-collapse collapse': !type.selected}")
 			.row.checked-container(ng-show='type.group1Count > 0' style='padding:10px;{{type.group1Count > 0 && type.group2Count > 0 ? "border-bottom:1px solid lightgray" : ""}}')
-				.col-md-4(ng-repeat="option in type.options | filter: { group: 1}")
+				.col-md-4(ng-repeat="option in type.options | filter: { group: 1}" ng-show ="option.hierarchyName !=''")
 					input.cbs-input-box(type="checkbox" ng-model="option.selected" ng-attr-id="a_{{type.lookupId}}_{{option.hierarchyId}}")
 					label.label-ellipsis(for="a_{{type.lookupId}}_{{option.hierarchyId}}") &nbsp;{{option.hierarchyName}}				 
 			.row.unchecked-container(ng-show='type.group2Count > 0' style='padding:10px;')
-				.col-md-4(ng-repeat="option in type.options | filter: { group: 2, hierarchyName: searchMap[type.lookupId].searchData}")
+				.col-md-4(ng-repeat="option in type.options | filter: { group: 2, hierarchyName: searchMap[type.lookupId].searchData}"  ng-show ="option.hierarchyName !=''")
 					input.cbs-input-box(type="checkbox" ng-model="option.selected" ng-attr-id="a_{{type.lookupId}}_{{option.hierarchyId}}")
 					label.label-ellipsis.text-muted( for="a_{{type.lookupId}}_{{option.hierarchyId}}") &nbsp;{{option.hierarchyName}}
