@@ -5,7 +5,7 @@
 				a(href="" style="display:inline;border-bottom:none") {{rangeGroup.lookupName}}
 				span.badge.badge-info(style='width:40px;margin-bottom:12px;margin-top:5px;background-color:{{rangeGroup.selected ? "#02b6ff" : "lightgray"}}'){{getSelectedAttributesCount(rangeGroup.attributes)}}
 	.col-md-2
-		button.btn.btn-success.btn-lg.pull-right(ng-click="applyRangeCriteria()") Apply
+		button.btn.btn-success.apply(ng-click="applyRangeCriteria()" style="width:100%;") Apply
 .row.range-criteria-header-container
 	.col-md-6
 		#HOME-CRITERIA HOME DISTRICT

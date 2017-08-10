@@ -11,7 +11,7 @@
 		button.btn.btn-danger.btn-clear-criteria(ng-click="clearAllCriteria()") Clear All Criteria
 #geo-criteria-dashboard.row(ng-if="currentSelectedCriteria === 'Geo-Criteria'")
 	.col-md-12
-		.panel.panel-default(ng-repeat="type in types" ng-if="getSelectedCount(type) > 0")
+		.panel.panel-default(ng-repeat="type in types" ng-if="getCriteriaHieracrhiesCount(type) > 0")
 			.panel-heading
 				.panel-title {{type.lookupName}}
 			.panel-body
@@ -25,11 +25,11 @@
 				.panel-title Quick-Pick
 			.panel-body
 				.row
-					.col-md-4(ng-repeat = "quickPickType in quickPickTypes|filter: {selected : true}")
-						span {{quickPickType.caption}}
+					.col-md-4(ng-repeat = "quickPickType in quickPickTypes" ng-if="profile[quickPickType.field] == true")
+						span {{quickPickType.caption}} 
 .row#range-criteria-dashboard(ng-if="currentSelectedCriteria === 'Range-Criteria'")
 	.col-md-12
-		.panel.panel-default(ng-repeat="rangeGroup in rangeGroups" ng-if="getSelectedAttributeCount(rangeGroup) > 0")
+		.panel.panel-default(ng-repeat="rangeGroup in rangeGroups" ng-if="getCriteriaRangesCount(rangeGroup) > 0")
 			.panel-heading
 				.panel-title {{rangeGroup.lookupName}}
 			.panel-body

@@ -1,23 +1,23 @@
 .div.profile-image-container
-	.row(style="padding-bottom:90px;height:130px")
+	.row(style="padding-bottom:90px;height:100px")
 		.col-md-12
 			h1.text-left {{profileGreeting}}
 	.row(style="padding-bottom:15px;height:45px")
 		.col-md-12
 			span My Recent Profile
-	.row(style="padding-bottom:90px;height:150px")
+	.row(style="padding-bottom:30px;height:80px")
 		.col-md-12
 			h3 {{recentProfile.cbSprofileName}}
-			span {{$moment.fromNow(recentProfile.lastAccessedAt)}}
-			div(style='padding-top:20px' ng-if='profileLocation != "/profiles"') 
-				a(href="/profiles" style="color:white") (View All Profiles)
-	.row(style="height:20px")
+			h5 {{recentProfile.homeHierarchyName}}
+	.row(style="height:50px")
 		.col-md-12
-			| &nbsp;
-	.row(style="height:60px")
+			span{{$moment.fromNow(recentProfile.lastAccessedAt)}}
+			div( ng-if='profileLocation != "/profiles"') 
+				a(href="/profiles" style="color:white") (View All Profiles)
+	.row(style="padding-bottom:30px;height:60px")
 		.col-md-6(style="padding:2px;")
 			button.btn.btn-primary.btn-lg(style="width:100%;") 
 				a(href="/reports" style="color:white" ) Analysis
 		.col-md-6(style="padding:2px;")
 			button.btn.btn-primary.btn-lg(style="width:100%;") 
-				a(href="/profiles/{{recentProfile.cbSprofileId}}" style="color:white" ) Criteria
+				a(href="/profiles/{{recentProfile.cbSprofileId}}" style="color:white" ) Criteria	
