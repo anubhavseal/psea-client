@@ -485,32 +485,33 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		var criteriaRanges = [];
 		var cbSprofileId = $scope.profile.cbSprofileId;
 		var options = {'apiURL': 'criteriaRanges', 'primaryKeyField': 'criteriaRangeId', 'data': criteriaRanges};
-		
-		// if (rangeGroup == null) {
-		// 	angular.forEach($scope.rangeGroups,function(group){
-		// 		if (group.selected) {
-		// 			rangeGroup = group;
-		// 		}
-		// 	})
-		// 	angular.forEach(rangeGroup.attributes,function(attribute){
-		// 		if (attribute.selected && attribute.criteriaHierarchyId == null) {
-		// 			criteriaRanges.push({'cbSprofileId': cbSprofileId, 'attributeId': attribute.attributeId, 'minPercent': attribute.minPercent, 'maxPercent': attribute.maxPercent, 'minValue': attribute.minValue, 'maxValue': attribute.maxValue})
-		// 		} else if (!attribute.selected && attribute.criteriaRangeId != null){
-		// 			criteriaRanges.push({'__row_mode': 'D', 'criteriaRangeId': attribute.criteriaRangeId})
-		// 		}
-		// 	});
-		// }else{
-			
-		// }
+
+		if (rangeGroup == null) {
+			angular.forEach($scope.rangeGroups,function(group){
+				if (group.selected) {
+					rangeGroup = group;
+				}
+			})
+			angular.forEach(rangeGroup.attributes,function(attribute){
+				if (attribute.selected && attribute.criteriaRangeId == null) {
+					criteriaRanges.push({'cbSprofileId': cbSprofileId, 'attributeId': attribute.attributeId, 'minPercent': attribute.minPercent, 'maxPercent': attribute.maxPercent, 'minValue': attribute.minValue, 'maxValue': attribute.maxValue})
+				} else if (!attribute.selected && attribute.criteriaRangeId != null){
+					criteriaRanges.push({'__row_mode': 'D', 'criteriaRangeId': attribute.criteriaRangeId})
+				}
+			});
+		}else{
 			angular.forEach($scope.rangeGroups,function(rangeGroup){
 				angular.forEach(rangeGroup.attributes,function(attribute){
-					if (attribute.selected && attribute.criteriaHierarchyId == null) {
+					if (attribute.selected && attribute.criteriaRangeId == null) {
+						console.log("wrong",attribute)
 						criteriaRanges.push({'cbSprofileId': cbSprofileId, 'attributeId': attribute.attributeId, 'minPercent': attribute.minPercent, 'maxPercent': attribute.maxPercent, 'minValue': attribute.minValue, 'maxValue': attribute.maxValue})
 					} else if (!attribute.selected && attribute.criteriaRangeId != null){
 						criteriaRanges.push({'__row_mode': 'D', 'criteriaRangeId': attribute.criteriaRangeId})
 					}
 				});
 			})
+		 }
+			
 		
 		$dataService.synchronize(options, function(results){
 			
@@ -540,7 +541,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 						attribute.selected = false;
 					})
 				})
-				applyRangeCriteria()
+				applyRangeCriteria($scope.rangeGroups);
 				$scope.$apply();
 			} 
 		});  
@@ -565,7 +566,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 						attribute.selected = false;
 					})
 				})
-				applyRangeCriteria()
+				applyRangeCriteria($scope.rangeGroups);
 				angular.forEach($scope.quickPickTypes,function(quickPickType){
 					quickPickType.selected = false;
 				});
