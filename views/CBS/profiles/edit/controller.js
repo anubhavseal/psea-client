@@ -29,6 +29,8 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 	$scope.getCriteriaRangesCount = getCriteriaRangesCount;
 	
 	$scope.updateQuickPicks = updateQuickPicks;
+	$scope.getQuickPicksCount = getQuickPicksCount;
+
     $scope.clearAllQuickPick = clearAllQuickPick;
     $scope.clearAllRangeCriteria = clearAllRangeCriteria;
     $scope.clearAllGeoCriteria = clearAllGeoCriteria;
@@ -240,9 +242,17 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 	
 	function getCriteriaHieracrhiesCount(type){
 		var count = 0;
-		angular.forEach(type.options,function(option){
-			count = option.criteriaHierarchyId != null ? count = count + 1 : count;
-		})	
+		if(type == null){
+			angular.forEach($scope.types,function(type){
+				angular.forEach(type.options,function(option){
+					count = option.criteriaHierarchyId != null ? count = count + 1 : count;
+				})
+			})
+		}else{
+			angular.forEach(type.options,function(option){
+				count = option.criteriaHierarchyId != null ? count = count + 1 : count;
+			})
+		}
 		return count;
 	}
 
@@ -445,9 +455,17 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 
 	function getCriteriaRangesCount(rangeGroup){
 		var count = 0;
-		angular.forEach(rangeGroup.attributes,function(attribute){
-			count = attribute.criteriaRangeId != null ? count = count + 1 : count;
-		})
+		if(rangeGroup == null){
+			angular.forEach($scope.rangeGroups,function(rangeGroup){
+				angular.forEach(rangeGroup.attributes,function(attribute){
+					count = attribute.criteriaRangeId != null ? count = count + 1 : count;
+				})
+			})
+		}else{
+			angular.forEach(rangeGroup.attributes,function(attribute){
+				count = attribute.criteriaRangeId != null ? count = count + 1 : count;
+			})
+		}
 		return count;
 	}
 
@@ -503,7 +521,6 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 			angular.forEach($scope.rangeGroups,function(rangeGroup){
 				angular.forEach(rangeGroup.attributes,function(attribute){
 					if (attribute.selected && attribute.criteriaRangeId == null) {
-						console.log("wrong",attribute)
 						criteriaRanges.push({'cbSprofileId': cbSprofileId, 'attributeId': attribute.attributeId, 'minPercent': attribute.minPercent, 'maxPercent': attribute.maxPercent, 'minValue': attribute.minValue, 'maxValue': attribute.maxValue})
 					} else if (!attribute.selected && attribute.criteriaRangeId != null){
 						criteriaRanges.push({'__row_mode': 'D', 'criteriaRangeId': attribute.criteriaRangeId})
@@ -605,6 +622,18 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				$scope.$apply();
 			} 
 		});
+	}
+
+	function getQuickPicksCount(){
+		var count = 0;
+		for(key in $scope.profile){
+			if($scope.profile.hasOwnProperty(key)){
+				if(key == 'quickCluster' || key == 'quickRegion' || key == 'quickIU' || key == 'quickCounty'){
+					count = $scope.profile[key] == true ? count = count + 1 : count;
+				}
+			}
+		}
+		return count;
 	}
 
 	$scope.master = [{

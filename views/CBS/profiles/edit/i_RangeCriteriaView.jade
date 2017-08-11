@@ -19,7 +19,7 @@ form(name="minimumPercentageForm" ng-repeat='rangeGroup in rangeGroups' ng-show=
 			input.cbs-input-box(type="checkbox" id="{{attribute.attributeId}}" ng-model="attribute.selected")
 			label(for="{{attribute.attributeId}}" ng-class="{'text-muted':!attribute.selected}")&nbsp;&nbsp;{{attribute.attributeName}}
 		.col-md-2.range-criteria-percentage-value-container#retrieved-value
-			span(ng-class="{'text-muted':!attribute.selected}") {{attribute.homeValue|number}}
+			span(ng-class="{'text-muted':!attribute.selected}") {{attribute.homeValue|number:2}}
 		.col-md-1.range-criteria-percentage-input-container
 			input.percentage-input(type="number" min="0" step="0.1" ng-model="attribute.minPercent" ng-disabled="!attribute.selected" ng-change="updateRangeMinValue(attribute)")
 		.col-md-2.range-criteria-percentage-value-container
