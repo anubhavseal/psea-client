@@ -30,6 +30,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 	
 	$scope.updateQuickPicks = updateQuickPicks;
 	$scope.getQuickPicksCount = getQuickPicksCount;
+	$scope.getSchoolCount = getSchoolCount;
 
     $scope.clearAllQuickPick = clearAllQuickPick;
     $scope.clearAllRangeCriteria = clearAllRangeCriteria;
@@ -587,7 +588,11 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				angular.forEach($scope.quickPickTypes,function(quickPickType){
 					quickPickType.selected = false;
 				});
-				updateQuickPicks()
+				updateQuickPicks();
+				angular.forEach($scope.schoolTypes,function(school){
+					school.selected = false;
+				})
+				updateSchoolType();
 				$scope.$apply();
 			} 
 		});
@@ -613,12 +618,16 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 	}
 
 	function clearAllQuickPick(quickPickType){
-		alertify.confirm("Are you sure you want to clear all Quick Picks?",function (e) {
+		alertify.confirm("Are you sure you want to clear all Quick Picks & School Types?",function (e) {
 			if (e) {
 				angular.forEach($scope.quickPickTypes,function(quickPickType){
 					quickPickType.selected = false;
 				});
-				updateQuickPicks()
+				angular.forEach($scope.schoolTypes,function(school){
+					school.selected = false;
+				})
+				updateQuickPicks();
+				updateSchoolType();
 				$scope.$apply();
 			} 
 		});
@@ -633,6 +642,14 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 				}
 			}
 		}
+		return count;
+	}
+
+	function getSchoolCount(){
+		var count = 0;
+		angular.forEach($scope.schoolTypes,function(schoolType){
+			count = schoolType.criteriaSchoolTypeId != null ? count = count + 1 : count;
+		})
 		return count;
 	}
 

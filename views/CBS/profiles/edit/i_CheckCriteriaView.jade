@@ -1,11 +1,11 @@
 .row
 	.col-md-6
 		ul.nav.nav-pills#criteria-nav-pills
-			li(role="presentation" ng-repeat="criteria in master" ng-class="{'active':criteria.selected}" ng-click="selectCriteria(criteria)") 
+			li(role="presentation" ng-repeat="criteria in master" ng-class="{'active':criteria.selected}" ng-click="selectCriteria(criteria)")
 				a(href="" style="display:inline") {{criteria.id}}
 	.col-md-3
 		button.btn.btn-danger.btn-clear-criteria(ng-if="currentSelectedCriteria === 'Geo-Criteria'" ng-click="clearAllGeoCriteria()") Clear Geo-Criteria
-		button.btn.btn-danger.btn-clear-criteria(ng-if="currentSelectedCriteria === 'Quick-Pick'" ng-click="clearAllQuickPick()") Clear QuickPick
+		button.btn.btn-danger.btn-clear-criteria(ng-if="currentSelectedCriteria === 'Quick-Pick'" ng-click="clearAllQuickPick()") Clear QuickPick & School
 		button.btn.btn-danger.btn-clear-criteria(ng-if="currentSelectedCriteria === 'Range-Criteria'" ng-click="clearAllRangeCriteria()") Clear Range-Criteria
 	.col-md-3
 		button.btn.btn-danger.btn-clear-criteria(ng-click="clearAllCriteria()") Clear All Criteria
@@ -20,7 +20,7 @@
 				.panel-title {{type.lookupName}}
 			.panel-body
 				.row
-					.col-md-4(ng-repeat="option in type.options|filter: {selected : true}")
+					.col-md-4(ng-repeat="option in type.options" ng-if="option.criteriaHierarchyId != null")
 						span {{option.hierarchyName}}
 #quick-pick-dashboard.row(ng-if="currentSelectedCriteria === 'Quick-Pick'")
 	.col-md-12
@@ -32,6 +32,15 @@
 				.row
 					.col-md-4(ng-repeat = "quickPickType in quickPickTypes" ng-if="profile[quickPickType.field] == true")
 						span {{quickPickType.caption}} 
+	.col-md-12
+		.panel.panel-default
+			.panel-heading
+				.panel-title School Type
+			.panel-body(ng-if="getSchoolCount() == 0") No School Type Selected Yet!
+			.panel-body(ng-if="getSchoolCount() > 0")
+				.row
+					.col-md-4(ng-repeat='schoolType in schoolTypes' ng-if="schoolType.criteriaSchoolTypeId != null")
+						span {{schoolType.lookupName}}
 #range-criteria-dashboard.row(ng-if="currentSelectedCriteria === 'Range-Criteria'")
 	.col-md-12
 		.panel.panel-default(ng-if="getCriteriaRangesCount() == 0")
@@ -42,7 +51,7 @@
 			.panel-heading
 				.panel-title {{rangeGroup.lookupName}}
 			.panel-body
-				.row(ng-repeat="attribute in rangeGroup.attributes|filter:{selected:true}")
+				.row(ng-repeat="attribute in rangeGroup.attributes" ng-if="attribute.criteriaRangeId != null")
 					.col-md-2
 						span {{attribute.attributeName}}
 					.col-md-3
