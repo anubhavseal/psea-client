@@ -6,9 +6,9 @@
 				.row
 					.col-md-4.pull-left(ng-repeat="profile in profiles|orderBy:'-cbSprofileId'" ng-if="recentProfile == null || profile.cbSprofileId != recentProfile.cbSprofileId" )
 						.panel.panel-default.panel-profile-tile
-							.panel-heading.profile-heading 
+							.panel-heading.profile-heading
 								a(href="/profiles/{{profile.cbSprofileId}}") {{profile.cbSprofileName}}
-								span.glyphicon.glyphicon-remove.pull-right(style="cursor:pointer" ng-click="deleteProfile(profile)")
+								span.glyphicon.glyphicon-remove.pull-right.delete-profile(style="cursor:pointer" ng-click="deleteProfile(profile)")
 							.panel-body.profile-body
 								p.ellipsis {{profile.homeHierarchyName}}
 								p 

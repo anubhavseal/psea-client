@@ -29,6 +29,9 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 	$scope.getCriteriaRangesCount = getCriteriaRangesCount;
 	
 	$scope.updateQuickPicks = updateQuickPicks;
+	$scope.getQuickPicksCount = getQuickPicksCount;
+	$scope.getSchoolCount = getSchoolCount;
+
     $scope.clearAllQuickPick = clearAllQuickPick;
     $scope.clearAllRangeCriteria = clearAllRangeCriteria;
     $scope.clearAllGeoCriteria = clearAllGeoCriteria;
@@ -240,9 +243,17 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 	
 	function getCriteriaHieracrhiesCount(type){
 		var count = 0;
-		angular.forEach(type.options,function(option){
-			count = option.criteriaHierarchyId != null ? count = count + 1 : count;
-		})	
+		if(type == null){
+			angular.forEach($scope.types,function(type){
+				angular.forEach(type.options,function(option){
+					count = option.criteriaHierarchyId != null ? count = count + 1 : count;
+				})
+			})
+		}else{
+			angular.forEach(type.options,function(option){
+				count = option.criteriaHierarchyId != null ? count = count + 1 : count;
+			})
+		}
 		return count;
 	}
 
@@ -445,9 +456,17 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 
 	function getCriteriaRangesCount(rangeGroup){
 		var count = 0;
-		angular.forEach(rangeGroup.attributes,function(attribute){
-			count = attribute.criteriaRangeId != null ? count = count + 1 : count;
-		})
+		if(rangeGroup == null){
+			angular.forEach($scope.rangeGroups,function(rangeGroup){
+				angular.forEach(rangeGroup.attributes,function(attribute){
+					count = attribute.criteriaRangeId != null ? count = count + 1 : count;
+				})
+			})
+		}else{
+			angular.forEach(rangeGroup.attributes,function(attribute){
+				count = attribute.criteriaRangeId != null ? count = count + 1 : count;
+			})
+		}
 		return count;
 	}
 
@@ -485,32 +504,32 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 		var criteriaRanges = [];
 		var cbSprofileId = $scope.profile.cbSprofileId;
 		var options = {'apiURL': 'criteriaRanges', 'primaryKeyField': 'criteriaRangeId', 'data': criteriaRanges};
-		
-		// if (rangeGroup == null) {
-		// 	angular.forEach($scope.rangeGroups,function(group){
-		// 		if (group.selected) {
-		// 			rangeGroup = group;
-		// 		}
-		// 	})
-		// 	angular.forEach(rangeGroup.attributes,function(attribute){
-		// 		if (attribute.selected && attribute.criteriaHierarchyId == null) {
-		// 			criteriaRanges.push({'cbSprofileId': cbSprofileId, 'attributeId': attribute.attributeId, 'minPercent': attribute.minPercent, 'maxPercent': attribute.maxPercent, 'minValue': attribute.minValue, 'maxValue': attribute.maxValue})
-		// 		} else if (!attribute.selected && attribute.criteriaRangeId != null){
-		// 			criteriaRanges.push({'__row_mode': 'D', 'criteriaRangeId': attribute.criteriaRangeId})
-		// 		}
-		// 	});
-		// }else{
-			
-		// }
+
+		if (rangeGroup == null) {
+			angular.forEach($scope.rangeGroups,function(group){
+				if (group.selected) {
+					rangeGroup = group;
+				}
+			})
+			angular.forEach(rangeGroup.attributes,function(attribute){
+				if (attribute.selected && attribute.criteriaRangeId == null) {
+					criteriaRanges.push({'cbSprofileId': cbSprofileId, 'attributeId': attribute.attributeId, 'minPercent': attribute.minPercent, 'maxPercent': attribute.maxPercent, 'minValue': attribute.minValue, 'maxValue': attribute.maxValue})
+				} else if (!attribute.selected && attribute.criteriaRangeId != null){
+					criteriaRanges.push({'__row_mode': 'D', 'criteriaRangeId': attribute.criteriaRangeId})
+				}
+			});
+		}else{
 			angular.forEach($scope.rangeGroups,function(rangeGroup){
 				angular.forEach(rangeGroup.attributes,function(attribute){
-					if (attribute.selected && attribute.criteriaHierarchyId == null) {
+					if (attribute.selected && attribute.criteriaRangeId == null) {
 						criteriaRanges.push({'cbSprofileId': cbSprofileId, 'attributeId': attribute.attributeId, 'minPercent': attribute.minPercent, 'maxPercent': attribute.maxPercent, 'minValue': attribute.minValue, 'maxValue': attribute.maxValue})
 					} else if (!attribute.selected && attribute.criteriaRangeId != null){
 						criteriaRanges.push({'__row_mode': 'D', 'criteriaRangeId': attribute.criteriaRangeId})
 					}
 				});
 			})
+		 }
+			
 		
 		$dataService.synchronize(options, function(results){
 			
@@ -540,7 +559,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 						attribute.selected = false;
 					})
 				})
-				applyRangeCriteria()
+				applyRangeCriteria($scope.rangeGroups);
 				$scope.$apply();
 			} 
 		});  
@@ -565,11 +584,15 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 						attribute.selected = false;
 					})
 				})
-				applyRangeCriteria()
+				applyRangeCriteria($scope.rangeGroups);
 				angular.forEach($scope.quickPickTypes,function(quickPickType){
 					quickPickType.selected = false;
 				});
-				updateQuickPicks()
+				updateQuickPicks();
+				angular.forEach($scope.schoolTypes,function(school){
+					school.selected = false;
+				})
+				updateSchoolType();
 				$scope.$apply();
 			} 
 		});
@@ -595,15 +618,39 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 	}
 
 	function clearAllQuickPick(quickPickType){
-		alertify.confirm("Are you sure you want to clear all Quick Picks?",function (e) {
+		alertify.confirm("Are you sure you want to clear all Quick Picks & School Types?",function (e) {
 			if (e) {
 				angular.forEach($scope.quickPickTypes,function(quickPickType){
 					quickPickType.selected = false;
 				});
-				updateQuickPicks()
+				angular.forEach($scope.schoolTypes,function(school){
+					school.selected = false;
+				})
+				updateQuickPicks();
+				updateSchoolType();
 				$scope.$apply();
 			} 
 		});
+	}
+
+	function getQuickPicksCount(){
+		var count = 0;
+		for(key in $scope.profile){
+			if($scope.profile.hasOwnProperty(key)){
+				if(key == 'quickCluster' || key == 'quickRegion' || key == 'quickIU' || key == 'quickCounty'){
+					count = $scope.profile[key] == true ? count = count + 1 : count;
+				}
+			}
+		}
+		return count;
+	}
+
+	function getSchoolCount(){
+		var count = 0;
+		angular.forEach($scope.schoolTypes,function(schoolType){
+			count = schoolType.criteriaSchoolTypeId != null ? count = count + 1 : count;
+		})
+		return count;
 	}
 
 	$scope.master = [{

@@ -32,11 +32,19 @@ html,body,.page-container,main{
 
 .panel-default .profile-heading{
 	color: #02b6ff;
-	padding: 2px 15px 15px 0px;
+	padding: 2px 0px 15px 0px;
     font-size: large;
 	text-transform: capitalize;
 	border: none;
 	height:43px;
+}
+
+.delete-profile {
+	display:none;
+}
+
+.panel-profile-tile:hover .delete-profile {
+	display: block;
 }
 
 .profile-body{

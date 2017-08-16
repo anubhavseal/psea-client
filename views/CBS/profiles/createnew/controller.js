@@ -1,6 +1,6 @@
 var app = angular.module('cbs');
 
-app.controller('cbs.profiles.createnew.controller',[ '$scope', '$accessService', '$dataService', '$modalInstance', '$notifier',  '$popup', '$loader', 'refreshProfileList', function($scope, $accessService, $dataService, $modalInstance, $notifier, $popup, $loader, refreshProfileList){
+app.controller('cbs.profiles.createnew.controller',[ '$scope', '$accessService', '$dataService', '$modalInstance', '$notifier',  '$popup', '$loader', 'refreshProfileList','$window', function($scope, $accessService, $dataService, $modalInstance, $notifier, $popup, $loader, refreshProfileList, $window){
 		$scope.save = save;
 		
 		function init(){
@@ -33,6 +33,7 @@ app.controller('cbs.profiles.createnew.controller',[ '$scope', '$accessService',
 				$loader.hide();
 				$modalInstance.dismiss('ok');
 				refreshProfileList();
+				$window.location = "/profiles/" + response.cbSprofileId;
 			});
 		}
 	   
