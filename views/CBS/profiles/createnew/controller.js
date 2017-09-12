@@ -6,7 +6,8 @@ app.controller('cbs.profiles.createnew.controller',[ '$scope', '$accessService',
 		function init(){
 			$scope.profile = {
 				'ownerId': $accessService.getUserId(),
-				'profileType': 'EA'
+				'profileType': 'EA',
+				'lastAccessedAt':new Date()
 			};
 			
 			$dataService.getFromCache('hierarchy?hierarchyType=525', function(districts){
@@ -26,9 +27,7 @@ app.controller('cbs.profiles.createnew.controller',[ '$scope', '$accessService',
 			}
 			$scope.profile.homeHierarchyId = $scope.profile.homeDistrict == null ? null : $scope.profile.homeDistrict.hierarchyId;
 			$scope.profile.eaespFlag = $scope.profile.profileType == 'EA';
-			
 			$loader.show();
-			
 			$dataService.post('CBSprofiles', $scope.profile, function(response){
 				$loader.hide();
 				$modalInstance.dismiss('ok');

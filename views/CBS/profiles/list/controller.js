@@ -30,6 +30,7 @@ function($scope, $dataService, $accessService, $recentProfile, $moment, $loader,
 			var mapHierarchy = {};
 			angular.forEach($scope.profiles,function(profile){
 				mapProfile[profile.cbSprofileId] = profile;
+				profile.lastAccessedTime = profile.lastAccessedAt + "Z";
 			});
 			
 			$dataService.getFromCache('hierarchy',function(hierarchies){
@@ -75,14 +76,16 @@ function($scope, $dataService, $accessService, $recentProfile, $moment, $loader,
 		})
 	}
 
+
+
 	function deleteProfile(profile){	
 		alertify.confirm("Are you sure you want to delete the profile",function (e) {
 			if (e) {
 				profile.active = false;
-				$dataService.remove('CBSprofiles?cbSprofileId='+ profile.cbSprofileId,profile,function(response){
-					$notifier.success("Profile Deleted Successfully")
+				$dataService.put('CBSprofiles?cbSprofileId='+ profile.cbSprofileId,profile,function(response){
+					$notifier.success("Profile Deleted Successfully");
 					init();
-				})
+				});
 			}
 		});  
 	}
