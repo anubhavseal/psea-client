@@ -67,9 +67,9 @@ angular.module('security')
 				if (alreadyAuthWith == 'O365') {
 					$scope.credentials.username = $rootScope.userInfo.profile.upn;
 					$scope.credentials.password = window.btoa(alreadyAuthWith + '$' + JSON.stringify($rootScope.userInfo));
-					$scope.credentials.loginType = 'O365';
+					
 					$scope.credentials.loginToken = sessionStorage.getItem('adal.idtoken');
-					authenticate();
+					authenticate('O365');
 				}
 			}
 			
@@ -84,7 +84,7 @@ angular.module('security')
 				return ((location.protocol == 'https:' || location.protocol == 'https') && $constants.HTTPSAPIBasePath != null && $constants.HTTPSAPIBasePath != '') ? $constants.HTTPSAPIBasePath : $constants.APIBasePath;
 			}
 			
-			function authenticate() {
+			function authenticate(loginType) {
 				if ($scope.credentials.username == null || $scope.credentials.username == ''){
 					$notifier.error('Email is mandatory.');
 					angular.element('#email').focus();
@@ -95,6 +95,7 @@ angular.module('security')
 					angular.element('#password').focus();
 					return false;
 				}
+				$scope.credentials.loginType = loginType;
 				$loader.show();
 				$http.post(getAPIBasePath() + 'token', $scope.credentials)
 					.success(function(response) {
