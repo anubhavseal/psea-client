@@ -67,6 +67,8 @@ angular.module('security')
 				if (alreadyAuthWith == 'O365') {
 					$scope.credentials.username = $rootScope.userInfo.profile.upn;
 					$scope.credentials.password = window.btoa(alreadyAuthWith + '$' + JSON.stringify($rootScope.userInfo));
+					$scope.credentials.loginType = 'O365';
+					$scope.credentials.loginToken = sessionStorage.getItem('adal.idtoken');
 					authenticate();
 				}
 			}
