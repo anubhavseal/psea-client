@@ -270,7 +270,9 @@ if (typeof module !== 'undefined' && module.exports) {
                         var isEndpoint = false;
                         if (tokenStored) {
                             // check endpoint mapping if provided
-                            config.headers.Authorization = 'Bearer ' + tokenStored;
+							if (config.headers.Authorization == null || config.headers.Authorization == "") {
+								config.headers.Authorization = 'Bearer ' + tokenStored;
+							}
                             return config;
                         } else {
 

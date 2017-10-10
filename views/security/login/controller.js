@@ -66,9 +66,10 @@ angular.module('security')
 			function proceedAheadWithExternalAuthentication(alreadyAuthWith) {
 				if (alreadyAuthWith == 'O365') {
 					$scope.credentials.username = $rootScope.userInfo.profile.upn;
-					$scope.credentials.password = window.btoa(alreadyAuthWith + '$' + JSON.stringify($rootScope.userInfo));
-					
-					$scope.credentials.loginToken = sessionStorage.getItem('adal.idtoken');
+					$scope.credentials.password = sessionStorage.getItem('adal.idtoken');
+					if ($scope.credentials.password == null || $scope.credentials.password == "") {
+						$scope.credentials.password = localStorage.getItem('adal.idtoken');
+					}
 					authenticate('O365');
 				}
 			}
