@@ -7,6 +7,7 @@ app.controller('cbs.profiles.createnew.controller',[ '$scope', '$accessService',
 			$scope.profile = {
 				'ownerId': $accessService.getUserId(),
 				'profileType': 'EA',
+				'active':true,
 				'lastAccessedAt':new Date()
 			};
 			
