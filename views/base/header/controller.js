@@ -1,6 +1,6 @@
 angular.module('base')
-	.controller('base.header.controller', ['$scope', '$location', '$constants', '$window', '$rootScope', '$injector', '$accessService', '$dataService', '$route', 
-	function ($scope, $location, $constants, $window, $rootScope, $injector, $accessService, $dataService, $route) {
+	.controller('base.header.controller', ['$scope', '$location', '$constants', '$window', '$rootScope', '$injector', '$accessService', '$dataService', '$route', '$cache', 
+	function ($scope, $location, $constants, $window, $rootScope, $injector, $accessService, $dataService, $route, $cache) {
 		var services = {};
 		$scope.searchOptions = {"text": ""};
 		$scope.showBreadcrumb = showBreadcrumb;
@@ -120,6 +120,7 @@ angular.module('base')
 						
 						 
 		function init(){
+			$scope.loginType = $cache.session.get('loginType','type');
 			var url = '' + $window.location;
 			$scope.user = $accessService.getActiveUser();
 			var selectableTenants = $accessService.getSelectableTenants();

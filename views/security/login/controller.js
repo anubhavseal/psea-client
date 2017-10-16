@@ -97,6 +97,8 @@ angular.module('security')
 					return false;
 				}
 				$scope.credentials.loginType = loginType;
+				$cache.session.put('loginType', 'type', loginType);
+				
 				$loader.show();
 				$http.post(getAPIBasePath() + 'token', $scope.credentials)
 					.success(function(response) {
