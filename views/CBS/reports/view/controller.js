@@ -1,4 +1,4 @@
-angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$dataService','$routeParams', '$recentProfile', '$timeout', function($scope,$dataService, $routeParams, $recentProfile, $timeout) {
+angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$dataService','$constants','$location','$routeParams','$notifier', '$recentProfile', '$timeout', function($scope,$dataService,$constants,$location, $routeParams, $notifier ,$recentProfile, $timeout) {
 	$scope.updateSelectCount = updateSelectCount;
 	$scope.applySelectedDistricts = applySelectedDistricts;
 	$scope.districts = [];
@@ -6,6 +6,12 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
 
 	function updateSelectCount() {
 		$scope.selectedDistrictCount = getSelectedDistricts().length;
+		if($scope.selectedDistrictCount == 0 || $scope.homeDistrict == null){
+		$notifier.error('District not available for selected profile.');
+					angular.element('#email').focus();
+					return $location.path($constants.ReportPage);
+					//return false;
+		}
 	}
 
 	function getSelectedDistricts() {
