@@ -4,7 +4,8 @@ angular.module('base')
 		return {
 			get :getRecentProfile,
 			set: setRecentProfile,
-			show: showRecentProfile
+			show: showRecentProfile,
+			fetchQualifyingDistricts: fetchQualifyingDistricts
 		};
 		
 		function getRecentProfile() {
@@ -15,6 +16,7 @@ angular.module('base')
 			if (profile != null) {
 				profile.lastAccessedAt = new Date();
 				$dataService.put('CBSprofiles?cbSprofileId='+ profile.cbSprofileId,profile, function(response){
+					
 				});
 			}
 			$cache.session.put("cbs", "recent.profile", profile);
@@ -38,5 +40,41 @@ angular.module('base')
 			$scope.profileGreeting = $cache.session.get("cbs", "recent.profile.accessed") == null ? "Welcome Back" : (mapRouteHeading[routePath] || " ");
 			$cache.session.put("cbs", "recent.profile.accessed", "true");
 			$scope.profileLocation = routePath;
+		}
+		
+		function fetchQualifyingDistricts(callback) {
+			var profile = getRecentProfile();
+			
+			if (profile == null || profile.cbSprofileId == null || profile.cbSprofileId == 0) {
+				callback(null, null);
+				return;
+			}
+			
+			$dataService.get('CBSprofiles/' + profile.cbSprofileId + '/qualifyingDistricts', function(qualifyingDistricts){
+				qualifyingDistricts = qualifyingDistricts || [];
+				var homeDistrictId = profile.homeHierarchyId;
+				var homeDistrict = null;
+				$dataService.getFromCache('districts', function(districts){
+					districts = districts || [];
+					
+					var selectedDistrictIds = [];
+					var selectedDistricts = [];
+					
+					angular.forEach(qualifyingDistricts, function(qualifyingDistrict) {
+						selectedDistrictIds.push(qualifyingDistrict.hierarchyId);
+					});
+
+					angular.forEach(districts, function(district) {
+						if (homeDistrictId == district.districtId) {
+							homeDistrict = district;
+						}
+						if (selectedDistrictIds.indexOf(district.districtId) > -1){
+							selectedDistricts.push({'districtId': district.districtCode, 'districtName': district.districtName, 'selected': true});
+						}
+					});
+
+					callback(selectedDistricts, homeDistrict);
+				});
+			});
 		}
 	}]);
