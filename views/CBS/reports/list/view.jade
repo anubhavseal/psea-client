@@ -1,11 +1,15 @@
 .container-fluid
-    .app-container(style='padding-top:53px;margin-top:20px')
-        .row
-            .col-md-3(ng-include='"/views/CBS/profiles/recentprofile/view"')
-            .col-md-9.profile-container
-                .row(ng-repeat='reportGroup in reportGroups')
-                    h2 {{reportGroup.reportGroupName}}
-                    .col-md-4(ng-repeat='report in reportGroup.reports')
-                        .panel.panel-default.profile.panel-profile-tile
-                            .panel-heading.profile-heading.ellipsis
-                                a(href="/reports/{{report.reportId}}") {{report.reportName}}
+	.app-container(style='padding-top:53px;margin-top:20px')
+		.row
+			.col-md-3(ng-include='"/views/CBS/profiles/recentprofile/view"')
+			.col-md-9.profile-container
+				.row(ng-repeat='reportGroup in reportGroups')
+					.col-md-12
+						.row
+							.col-md-12
+								h2 {{reportGroup.reportGroupName}}
+						.row
+							.col-md-4(ng-repeat='report in reportGroup.reports')
+								.panel.panel-default.profile.panel-profile-tile
+									.panel-heading.profile-heading.ellipsis
+										a(href="/reports/{{report.reportId}}") {{report.reportName}}

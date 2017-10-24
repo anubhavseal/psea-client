@@ -1,7 +1,5 @@
 angular.module('cbs')
-.controller('cbs.reports.list.controller', [ '$scope', '$dataService', '$routeParams', '$recentProfile', function($scope,$dataService,$routeParams,$recentProfile,$urlPath) {
-		
-		
+.controller('cbs.reports.list.controller', [ '$scope', '$dataService', '$routeParams', '$recentProfile', '$notifier', '$location', function($scope, $dataService, $routeParams, $recentProfile, $notifier, $location) {
 		/*function fetchReportTabs(callback) {
 			$dataService.get('reportTabs',function(reportTabs){
 				$scope.reportTabs = reportTabs || [];
@@ -25,7 +23,6 @@ angular.module('cbs')
 		}*/
 		
 		function fetchReports(callback) {
-			console.log(new Date().getTime() + ": fetchReports");
 			$dataService.get('reports',function(reports){
 				$scope.reports = reports || [];
 				callback();
@@ -33,7 +30,6 @@ angular.module('cbs')
 		}
 		
 		function fetchReportGroups(callback) {
-			console.log(new Date().getTime() + ": fetchReportGroups");
 			$dataService.get('reportGroups',function(reportGroups){
 				$scope.reportGroups = reportGroups || [];
 				callback();
@@ -41,7 +37,6 @@ angular.module('cbs')
 		}
 		
 		function mapReportsToReportGroup() {
-			console.log(new Date().getTime() + ": mapReportsToReportGroup");
 			var reportGroupMap = {};
 
 			angular.forEach($scope.reportGroups, function(reportGroup){
@@ -59,7 +54,17 @@ angular.module('cbs')
 
         function init(){
             $recentProfile.show($scope);
-			async.parallel([fetchReports, fetchReportGroups], mapReportsToReportGroup);
+			$recentProfile.fetchQualifyingDistricts(function(districts, homeDistrict){
+				$scope.isReportAvailable = districts != null && districts.length > 0;
+				
+				if(districts == null || districts.length == 0){
+					$notifier.error('District(s) not available for selected profile. Please select appropriate profile.');
+					$location.path('/profiles');
+					return;
+				}
+				
+				async.parallel([fetchReports, fetchReportGroups], mapReportsToReportGroup);
+			});
         }
 
         init();

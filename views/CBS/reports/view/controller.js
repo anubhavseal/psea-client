@@ -1,4 +1,4 @@
-angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$dataService','$routeParams', '$recentProfile', '$timeout', function($scope,$dataService, $routeParams, $recentProfile, $timeout) {
+angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$dataService','$constants','$location','$routeParams','$notifier', '$recentProfile', '$timeout', function($scope,$dataService,$constants,$location, $routeParams, $notifier ,$recentProfile, $timeout) {
 	$scope.updateSelectCount = updateSelectCount;
 	$scope.applySelectedDistricts = applySelectedDistricts;
 	$scope.districts = [];
@@ -19,6 +19,12 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
 	}
 
 	function applySelectedDistricts() {
+		var districts = getSelectedDistricts();
+		if (districts.length == 0) {
+			$notifier.error('Please select district(s) for report.');
+			return;
+		}
+		
 		var report = {};
 		angular.forEach($scope.actualReport, function(value, key){
 			report[key] = value;
@@ -31,7 +37,7 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
 					column: "DISTCODE"
 				},
 				"operator": "In",
-				"values": getSelectedDistricts()
+				"values": districts
 			}
 		];
 		
@@ -59,42 +65,21 @@ angular.module('cbs').controller('cbs.reports.view.controller', ['$scope','$data
 		$scope.reports = [report];
 	}
 
-	function fetchQualifyingDistricts(callback) {
-		$dataService.get('CBSprofiles/' + $recentProfile.get().cbSprofileId + '/qualifyingDistricts', function(qualifyingDistricts){
-			qualifyingDistricts = qualifyingDistricts || [];
-			var homeDistrictId = $recentProfile.get().homeHierarchyId;
-			var homeDistrict = null;
-			$dataService.getFromCache('districts', function(districts){
-				districts = districts || [];
-				
-				var selectedDistrictIds = [];
-				var selectedDistricts = [];
-				
-				angular.forEach(qualifyingDistricts, function(qualifyingDistrict) {
-					selectedDistrictIds.push(qualifyingDistrict.hierarchyId);
-				});
-
-				angular.forEach(districts, function(district) {
-					if (homeDistrictId == district.districtId) {
-						homeDistrict = district;
-					}
-					if (selectedDistrictIds.indexOf(district.districtId) > -1){
-						selectedDistricts.push({'districtId': district.districtCode, 'districtName': district.districtName, 'selected': true});
-					}
-				});
-
-				$scope.districts = selectedDistricts;
-				$scope.homeDistrict = homeDistrict;
-
-				callback();
-			});
-		});
-	}
+	
 
 	function init(){
 		$recentProfile.show($scope);
 
-		fetchQualifyingDistricts(function(){
+		$recentProfile.fetchQualifyingDistricts(function(districts, homeDistrict){
+			$scope.districts = districts;
+			$scope.homeDistrict = homeDistrict;
+			
+			if(districts == null || districts.length == 0){
+				$notifier.error('District not available for selected profile. Please select appropriate profile.');
+				$location.path('/profiles');
+				return;
+			}
+		
 			updateSelectCount();
 			$dataService.get('reports/' + $routeParams.reportId + '/token', function(report){
 				report = report || {};

@@ -17,7 +17,7 @@ nav.navbar
 				a.dropdown-toggle(aria-expanded='false', aria-haspopup='true', role='button', data-toggle='dropdown', href='#')
 					span#userdetails(data-userId="{{user.userId}}" data-emailId="{{user.email}}" data-userName="{{user.name || user.email || user.userId}}")
 						| {{user.name || user.email || user.userId}}
-				ul.dropdown-menu.pull-right
+				ul.dropdown-menu.pull-right(ng-show="loginType == null")
 					li(ng-repeat='headerLink in headerLinks' ng-class='{"divider": (headerLink.caption == "separator" || headerLink.caption == "-")}')
 						a(href='#' ng-click='onClick(headerLink)' compile-template ng-bind-html="headerLink.caption | html")
 			div(ng-if='user == null')
