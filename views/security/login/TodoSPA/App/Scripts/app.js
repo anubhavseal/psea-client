@@ -17,8 +17,8 @@ angular.module('todoApp', ['ngRoute','AdalAngular'])
     adalProvider.init(
         {
             instance: 'https://login.microsoftonline.com/', 
-            tenant: 'motifworks.com',
-            clientId: 'b28c22a2-e7c9-498a-99be-16c726703418',
+            tenant: 'psea.org',
+            clientId: '6f00369c-a12e-427a-b918-1443d5684d4c',
             extraQueryParameter: 'nux=1',
             //cacheLocation: 'localStorage', // enable this for IE, as sessionStorage does not work for localhost.
         },
