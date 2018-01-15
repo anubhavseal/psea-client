@@ -10,23 +10,36 @@ html
 		title PSEA
 		//link(href='//fonts.googleapis.com/css?family=Noto+Sans:400,700', rel='stylesheet', type='text/css')
 		link(href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet")
-		!= css('lib/nvd3/nv.d3.css')
+		//!= css('lib/nvd3/nv.d3.css')
 		!= css('lib/toastr/toastr.min.css')
-		!= css('lib/angular-treeview/css/angular.treeview.css')
+		//!= css('lib/angular-treeview/css/angular.treeview.css')
 		!= css('nextgen/stylesheets/application')
-		!= css('nextgen/stylesheets/custom')
-		!= css('lib/simplepagination/simplePagination')
+		//!= css('nextgen/stylesheets/custom')
+		!= css('nextgen/stylesheets/simplePagination')
 		!= css('font-awesome/font-awesome')
 		!= css('nextgen/stylesheets/cbsCustom')
 		!= css('lib/alertify.js/themes/alertify.core')
 		!= css('lib/alertify.js/themes/alertify.bootstrap')
-		!= css('lib/pagination/simplePagination')
+		!= js('test', async='')
 		!= js('application')
-		!= js('lib/nextgen/Chart.js')
-		!= js('lib/nextgen/app.js')
-		!= js('lib/angular-treeview/angular.treeview.js')
-		!= js('lib/powerbi-client/dist/powerbi.js')
-		!= js('lib/angular-powerbi/dist/angular-powerbi.js')
+		//!= js('lib/nextgen/Chart.js')
+		//!= js('lib/nextgen/app.js')
+		//!= js('lib/angular-treeview/angular.treeview.js')
+		!= js('lib/powerbi-client/dist/powerbi.js', async='')
+		!= js('lib/angular-powerbi/dist/angular-powerbi.js', async='')
+		
+		//- script(type='text/javascript').
+		//- 	if ('serviceWorker' in navigator) {
+		//- 		window.addEventListener('load', function() {
+		//- 			navigator.serviceWorker.register('../../public/js/lib/sw.js').then(function(registration) {
+		//- 			// Registration was successful
+		//- 			console.log('ServiceWorker registration successful with scope: ', registration.scope);
+		//- 			}, function(err) {
+		//- 			// registration failed :(
+		//- 			console.log('ServiceWorker registration failed: ', err);
+		//- 			});
+		//- 		});
+		//- 		}
 	body(ng-app="global" ng-cloak="ng-cloak")
 		.page-container
 			.navigation-dock

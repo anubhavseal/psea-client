@@ -17,7 +17,7 @@ function($scope, $dataService, $accessService, $recentProfile, $moment, $loader,
 	function init(){
 		$loader.show();
 		$scope.recentProfileIndicator = false;
-		$dataService.get('CBSprofiles?ownerId='+ $accessService.getUserId(), function(profiles){
+		$dataService.getFromCache('CBSprofiles?ownerId='+ $accessService.getUserId(), function(profiles){
 			profiles = profiles || [];
 			$scope.profiles = profiles;
 			var recentProfile = $recentProfile.get();

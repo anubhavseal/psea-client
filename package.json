@@ -81,7 +81,9 @@
     "validator": "^3.39.0",
     "yui": "^3.18.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "uglifyjs": "^2.4.11"
+  },
   "description": "CloudTool",
   "bugs": {
     "url": "https://github.com/sahat/hackathon-starter/issues"

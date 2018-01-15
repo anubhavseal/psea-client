@@ -1,6 +1,6 @@
 angular.module('security')
-	.controller('security.acceptagreement.controller', ['$scope', '$dataService', '$routeParams', '$location', '$constants', '$timeout', '$window', '$notifier', '$location', '$accessService', 
-	function ($scope, $dataService, $routeParams, $location, $constants, $timeout, $window, $notifier, $location, $accessService) {
+	.controller('security.acceptagreement.controller', ['$scope', '$dataService', '$routeParams', '$location', '$constants', '$timeout', '$window', '$notifier',  '$accessService', 
+	function ($scope, $dataService, $routeParams, $location, $constants, $timeout, $window, $notifier,  $accessService) {
 		$scope.acceptAgreement = acceptAgreement;
 		
 		function acceptAgreement() {

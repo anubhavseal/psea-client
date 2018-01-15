@@ -15,7 +15,7 @@ var _ = require('lodash');
 var path = require('path');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
-
+process.env.NODE_ENV = 'production';
 var consoleStamp = require('console-stamp');
 consoleStamp(console, { pattern : "ddd dd/mm/yyyy HH:MM:ss.l", 
 						metadata: function () {
@@ -71,12 +71,12 @@ app.use(connectAssets({
           path.join(__dirname, 'public/js'),
           path.join(__dirname, 'views/')
           ],
-  bundle: false,
+  bundle: true,
   compress: false,
   sourceMaps: true, 
   fingerprinting: false,
-  build: false, //(config.ResourceVersion != null && config.ResourceVersion != ''? {dev : false, prod: false} : null),
-  buildDir: null, //(config.ResourceVersion != null && config.ResourceVersion != '' ? "builtAssets" : null)
+  build: true, //(config.ResourceVersion != null && config.ResourceVersion != ''? {dev : false, prod: false} : null),
+  buildDir: path.join(__dirname,'build'), //(config.ResourceVersion != null && config.ResourceVersion != '' ? "builtAssets" : null)
 }, function(assets){
 	if (config.ResourceVersion != null && config.ResourceVersion != '') {
 		assets.options.helperContext.css = assets.helper(tagWriters.css, "css");
@@ -104,7 +104,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 
 app.use(function(req, res, next){
 	var urlPart = req.url.substr(0, (req.url.indexOf('?') > 0 ? req.url.indexOf('?') : req.url.length));
-	
+	//res.setHeader('content-type', 'application/javascript');
 	urlPart = urlPart.split('/');
 
 	if (urlPart.length < 2 || urlPart[0] !== '' || urlPart[1].toLowerCase() !== 'views') {
@@ -118,6 +118,9 @@ app.use(function(req, res, next){
 		next();
 	}
 });
+
+app.use('/sw.js', (req, res) => {
+	res.sendFile(path.resolve('views/CBS/sw.js'), 0)});
 
 app.get('/', function(req, res) {
 	res.redirect(config.LoginPage || '/security/login');
