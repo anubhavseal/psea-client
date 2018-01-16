@@ -72,7 +72,7 @@ app.use(connectAssets({
           path.join(__dirname, 'views/')
           ],
   bundle: true,
-  compress: false,
+  compress: true,
   sourceMaps: true, 
   fingerprinting: false,
   build: true, //(config.ResourceVersion != null && config.ResourceVersion != ''? {dev : false, prod: false} : null),

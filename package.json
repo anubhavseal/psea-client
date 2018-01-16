@@ -82,6 +82,7 @@
     "yui": "^3.18.1"
   },
   "devDependencies": {
+    "csswring": "^6.0.2",
     "uglifyjs": "^2.4.11"
   },
   "description": "CloudTool",

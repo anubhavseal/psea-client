@@ -23,11 +23,9 @@
 //= require lib/angular-bootstrap/ui-bootstrap-tpls.min.js
 
 //= require lib/moment/min/moment.min.js
-//= require lib/jquery.cycle2.min/index.js
-//= require lib/jquery.cycle2.center/index.js
-//= require lib/alertify.js/lib/alertify.js
 //= require lib/toastr/toastr.min.js
 //= require lib/simplepagination/jquery.simplePagination.js
 //= require lib/adal/adal.js
 //= require lib/adal/adal-angular.js
-//= require lib/async/async.js
+//= require lib/powerbi-client/dist/powerbi.js
+//= require lib/angular-powerbi/dist/angular-powerbi.js
