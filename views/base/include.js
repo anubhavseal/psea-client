@@ -2,41 +2,18 @@
 //= require base/header/controller.js
 //= require base/notifier.js
 //= require base/html.filter.js
-//= require base/nospace.filter.js
 //= require base/cache.service.js
 //= require base/data.service.js
-//= require base/ckeditor.directive.js
-//= require base/barchart.directive.js
+
 //= require base/loader.service.js
-//= require base/linechart.directive.js
-//= require base/percentage.doughnut.directive.js
-//= require base/toggleclass.directive.js
-//= require base/tooltip.directive.js
-//= require base/operation.service.js
+
 //= require base/compile.template.directive.js
-//= require base/files.directive.js
-//= require base/tree.service.js
+
+
 //= require base/moment.js
-//= require base/list/controller.js
-//= require base/lookup/lookup.config.service.js
-//= require base/lookup/lookup.service.js
-//= require base/lookup/controller.js
-//= require base/help/controller.js
-//= require base/help/help.text.directive.js
-//= require base/help/helpContent.service.js
-//= require base/metamodel/entity.manager.service.js
-//= require base/combo.service.js
-//= require base/DropdownMultiselect.directive.js
-//= require base/anchor.smooth.scroll.service.js
-//= require base/on.repeat.finish.directive.js
-//= require base/grid.service.js
+//= require base/operation.service.js
+//= require base/tree.service.js
+
 //= require base/popup/controller.js
 //= require base/router.js
-//= require base/message.service.js
-//= require base/datepicker.controller.js
-//= require base/template/controller.js
-//= require base/dashboard/controller.js
-//= require base/dashboard/filter.service.js
-//= require base/dashboard/graph.service.js
-//= require base/dashboard/settings.controller.js
 //= require base/popup.service.js
