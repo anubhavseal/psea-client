@@ -13,11 +13,13 @@ app.controller('cbs.profiles.list.controller', [
 function($scope, $dataService, $accessService, $recentProfile, $moment, $loader, $popup,$cache,$notifier) {
 	$scope.openCreateProfilePopup = openCreateProfilePopup;
 	$scope.deleteProfile = deleteProfile;
-	
+	$scope.profilesPlaceholder = [{},{},{},{},{},{},{},{},{}]
+	$scope.profiles = []
 	function init(){
-		$loader.show();
+		//$loader.show();
 		$scope.recentProfileIndicator = false;
-		$dataService.getFromCache('CBSprofiles?ownerId='+ $accessService.getUserId(), function(profiles){
+		debugger
+		$dataService.get('CBSprofiles?ownerId='+ $accessService.getUserId(), function(profiles){
 			profiles = profiles || [];
 			$scope.profiles = profiles;
 			var recentProfile = $recentProfile.get();
@@ -50,8 +52,9 @@ function($scope, $dataService, $accessService, $recentProfile, $moment, $loader,
 				$recentProfile.show($scope);
 			});
 			setTimeout(paginate,5);	
-			$loader.hide();
+			//$loader.hide();
 		});	
+
 	}
 	function openCreateProfilePopup(){
 		$popup.open('/views/CBS/profiles/createnew/view', 'cbs.profiles.createnew.controller', {'refreshProfileList': init}, 'md');
@@ -66,7 +69,7 @@ function($scope, $dataService, $accessService, $recentProfile, $moment, $loader,
 		$('#pagination').pagination({
 				items:numberOfProfiles,
 				itemsOnPage:perPage,
-				cssStyle:"dark-theme",
+				cssStyle:"compact-theme",
 				onPageClick: function(pageNumber){
 					var showFrom = perPage * (pageNumber - 1);
 					var showTo = showFrom + perPage;
@@ -90,5 +93,7 @@ function($scope, $dataService, $accessService, $recentProfile, $moment, $loader,
 			}
 		});  
 	}
+
+	//setTimeout(init,150000);
 	init();	
 }]);

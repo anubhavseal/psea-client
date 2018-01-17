@@ -12,7 +12,31 @@ html,body,.page-container,main{
 	text-overflow:ellipsis;
 	white-space:nowrap;
 }
-
+.navbar {
+	background-color: #1976D2;
+	height:8vh;
+	box-shadow:0 5px 8px rgba(0,0,0,0.30), 0 1px 2px rgba(0,0,0,0.22)
+}
+.psea-side-container{
+	background: #fff;
+	border-radius: 2px;
+	padding: 0;
+}
+.profiles-container{
+	max-width: 95%;
+	margin: auto;
+}
+.psea-main-container{
+	background: #fff;
+	border-radius: 2px;
+	padding: 30px;
+	/* display: inline-block; */
+	/* height: 300px; */
+	/* margin: 1rem; */
+	/* position: relative; */
+	/* width: 300px; */
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
 /*------------------------------Profile List---------------------------------*/
 .profile-container{
 	padding-right: 75px;
@@ -21,17 +45,24 @@ html,body,.page-container,main{
 }
 
 .panel-profile-tile{
-	padding: 10px 20px 1px;
-	box-shadow: 0.2px 0.2px 40.2px 0.2px #efefef;
-	border-radius: 3px;
+	/* padding: 10px 20px 1px; */
+	/* box-shadow: 0.2px 0.2px 40.2px 0.2px #efefef; */
+	/* border-radius: 3px;
     border-color:#e8e8e8;
-    border-width: 2px;
-	height: 130px;
-    width: 90%;
+	border-width: 2px; */
+	border:none;
+	height: 140px;
+	/* width: 90%; */
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.panel-profile-tile:hover {
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
 .panel-default .profile-heading{
-	color: #02b6ff;
+	background-color: #2196F3;
 	padding: 2px 0px 15px 0px;
     font-size: large;
 	text-transform: capitalize;
@@ -39,6 +70,9 @@ html,body,.page-container,main{
 	height:43px;
 }
 
+.profile-heading a {
+	color: white;
+}
 .delete-profile {
 	display:none;
 }
@@ -48,6 +82,7 @@ html,body,.page-container,main{
 }
 
 .profile-body{
+	margin-top:15px;
 	padding:0px;
 	color: #9e9e9e;
     font-weight: 600;
@@ -64,7 +99,9 @@ html,body,.page-container,main{
     border:none;
 }
 
-
+#userdetails{
+	color: white;
+}
 .profile-container button{
 	border-radius: 4px;
 	background-color: #21cc71;
@@ -73,9 +110,9 @@ html,body,.page-container,main{
 .profile-image-container{
 	padding: 20px;
 	padding-bottom: 5px;
-	max-width: 100%;
-    margin: auto;
-	margin-bottom: 10px;
+	/* max-width: 100%; */
+    /* margin: auto;
+	margin-bottom: 10px; */
 	color:white;
 	background: url(/images/york_city.jpg);
 	background-repeat: no-repeat;
@@ -598,3 +635,76 @@ html,body,.page-container,main{
 		}
 	}
 	
+
+
+	@keyframes placeHolderShimmer {
+		0% {
+		  background-position: -668px 0;
+		}
+		100% {
+		  background-position: 668px 0;
+		}
+	  }
+	  .placeholder {
+		position: relative;
+	  }
+	  .panel-primary > .placeholder.panel-heading {
+		 background-color: #eeeeee !important;
+		 border-color:#eeeeee;
+	  }
+	  .placeholder:before {
+		opacity: 1;
+		transition: opacity 0.6s;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		content: '';
+		animation-duration: 2s;
+		animation-fill-mode: forwards;
+		animation-iteration-count: infinite;
+		animation-name: placeHolderShimmer;
+		animation-timing-function: linear;
+		background: #eeeeee linear-gradient(to right, #eeeeee 8%, #e3e3e3 18%, #eeeeee 33%);
+		background-repeat: no-repeat;
+		background-size: 800px 204px;
+		z-index: 99;
+	  }
+	  .placeholder-circle img {
+		opacity: 0;
+		transition: opacity 1s;
+	  }
+	  .placeholder-circle:before {
+		border-radius: 50%;
+	  }
+	  .placeholder-half {
+		width: 100%;
+	  }
+	  .placeholder-half:before {
+		right: 50%;
+	  }
+	  .placeholder-quarter {
+		width: 100%;
+	  }
+	  .placeholder-quarter:before {
+		right: 75%;
+	  }
+	  .placeholder-hidden {
+		opacity: 0;
+		transition: opacity 1s;
+	  }
+	  .loaded .placeholder:before {
+		opacity: 0 !important;
+		pointer-events: none;
+	  }
+	  .loaded .placeholder-half {
+		width: auto;
+	  }
+	  .loaded .placeholder-hidden {
+		opacity: 1;
+	  }
+	  .loaded .placeholder-circle img {
+		opacity: 1 !important;
+	  }
+	  
