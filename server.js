@@ -72,11 +72,11 @@ app.use(connectAssets({
           path.join(__dirname, 'views/')
           ],
   bundle: true,
-  compress: true,
+  compress: false,
   sourceMaps: true, 
   fingerprinting: false,
-  gzip:true,
-  build: true, //(config.ResourceVersion != null && config.ResourceVersion != ''? {dev : false, prod: false} : null),
+  gzip:false,
+  build: false, //(config.ResourceVersion != null && config.ResourceVersion != ''? {dev : false, prod: false} : null),
   buildDir: null //path.join(__dirname,'build'), //(config.ResourceVersion != null && config.ResourceVersion != '' ? "builtAssets" : null)
 }, function(assets){
 	if (config.ResourceVersion != null && config.ResourceVersion != '') {

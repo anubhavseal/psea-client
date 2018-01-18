@@ -17,7 +17,7 @@ var urlsToCache = [
 self.addEventListener('install', function(event) {
     event.waitUntil(
       caches.open(staticCacheName).then(function(cache) {
-        return cache.addAll([urlsToCache]);
+        return cache.addAll(urlsToCache);
     })
   );
 });
@@ -36,39 +36,28 @@ self.addEventListener('activate', function(event) {
   )
 })
 
-  self.addEventListener('fetch', function(event) {
-    event.respondWith(
-       caches.match(event.request).then(function(response) {
-        if(response) {
-          return response;
-        } else {
-           return fetch(event.request).then(function(response){
-            return caches.open('psea-static-v1').then(function(cache){
-              cache.add(event.request.url);
-              return response;
-            })
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+      caches.match(event.request).then(function(response) {
+      if(response) {
+        return response;
+      } else {
+          return fetch(event.request).then(function(response){
+          return caches.open('psea-static-v1').then(function(cache){
+            cache.add(event.request.url);
+            return response;
           })
-        } 
-      })
-    );
-  });
+        })
+      } 
+    })
+  );
+});
+
+self.addEventListener('message',function(event) {
+  if(event.data.action == 'skipWaiting') {
+    self.skipWaiting();
+  }
+})
 
 
-  // function fetchResourcesFromCache(response) {
-  //   if(response) return response;
-  //   else fetchResourcesAndSaveToCache(request);
-  // }
-
-  // function fetchResourcesAndSaveToCache(request) {
-  //   fetch(request).then()
-  // }
-
-  // function saveResourcesToCache() {
-
-  // }
-
-  // self.addEventListener('fetch', function(event) {
-  //   event.respondWith(
-  //     caches.match(event.request).then(fetchResourcesFromCache)
-  //   );
-
+//sd
