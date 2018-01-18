@@ -72,10 +72,11 @@ app.use(connectAssets({
           path.join(__dirname, 'views/')
           ],
   bundle: true,
-  compress: false,
+  compress: true,
   sourceMaps: true, 
   fingerprinting: false,
-  build: false, //(config.ResourceVersion != null && config.ResourceVersion != ''? {dev : false, prod: false} : null),
+  gzip:true,
+  build: true, //(config.ResourceVersion != null && config.ResourceVersion != ''? {dev : false, prod: false} : null),
   buildDir: null //path.join(__dirname,'build'), //(config.ResourceVersion != null && config.ResourceVersion != '' ? "builtAssets" : null)
 }, function(assets){
 	if (config.ResourceVersion != null && config.ResourceVersion != '') {
@@ -94,7 +95,7 @@ app.use(cookieParser());
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Access-Control-Allow-Headers', 'Content-Type', 'Content-Encoding');
   next();
 });
 
