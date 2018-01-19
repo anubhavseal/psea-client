@@ -1,18 +1,18 @@
 var staticCacheName = 'psea-static-v2';
+var version = 20180119;
 var urlsToCache = [
 '/profiles',
 '/views/CBS/profiles/list/view',
 '/views/CBS/profiles/recentprofile/view',
-'/assets/nextgen/stylesheets/application.css?version=20180115043404',
-'/assets/nextgen/stylesheets/cbsCustom.css?version=20180115043404',
-'/assets/test.js?version=20180115043404',
-'/assets/application.js?version=20180115043404',
-'/assets/lib/nextgen/app.js?version=20180115043404',
-'/assets/base/include.js?version=20180115043404',
-'/assets/security/include.js?version=20180115043404',
-'/assets/shared/include.js?version=20180115043404',
-'/assets/CBS/include.js?version=20180115043404'];
-
+'/assets/nextgen/stylesheets/application.css?version=' + version,
+'/assets/nextgen/stylesheets/cbsCustom.css?version=' + version,
+'/assets/test.js?version=' + version,
+'/assets/application.js?version=' + version,
+'/assets/lib/nextgen/app.js?version=' + version,
+'/assets/base/include.js?version=' + version,
+'/assets/security/include.js?version=' + version,
+'/assets/shared/include.js?version=' + version,
+'/assets/CBS/include.js?version=' + version];
 
 self.addEventListener('install', function(event) {
     event.waitUntil(
@@ -43,10 +43,13 @@ self.addEventListener('fetch', function(event) {
         return response;
       } else {
           return fetch(event.request).then(function(response){
-          return caches.open('psea-static-v1').then(function(cache){
-            cache.add(event.request.url);
-            return response;
-          })
+            return caches.open(staticCacheName).then(function(cache){    
+              return cache.put(event.request, response.clone()).then(function() {
+                return response;
+              })
+            })
+        }).catch(function(er){
+          console.log(err);
         })
       } 
     })
@@ -59,5 +62,3 @@ self.addEventListener('message',function(event) {
   }
 })
 
-
-//sd

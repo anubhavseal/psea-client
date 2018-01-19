@@ -15,9 +15,9 @@ angular.module('base')
 		function setRecentProfile(profile, first) {
 			if (profile != null) {
 				profile.lastAccessedAt = new Date();
-				$dataService.put('CBSprofiles?cbSprofileId='+ profile.cbSprofileId,profile, function(response){
+				//$dataService.put('CBSprofiles?cbSprofileId='+ profile.cbSprofileId,profile, function(response){
 					
-				});
+				//});
 			}
 			$cache.session.put("cbs", "recent.profile", profile);
 		}

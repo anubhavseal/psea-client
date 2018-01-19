@@ -39,7 +39,7 @@ var config = require('./config');
 if (config.ResourceVersion != null && ('' + config.ResourceVersion).toUpperCase() === 'START_DATE_TIME') {
 	var dateFormat = require('dateformat');
     var now = new Date();
-	config.ResourceVersion = dateFormat(now, 'yyyymmddHHMMss');
+	config.ResourceVersion = dateFormat(now, 'yyyymmdd');
 }
 console.log('ResourceVersion: ' + config.ResourceVersion);
 var tagWriters = {

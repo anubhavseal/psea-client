@@ -2,8 +2,6 @@ if ('serviceWorker' in navigator) {
 	window.addEventListener('load', function() {
 		navigator.serviceWorker.register('/sw.js',{scope:'/profiles'}).then(function(registration) {
 			console.log('ServiceWorker registration successful with scope: ', registration.scope);
-			console.log(navigator.serviceWorker.controller);
-			debugger
 			if(!navigator.serviceWorker.controller) return;
 
 			if(registration.waiting) {
@@ -47,7 +45,6 @@ function upadteReady(worker) {
 function toastView() {
 	return new Promise(function(resolve, reject) {
 		$('body').on('click','.toast-message',  function(event){
-			debugger
 			if(event.target.textContent == 'Refresh')
 				resolve('refresh');
 			else if(event.target.textContent == 'Dismiss') {
