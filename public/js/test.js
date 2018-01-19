@@ -32,20 +32,31 @@ function trackInstalling(worker) {
 		}
 	})
 }
-var sw;
+
 function upadteReady(worker) {
-	toastr.info('message <button type="button" id= "refresh" class=" btn clear btn-toastr">OK</button>' , 'Refresh');
-	//alert('new sw');
-	sw = worker;
+	toastr.info('<button type="button" class=" btn btn-success clear btn-toastr">Refresh</button>' +
+	'<button type="button" class=" btn btn-default clear btn-toastr">Dismiss</button>' , 'New content available');
+	debugger
+	$('#toast-container > div').css('opacity', 100);
+	var toast = toastView().then(function(){
+		worker.postMessage({action: 'skipWaiting'});
+	}, function() {})
 }
 
-$(document).on('click','#refresh',function(){
-	console.log("here")
-	post();
-})
-function post() {
-	sw.postMessage({action: 'skipWaiting'});
+
+function toastView() {
+	return new Promise(function(resolve, reject) {
+		$('body').on('click','.toast-message',  function(event){
+			debugger
+			if(event.target.textContent == 'Refresh')
+				resolve('refresh');
+			else if(event.target.textContent == 'Dismiss') {
+				reject('dismiss');
+			}
+		})
+	})
 }
+
 navigator.serviceWorker.addEventListener('controllerchange', function() {
 	debugger
 	window.location.reload();
@@ -56,7 +67,7 @@ toastr.options = {
   "debug": true,
   "newestOnTop": false,
   "progressBar": false,
-  "positionClass": "toast-top-right",
+  "positionClass": "toast-bottom-center",
   "preventDuplicates": false,
   "showDuration": "300",
   "hideDuration": "1000",
