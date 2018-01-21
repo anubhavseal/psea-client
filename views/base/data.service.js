@@ -108,8 +108,8 @@ angular.module('base')
 			var api = getAPIURL(apiURL);
 			
 			var separator = api.indexOf('?') === -1 ? '?' : '&';
-			api = api + separator +'noCache=' + new Date().getTime();
-
+			// api = api + separator +'noCache=' + new Date().getTime();
+			api = api;
 			$http.get(api, prepareCallOptions(options))
 				.success(function(data, status, headers, config){
 					if (successCallback != null) {

@@ -1,5 +1,5 @@
 var staticCacheName = 'psea-static-v2';
-var version = 20180119;
+var version = 20180121;
 var urlsToCache = [
 '/profiles',
 '/views/CBS/profiles/list/view',
@@ -49,7 +49,7 @@ self.addEventListener('fetch', function(event) {
               })
             })
         }).catch(function(er){
-          console.log(err);
+          console.log(er);
         })
       } 
     })

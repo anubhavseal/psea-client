@@ -15,7 +15,7 @@ var _ = require('lodash');
 var path = require('path');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
-//process.env.NODE_ENV = 'production';
+process.env.NODE_ENV = 'production';
 var consoleStamp = require('console-stamp');
 consoleStamp(console, { pattern : "ddd dd/mm/yyyy HH:MM:ss.l", 
 						metadata: function () {
@@ -72,12 +72,12 @@ app.use(connectAssets({
           path.join(__dirname, 'views/')
           ],
   bundle: true,
-  compress: false,
+  compress: true,
   sourceMaps: true, 
   fingerprinting: false,
-  gzip:false,
-  build: false, //(config.ResourceVersion != null && config.ResourceVersion != ''? {dev : false, prod: false} : null),
-  buildDir: null //path.join(__dirname,'build'), //(config.ResourceVersion != null && config.ResourceVersion != '' ? "builtAssets" : null)
+  gzip:true,
+  build: true, //(config.ResourceVersion != null && config.ResourceVersion != ''? {dev : false, prod: false} : null),
+  buildDir: path.join(__dirname,'build'), //(config.ResourceVersion != null && config.ResourceVersion != '' ? "builtAssets" : null)
 }, function(assets){
 	if (config.ResourceVersion != null && config.ResourceVersion != '') {
 		assets.options.helperContext.css = assets.helper(tagWriters.css, "css");

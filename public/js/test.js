@@ -32,9 +32,24 @@ function trackInstalling(worker) {
 }
 
 function upadteReady(worker) {
+	toastr.options = {
+		"closeButton": false,
+		"debug": true,
+		"newestOnTop": false,
+		"progressBar": false,
+		"positionClass": "toast-bottom-center",
+		"preventDuplicates": false,
+		"showDuration": "300",
+		"hideDuration": "1000",
+		"timeOut": "60000",
+		"extendedTimeOut": "30000",
+		"showEasing": "swing",
+		"hideEasing": "linear",
+		"showMethod": "fadeIn",
+		"hideMethod": "fadeOut"
+	  }
 	toastr.info('<button type="button" class=" btn btn-success clear btn-toastr">Refresh</button>' +
 	'<button type="button" class=" btn btn-default clear btn-toastr">Dismiss</button>' , 'New content available');
-	debugger
 	$('#toast-container > div').css('opacity', 100);
 	var toast = toastView().then(function(){
 		worker.postMessage({action: 'skipWaiting'});
@@ -59,19 +74,3 @@ navigator.serviceWorker.addEventListener('controllerchange', function() {
 	window.location.reload();
 })
 
-toastr.options = {
-  "closeButton": false,
-  "debug": true,
-  "newestOnTop": false,
-  "progressBar": false,
-  "positionClass": "toast-bottom-center",
-  "preventDuplicates": false,
-  "showDuration": "300",
-  "hideDuration": "1000",
-  "timeOut": "5000",
-  "extendedTimeOut": "30000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
-}
