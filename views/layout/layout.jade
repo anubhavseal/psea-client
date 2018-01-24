@@ -9,6 +9,10 @@ html
 		meta(name='author' content='')
 		title PSEA
 
+		link(rel='stylesheet', href='https://fonts.googleapis.com/icon?family=Material+Icons')
+		link(rel='stylesheet', href='https://code.getmdl.io/1.3.0/material.blue-indigo.min.css')
+		script(defer='', src='https://code.getmdl.io/1.3.0/material.min.js')
+
 		!= css('lib/toastr/toastr.min.css')
 		!= css('nextgen/stylesheets/custom')
 		!= css('nextgen/stylesheets/simplePagination')
@@ -17,26 +21,35 @@ html
 		!= css('nextgen/stylesheets/cbsCustom')
 		
 		!= js('application')
-		!= js('test', {async: true})
 		!= js('lib/jquery.cycle2.min/index.js', {async: true})
 		!= js('lib/jquery.cycle2.center/index.js', {async: true})
 		!= js('lib/alertify.js/lib/alertify.js', {async: true})
 		!= js('lib/async/async.js', {async: true})		
 		
+	//- body(ng-app="global" ng-cloak="ng-cloak")
+	//- 	.page-container
+	//- 		.navigation-dock
+	//- 			.left-pane
+	//- 				include partials/menu
+	//- 				// include partials/footer	
+	//- 		.nav
+	//- 		main.app-main(style="background-color:white;")
+	//- 			include partials/header
+	//- 			.container-fluid(style="height:100%")
+	//- 				block content
+	//- 	.loading-spiner-holder.theme-loading-spiner-holder
+	//- 		i.fa.fa-spinner.fa-pulse
+	//- 		.message.white
+	//- 			span#loaderMessage
+	//- 	.overlay(data-loading)
+	//- 		.three-quarters
 	body(ng-app="global" ng-cloak="ng-cloak")
-		.page-container
-			.navigation-dock
-				.left-pane
-					include partials/menu
-					// include partials/footer	
-			.nav
-			main.app-main(style="background-color:white;")
-				include partials/header
-				.container-fluid(style="height:100%")
-					block content
-		.loading-spiner-holder.theme-loading-spiner-holder
-			i.fa.fa-spinner.fa-pulse
-			.message.white
-				span#loaderMessage
-		.overlay(data-loading)
-			.three-quarters
+		.app-container.mdl-layout.mdl-js-layout
+			header.mdl-layout__header
+				.mdl-layout__header-row
+					span.mdl-layout__title PSEA
+					.mdl-layout-spacer
+					nav.mdl-navigation
+						a.mdl-navigation__link(href="#") Home
+
+
