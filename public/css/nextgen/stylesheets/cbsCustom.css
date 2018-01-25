@@ -107,20 +107,28 @@ html,body,.page-container,main{
 	background-color: #21cc71;
 }
 
-.profile-image-container{
-	padding: 20px;
-	padding-bottom: 5px;
+.mdl-card__media{
+	/* padding: 20px;
+	padding-bottom: 5px; */
 	/* max-width: 100%; */
     /* margin: auto;
 	margin-bottom: 10px; */
-	color:white;
-	background: url(/images/york_city.jpg);
+	/* color:white; */
+	background: url(/images/york_city.jpg) bottom right 15% no-repeat #46B6AC;;
 	background-repeat: no-repeat;
 	background-size: cover;
-	border-radius: 5px;
+	/* border-radius: 5px; */
 	/*background: url(/images/psea-assets/image/img@3x.png);*/
 }
-
+.profile-card-square.mdl-card {
+	width: 320px;
+	height: 320px;
+  }
+  .profile-card-square > .mdl-card__title {
+	color: #fff;
+	background:
+	  url('/images/york_city.jpg') bottom right 15% no-repeat #46B6AC;
+  }
 .side-menu-container{
 	max-width: 70%;
     margin: auto;

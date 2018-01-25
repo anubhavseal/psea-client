@@ -60,10 +60,10 @@ function($scope, $dataService, $accessService, $recentProfile, $moment, $loader,
 	}
 	
 	function paginate(){
-		var profiles = $('.panel-profile-tile');
+		var profiles = $('.profile-card');
 		var numberOfProfiles = $scope.recentProfileIndicator === true ? profiles.length - 1 : profiles.length;
 		$scope.numberOfProfiles = numberOfProfiles;
-		var perPage = 9;
+		var perPage = 6;
 		profiles.slice(perPage).hide();
 		$('#pagination').pagination({
 				items:numberOfProfiles,

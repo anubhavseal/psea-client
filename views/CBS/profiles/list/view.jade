@@ -1,6 +1,17 @@
-.mdl-tabs.mdl-js-tabs.mdl-js-ripple-effect
-	.mdl-tabs__tab-bar
-		a.mdl-tabs__tab.is-active(href='#starks-panel') Starks
-		a.mdl-tabs__tab(href='#lannisters-panel') Lannisters
-		a.mdl-tabs__tab(href='#targaryens-panel') Targaryens
-
+.mdl-grid
+	.mdl-cell.mdl-cell--3-col-desktop.mdl-cell--8-col-tablet.mdl-cell--4-col-phone(ng-include='"/views/CBS/profiles/recentprofile/view1"' ng-show="recentProfile != null")
+	.mdl-cell.mdl-cell--9-col-desktop.mdl-cell--8-col-tablet.mdl-cell--4-col-phone
+		.mdl-grid(style="background-color:white;")
+			.mdl-cell.mdl-cell--4-col-desktop.mdl-cell--4-col-tablet.mdl-cell--4-col-phone(ng-repeat="profile in profiles|orderBy:'-cbSprofileId'" ng-if="profile.active == true && (recentProfile == null || profile.cbSprofileId != recentProfile.cbSprofileId)" )
+					.mdl-card.mdl-shadow--4dp.profile-card(style="width:95%;height:90%;margin-bottom:2px;")
+						.mdl-card__title.ellipsis(style="background-color:#039BE5;color:white;")
+							a.mdl-card__title-text(href="/profiles/{{profile.cbSprofileId}}" style="text-transform:capitalize;font-size:larger;")
+								{{profile.cbSprofileName}}
+						.mdl-card__supporting-text.ellipsis 
+							h7 {{profile.homeHierarchyName}}
+							h6 {{$moment.fromNow(profile.lastAccessedTime)}}	
+						.mdl-card__actions.mdl-card--border
+							a.mdl-button.mdl-button--colored.mdl-js-button.mdl-js-ripple-effect
+								| View Criteria
+		#pagination 
+							

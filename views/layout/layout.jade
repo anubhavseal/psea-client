@@ -14,11 +14,11 @@ html
 		script(defer='', src='https://code.getmdl.io/1.3.0/material.min.js')
 
 		!= css('lib/toastr/toastr.min.css')
-		!= css('nextgen/stylesheets/custom')
+		//!= css('nextgen/stylesheets/custom')
 		!= css('nextgen/stylesheets/simplePagination')
 		!= css('font-awesome/font-awesome')
-		!= css('nextgen/stylesheets/application')
-		!= css('nextgen/stylesheets/cbsCustom')
+		//!= css('nextgen/stylesheets/application')
+		//!= css('nextgen/stylesheets/cbsCustom')
 		
 		!= js('application')
 		!= js('lib/jquery.cycle2.min/index.js', {async: true})
@@ -43,8 +43,8 @@ html
 	//- 			span#loaderMessage
 	//- 	.overlay(data-loading)
 	//- 		.three-quarters
-	body(ng-app="global" ng-cloak="ng-cloak")
+	body(ng-app="global" ng-cloak="ng-cloak" style="background-color:#f1f1f1")
 		.div.mdl-layout.mdl-js-layout
-			include partials/header1
+			include partials/header
 			block content
 
