@@ -1,45 +1,6 @@
-.container-fluid(style="height:100%")
-	.app-container(style='padding-top:60px; margin-top:20px; height:95%;')
-		.row.psea-main-container(style="height:100%")
-			.col-md-3.psea-side-container
-				div(ng-include='"/views/CBS/profiles/recentprofile/view"' ng-show="recentProfile != null")
-				div.placeholder(ng-show="recentProfile == null" style="width:334px;height:360px;")
-			.col-md-9.psea-content-container
-				.row.profiles-container
-					.col-md-4.pull-left(ng-repeat="profile in profiles|orderBy:'-cbSprofileId'" ng-if="profile.active == true && (recentProfile == null || profile.cbSprofileId != recentProfile.cbSprofileId)" )
-						.panel.panel-primary.panel-profile-tile
-							.panel-heading.profile-heading(style="background-color: #03A9F4;")
-								a(href="/profiles/{{profile.cbSprofileId}}") {{profile.cbSprofileName}}
-								span.glyphicon.glyphicon-remove.pull-right.delete-profile(style="cursor:pointer" ng-click="deleteProfile(profile)")
-							.panel-body.profile-body
-								.row
-									.col-md-offset-1.col-md-11
-										p.ellipsis {{profile.homeHierarchyName}}
-									.col-md-offset-1.col-md-11
-										p 
-											em {{$moment.fromNow(profile.lastAccessedTime)}}	
-					.col-md-4.pull-left(ng-repeat="profile in profilesPlaceholder" ng-show="profiles.length == 0")
-						.panel.panel-primary.panel-profile-tile
-							.panel-heading.profile-heading.placeholder
-								a(href="/profiles/{{profile.cbSprofileId}}") {{profile.cbSprofileName}}
-								span.glyphicon.glyphicon-remove.pull-right.delete-profile
-							.panel-body.profile-body.placeholder.placeholder-half
-								.row
-									.col-md-offset-1.col-md-11
-										p.ellipsis.placeholder.placeholder-half {{profile.homeHierarchyName}}
-									.col-md-offset-1.col-md-11
-										p.ellipsis.placeholder.placeholder-quarter {{profile.homeHierarchyName}}
-					.col-md-12(style="margin-top:20px;" ng-show="numberOfProfiles > 9")
-						#pagination 
-		//.row
-			.col-md-12
-				button.btn.btn-success.btn-lg.pull-left(type="button" ng-click="openCreateProfilePopup()" ng-show="recentProfile != null") Create New Profile
-			.col-md-12.text-center(ng-show="recentProfile == null")
-				h3 It seems that you have not created any profile yet.
-			.col-md-12.text-center(ng-show="recentProfile == null")
-				h3  Please click below to create a profile.
-			.col-md-offset-5.col-md-3(style="margin-top:5vh;")
-				.row
-					.col-md-12
-						button.btn.btn-success.btn-lg.pull-center(type="button" ng-click="openCreateProfilePopup()" ng-show="recentProfile == null") Create New Profile
-		//.row(style="position:absolute;bottom:10px;width:95%")
+.mdl-tabs.mdl-js-tabs.mdl-js-ripple-effect
+	.mdl-tabs__tab-bar
+		a.mdl-tabs__tab.is-active(href='#starks-panel') Starks
+		a.mdl-tabs__tab(href='#lannisters-panel') Lannisters
+		a.mdl-tabs__tab(href='#targaryens-panel') Targaryens
+

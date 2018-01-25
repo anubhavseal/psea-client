@@ -71,7 +71,7 @@ app.use(connectAssets({
           path.join(__dirname, 'public/js'),
           path.join(__dirname, 'views/')
           ],
-  bundle: false,
+  bundle: true,
   compress: false,
   sourceMaps: true, 
   fingerprinting: false,

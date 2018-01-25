@@ -44,12 +44,7 @@ html
 	//- 	.overlay(data-loading)
 	//- 		.three-quarters
 	body(ng-app="global" ng-cloak="ng-cloak")
-		.app-container.mdl-layout.mdl-js-layout
-			header.mdl-layout__header
-				.mdl-layout__header-row
-					span.mdl-layout__title PSEA
-					.mdl-layout-spacer
-					nav.mdl-navigation
-						a.mdl-navigation__link(href="#") Home
-
+		.div.mdl-layout.mdl-js-layout
+			include partials/header1
+			block content
 
