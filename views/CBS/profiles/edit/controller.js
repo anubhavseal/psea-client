@@ -6,7 +6,10 @@ angular.module('cbs').controller('cbs.profiles.edit.controller',[
 '$recentProfile',
 '$notifier',
 '$popup',
-function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,$urlPath,$popup) {
+'$navigation',
+function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier, $popup, $navigation) {
+	console.log('edit')
+	console.log($navigation)
 	$scope.showLink = showLink;
 	$scope.searchMap = {};
     $scope.getSelectedCount = getSelectedCount;
@@ -42,8 +45,9 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
     ################################################################################
     */
 	function init(){
-		$loader.show();
-		$dataService.get('CBSprofiles/' + $routeParams.profileId, function(profiles) {
+		//$loader.show();
+		
+		$dataService.get('CBSprofiles/1000' /*+ $routeParams.profileId*/, function(profiles) {
 			$scope.profile = profiles == null || profiles.length == 0 ? {} : profiles[0];
 				$dataService.getFromCache('hierarchy?hierarchyId.in=' + $scope.profile.homeHierarchyId,function(hierarchies){
 					$scope.profile.homeHierarchyName = hierarchies == null || hierarchies.length == 0 ? {} : hierarchies[0].hierarchyName;
@@ -51,7 +55,9 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 					$recentProfile.show($scope);
 			})
 			fetchHomeDistrict();
-		});         
+		});       
+		console.log($navigation)
+		$navigation.get();  
 	}
 
 	function fetchHomeDistrict() {
@@ -120,7 +126,7 @@ function($scope, $dataService, $routeParams, $loader, $recentProfile, $notifier,
 			populateRangeGroupAttributes();
 			populateSchoolTypePermissions();
 			
-			$loader.hide();
+			//$loader.hide();
 		});
 	}
     
