@@ -1,9 +1,18 @@
 html,body,.page-container,main{
-	height: 100%;
+	/* height: 100%; */
 	background-color: white;
 	font-family: 'Lato', sans-serif !important;
 }
-
+.navbar{
+	border-radius: 0px;
+}
+.psea-app{
+	/* padding-top: 40px; */
+}
+.psea-navigation{
+	/* margin-top:35px; */
+	margin-bottom: 1%;
+}
 .label-left{
 	text-align: left !important;
 }
@@ -18,14 +27,14 @@ html,body,.page-container,main{
 	box-shadow:0 5px 8px rgba(0,0,0,0.30), 0 1px 2px rgba(0,0,0,0.22)
 }
 .psea-side-container{
-	background: #fff;
+	/* background: #fff;
 	border-radius: 2px;
-	padding: 0;
+	padding: 0; */
 }
-.profiles-container{
+/* .profiles-container{
 	max-width: 95%;
 	margin: auto;
-}
+} */
 .psea-main-container{
 	background: #fff;
 	border-radius: 2px;
@@ -38,11 +47,11 @@ html,body,.page-container,main{
 	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 /*------------------------------Profile List---------------------------------*/
-.profile-container{
+/* .profile-container{
 	padding-right: 75px;
     padding-left: 30px;
 	margin-bottom: 10px;
-}
+} */
 
 .panel-profile-tile{
 	/* padding: 10px 20px 1px; */
@@ -51,6 +60,7 @@ html,body,.page-container,main{
     border-color:#e8e8e8;
 	border-width: 2px; */
 	border:none;
+	border-radius: 2px;
 	height: 140px;
 	/* width: 90%; */
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -72,6 +82,10 @@ html,body,.page-container,main{
 
 .profile-heading a {
 	color: white;
+}
+.panel-primary>.panel-heading{
+	border:none;
+	background-color: #03A9F4;
 }
 .delete-profile {
 	display:none;
@@ -110,6 +124,8 @@ html,body,.page-container,main{
 .profile-image-container{
 	padding: 20px;
 	padding-bottom: 5px;
+	height:30vh;
+	position: relative;
 	/* max-width: 100%; */
     /* margin: auto;
 	margin-bottom: 10px; */

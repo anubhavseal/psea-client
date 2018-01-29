@@ -8,31 +8,32 @@ html
 		meta(name='description' content='')
 		meta(name='author' content='')
 		title PSEA
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
+
+		
 
 		!= css('lib/toastr/toastr.min.css')
 		!= css('nextgen/stylesheets/custom')
 		!= css('nextgen/stylesheets/simplePagination')
 		!= css('font-awesome/font-awesome')
-		!= css('nextgen/stylesheets/application')
+		//!= css('nextgen/stylesheets/application')
 		!= css('nextgen/stylesheets/cbsCustom')
 		
 		!= js('application')
-		!= js('test', {async: true})
+		//!= js('test', {async: true})
 		!= js('lib/jquery.cycle2.min/index.js', {async: true})
 		!= js('lib/jquery.cycle2.center/index.js', {async: true})
 		!= js('lib/alertify.js/lib/alertify.js', {async: true})
 		!= js('lib/async/async.js', {async: true})		
-		
+		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
 	body(ng-app="global" ng-cloak="ng-cloak")
+		include partials/header
 		.page-container
 			.navigation-dock
 				.left-pane
 					include partials/menu
-					// include partials/footer	
-			.nav
-			main.app-main(style="background-color:white;")
-				include partials/header
-				.container-fluid(style="height:100%")
+			main.app-main.container-fluid(style="background-color:white;")
+				.container-fluid
 					block content
 		.loading-spiner-holder.theme-loading-spiner-holder
 			i.fa.fa-spinner.fa-pulse

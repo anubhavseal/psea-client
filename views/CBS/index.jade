@@ -1,0 +1,5 @@
+div.psea-navigation(ng-controller = 'cbs.controller')
+	ul.nav.nav-pills.nav-justified( )
+		li(ng-repeat='a in app' ng-class='{active: selectedTab.url == a.url}' ng-click='shownav(a)')
+			a(href='{{a.id}}') {{a.url}}
+block content

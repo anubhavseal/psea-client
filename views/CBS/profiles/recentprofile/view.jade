@@ -1,23 +1,40 @@
-.div.profile-image-container
-	.row(style="padding-bottom:90px;height:100px")
-		.col-md-12
-			h1.text-left {{profileGreeting}}
-	.row(style="padding-bottom:15px;height:45px")
-		.col-md-12
-			span My Recent Profile
-	.row(style="padding-bottom:30px;height:80px")
-		.col-md-12
-			h3 {{recentProfile.cbSprofileName}}
-			h5 {{recentProfile.homeHierarchyName}}
-	.row(style="height:50px")
-		.col-md-12
-			span{{$moment.fromNow(recentProfile.lastAccessedAt)}}
-			div( ng-if='profileLocation != "/profiles"') 
-				a(href="/profiles" style="color:white") (View All Profiles)
-	.row(style="padding-bottom:30px;height:60px")
-		.col-md-6(style="padding:2px;")
-			button.btn.btn-primary.btn-lg(style="width:100%;") 
-				a(href="/reports" style="color:white" ) Analysis
-		.col-md-6(style="padding:2px;")
-			button.btn.btn-primary.btn-lg(style="width:100%;") 
-				a(href="/profiles/{{recentProfile.cbSprofileId}}" style="color:white" ) Criteria	
+.col-md-12.profile-image-container
+	.col-md-12
+			h3 Recent Profile
+	//- .col-md-12(style='position:absolute;bottom:10px;')
+	//- 	h3 
+	//- 		u {{recentProfile.cbSprofileName}}
+	//- .row(style="padding-bottom:90px;height:100px")
+	//- 	.col-md-12
+	//- 		h1.text-left {{profileGreeting}}
+	//- .row(style="padding-bottom:15px;height:45px")
+	//- 	.col-md-12
+	//- 		h3 Recent Profile
+	//- .row(style="padding-bottom:30px;height:80px")
+	//- 	.col-md-12
+	//- 		h3 {{recentProfile.cbSprofileName}}
+	//- 		h5 {{recentProfile.homeHierarchyName}}
+	//- .row(style="height:50px")
+	//- 	.col-md-12
+	//- 		span{{$moment.fromNow(recentProfile.lastAccessedAt)}}
+	//- 		div( ng-if='profileLocation != "/profiles"') 
+	//- 			a(href="/profiles" style="color:white") (View All Profiles)
+	//- .row(style="padding-bottom:30px;height:60px")
+	//- 	.col-md-6(style="padding:2px;")
+	//- 		button.btn.btn-primary.btn-lg(style="width:100%;") 
+	//- 			a(href="/reports" style="color:white" ) Analysis
+	//- 	.col-md-6(style="padding:2px;")
+	//- 		button.btn.btn-primary.btn-lg(style="width:100%;") 
+	//- 			a(href="/profiles/{{recentProfile.cbSprofileId}}" style="color:white" ) Criteria	
+.col-md-12
+	h3 {{recentProfile.cbSprofileName}}
+.col-md-12
+	h4 {{recentProfile.homeHierarchyName}}
+.col-md-12
+	h5 {{$moment.fromNow(recentProfile.lastAccessedAt)}}
+
+	//- .row(style="height:50px")
+	//- 	.col-md-12
+	//- 		span{{$moment.fromNow(recentProfile.lastAccessedAt)}}
+	//- 		div( ng-if='profileLocation != "/profiles"') 
+	//- 			a(href="/profiles" style="color:white") (View All Profiles)

@@ -1,8 +1,9 @@
 extends ../layout/layout
 
 block content
-	div(style="height:100%")
-		div(ng-view='' style="height:100%")
+	.row.psea-app
+		include ../CBS/index
+		.col-md-12(ng-view='')
 	!= js('base/include.js')
 	!= js('security/include.js')
 	!= js('shared/include.js')
